@@ -9,7 +9,7 @@ class AirQualityHealthIndexController extends Controller
     public function __construct($container)
     {
         parent::__construct($container);
-        $this->container=$container;
+        $this->container = $container;
     }
 
     public function index($request, $response)
