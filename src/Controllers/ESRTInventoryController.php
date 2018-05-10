@@ -28,7 +28,12 @@ class ESRTInventoryController extends Controller
         $limit = isset($request_data['limit']) && !empty($request_data['limit']) ? $request_data['limit'] : (isset($request_data['limit']) && $request_data['limit'] === 0 ? 0 : null);
         
         if (empty($error_msgs)) {
-            $json = @file_get_contents('http://52.151.12.139/api/v1/ReceptionCentre');
+            $client = new \GuzzleHttp\Client();
+            $res = $client->request('GET', 'http://52.151.12.139/api/v1/ReceptionCentre', [
+                'auth' => ['ifttt', '24680']
+            ]);
+            
+            $json = @file_get_contents($res);
             if ($json !== FALSE) {
                 $obj         = json_decode($json, true);
                 $centres     = $obj["list"];
