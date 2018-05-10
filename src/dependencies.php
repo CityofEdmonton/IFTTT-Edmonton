@@ -85,7 +85,7 @@ $container['LightTheBridgeController'] = function( $container ){
 };
 
 $container['ESRTInventoryController'] = function( $container ){
-    return new \Src\Controllers\ESRTInventoryController($container;
+    return new \Src\Controllers\ESRTInventoryController($container);
 };
 
 require __DIR__ . '/../src/middleware.php';

@@ -1,5 +1,4 @@
 <?php
-use Src\Controllers\ESRTInventoryController;
 
 // Home (index Controllers)
 $app->get('/', 'HomeController:index');
