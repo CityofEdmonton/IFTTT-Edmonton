@@ -28,18 +28,28 @@ class ESRTInventoryController extends Controller
         $limit = isset($request_data['limit']) && !empty($request_data['limit']) ? $request_data['limit'] : (isset($request_data['limit']) && $request_data['limit'] === 0 ? 0 : null);
         
         if (empty($error_msgs)) {
-            $auth = base64_encode("ifttt:24680");
+            /* $auth = base64_encode("ifttt:24680");
             $context = stream_context_create(['http' => ['header' => "Authorization: Basic $auth"]]);
             $json = file_get_contents("http://52.151.12.139/api/v1/ReceptionCentre", false, $context );
             if ($json !== FALSE) {
                 $obj         = json_decode($json, true);
                 $centres     = $obj["list"];
-                $currentCentre = false;
+                $currentCentre = false; */
+            
+            // dummy data
+            $json = @file_get_contents('https://api.airtable.com/v0/appjnEtBJ7mDprrqG/ESRT%20Test?api_key=keySxDd3jQdYeH6Z5');
+            if ($json !== FALSE) {
+                $obj         = json_decode($json, true);
+                $centres   = $obj["records"];
+                $currentCentre = false; 
+                
                                 
                 // TODO: change to handle multiple reception centres with cot quantities below tolerance, no higher priority?
                 foreach ($centres as $centre) {
-                    $toleranceQty = $centre["toleranceLevel"];
-                    $cotsQty = $centre["cotsAvailable"];
+                    // $toleranceQty = $centre["toleranceLevel"];
+                    $toleranceQty = $centre["fields"]["tolaranceLevelQty"];
+                    // $cotsQty = $centre["cotsAvailable"]
+                    $cotsQty = $centre["fields"]["cotsAvailable"];
                                         
                     if ($cotsQty < $toleranceQty)
                     {
@@ -68,6 +78,7 @@ class ESRTInventoryController extends Controller
                     error_log(print_r($currentCentre["fields"][],1));
                     
                     // TODO: Future implementation: different items for inventory
+                    /* Change when data publicly available
                     if ($esrtr[0]->title != $currentCentre["name"] && esrtr[0]->description != "Cot quantity levels are low.") {
                         //insert NEW event!
                         $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' Inserted new event - success");
@@ -79,6 +90,20 @@ class ESRTInventoryController extends Controller
                     } else {
                         $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' levels above tolerance - skipping DB insert");
                     }
+                    */
+                    
+                    if ($esrtr[0]->title != $currentCentre["fields"]["name"] && esrtr[0]->description != "Cot quantity levels are low.") {
+                        //insert NEW event!
+                        $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' Inserted new event - success");
+                        $this->db->table('esrt_inventory_record')->insertGetId(array(
+                            'title' => $currentCentre["fields"]["name"],
+                            'description' => "Cot quantity levels are low.",
+                            'date_created' => date('Y-m-d H:i:s')
+                        ));
+                    } else {
+                        $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' levels above tolerance - skipping DB insert");
+                    }
+                    
                 }
                 error_log("#########################");
                 
