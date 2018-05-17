@@ -81,7 +81,7 @@ class ESRTInventoryController extends Controller
                     }
                     
                     
-                    if ($esrtr[0]->title != $currentCentre["fields"]["name"] && esrtr[0]->description != "Cot quantity levels are low.") {
+                    if ($esrtr[0]->title != $currentCentre["fields"]["name"] || esrtr[0]->description != "Cot quantity levels are low.") {
                         //insert NEW event!
                         $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' Inserted new event - success");
                         $this->db->table('esrt_inventory_record')->insertGetId(array(
