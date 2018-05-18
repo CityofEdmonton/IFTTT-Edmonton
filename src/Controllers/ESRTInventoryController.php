@@ -51,11 +51,16 @@ class ESRTInventoryController extends Controller
                     }
                 }
                 if (!$currentCentre) {
-                    error_log("Inventory levels above tolerance.");
-                    $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' levels above tolerance - skipping DB insert");
-                    $light_colour = "#009933"; // green
+                    $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' Inserted new event - success");
+                    $this->db->table('esrt_inventory_record')->insertGetId(array(
+                        'title' => $currentCentre["N/A"],
+                        'description' => "All quantity levels above tolerance",
+                        'date_created' => date('Y-m-d H:i:s')
+                    ));
+                    $light_colour = "#009933"; // TODO: use light colour ingredients?
                 } else {
                     $light_colour = "#FF0000"; // red
+                    
                     //first check to see if we need to insert a new entry
                     $esrtr = $this->db->table('esrt_inventory_record')
                     ->orderBy('date_created', 'desc')
@@ -68,7 +73,7 @@ class ESRTInventoryController extends Controller
                     error_log(print_r($currentCentre["fields"][],1));
                     
                     // TODO: Future implementation: different items for inventory
-                    if ($esrtr[0]->title != $currentCentre["name"] || esrtr[0]->description != "Cot quantity levels are low.") {
+                    if ($esrtr[0]->title != $currentCentre["name"] || esrtr[0]->title == "N/A") {
                         //insert NEW event!
                         $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' Inserted new event - success");
                         $this->db->table('esrt_inventory_record')->insertGetId(array(

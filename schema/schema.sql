@@ -40,7 +40,7 @@ CREATE TABLE `esrt_inventory_record` (
 LOCK TABLES `light_the_bridge_event` WRITE;
 /*!40000 ALTER TABLE `esrt_inventory_record` DISABLE KEYS */;
 
-INSERT INTO `esrt_inventory` VALUES
+INSERT INTO `esrt_inventory_record` VALUES
 ('1', 'TestReceptionCentre1', 'Cot quantity levels are low.', '2018-02-15 04:25:09'),
 ('2', 'TestReceptionCentre2', 'Cot quantity levels are low.', '2018-02-15 04:25:09'),
 ('3', 'TestReceptionCentre3', 'Cot quantity levels are low.', '2018-02-15 04:25:09'),
