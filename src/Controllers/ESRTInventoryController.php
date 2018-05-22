@@ -40,7 +40,7 @@ class ESRTInventoryController extends Controller
                     $toleranceQty = $centre["toleranceLevelQty"];
                     $cotsQty = $centre["cotsAvailable"];
                     $currentCentre = false;                                   
-                    if ((int) $toleranceQty > (int) $cotsQty)
+                    if ($toleranceQty > $cotsQty)
                     {
                         error_log("##### LOW INVENTORY #####");
                         error_log("Reception Centre: " . $centre["name"]);
@@ -51,7 +51,7 @@ class ESRTInventoryController extends Controller
                 // TODO: Future implementation: different items for inventory
                 if (!$currentCentre){
                     // check latest record
-                    $esrtr  = $this->db->table('esrt_inventory_record')
+                    $esrtr = $this->db->table('esrt_inventory_record')
                         ->orderBy('date_created', 'desc')
                         ->limit(1)
                         ->get();
@@ -59,7 +59,6 @@ class ESRTInventoryController extends Controller
                     error_log(print_r($currentCentre["name"], 1));
                     error_log("DB:");
                     error_log(print_r($esrtr[0],1));
-                    error_log(print_r($currentCentre["fields"][],1));
                     
                     // insert new record
                     if ($esrtr[0]->title == " "){
