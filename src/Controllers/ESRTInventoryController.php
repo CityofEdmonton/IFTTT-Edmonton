@@ -36,13 +36,10 @@ class ESRTInventoryController extends Controller
                 $obj         = json_decode($json, true);
                 $centres     = $obj["list"];
                                 
-                // TODO: change to handle multiple reception centres with cot quantities below tolerance, no higher priority
                 foreach ($centres as $centre) {
-                    $toleranceQty = (int) $centre["toleranceLevelQty"];
-                    $cotsQty = (int) $centre["cotsAvailable"];
                     $currentCentre = false;
                                         
-                    if ($cotsQty < $toleranceQty)
+                    if ((int)$centre["toleranceLevelQty"] > (int)$centre["cotsAvailable"])
                     {
                         $found = true;
                         error_log("##### LOW INVENTORY #####");
@@ -53,17 +50,14 @@ class ESRTInventoryController extends Controller
                 }
                 
                 if (!$currentCentre) {
-                    $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' levels above tolerance - skipping DB insert");
-                    /* $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' Inserted new event - success");
+                    // $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' levels above tolerance - skipping DB insert");
+                    $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' Inserted new event - success");
                     $this->db->table('esrt_inventory_record')->insertGetId(array(
                         'title' => " ",
                         'description' => "All quantity levels above tolerance.",
                         'date_created' => date('Y-m-d H:i:s')
-                    )); */
-                    //$light_colour = "#009933"; // TODO: use light colour ingredients?
+                    ));
                 } else {
-                //$light_colour = "#FF0000"; // red
-                
                 //first check to see if we need to insert a new entry
                 $esrtr = $this->db->table('esrt_inventory_record')
                 ->orderBy('date_created', 'desc')
@@ -87,15 +81,14 @@ class ESRTInventoryController extends Controller
                 } else {
                     $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' levels above tolerance - skipping DB insert");
                 }
-              
                 }
                 error_log("#########################");
                 
                 //get events
                 $dbevents = $this->db->table('esrt_inventory_record')
-                ->orderBy('date_created', 'desc')
-                ->limit($limit)
-                ->get();
+                    ->orderBy('date_created', 'desc')
+                    ->limit($limit)
+                    ->get();
                 
                 error_log("events from DB:");
                 error_log(print_r($dbevents,1));
