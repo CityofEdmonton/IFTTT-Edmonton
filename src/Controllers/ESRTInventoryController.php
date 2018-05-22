@@ -50,6 +50,7 @@ class ESRTInventoryController extends Controller
                 }
                 // TODO: Future implementation: different items for inventory
                 if (!$currentCentre){
+                    $lightColour = '#008000';
                     // check latest record
                     $esrtr = $this->db->table('esrt_inventory_record')
                         ->orderBy('date_created', 'desc')
@@ -71,6 +72,7 @@ class ESRTInventoryController extends Controller
                             'date_created' => date('Y-m-d H:i:s')));
                     }                
                 } else {
+                    $lightColour = '#FF0000';
                     $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' Inserted new event - success");
                     $this->db->table('esrt_inventory_record')->insertGetId(array(
                         'title' => $currentCentre["name"],
@@ -98,6 +100,7 @@ class ESRTInventoryController extends Controller
                         'id' => $event->id,
                         'title' => $event->title,
                         'description' => $event->description,
+                        'lightColor' => $lightColour,
                         'created_at' => $time,
                         'meta' => array(
                             'id' => $event->id,
