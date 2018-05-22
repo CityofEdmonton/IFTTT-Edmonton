@@ -37,27 +37,16 @@ class ESRTInventoryController extends Controller
                 $centres     = $obj["list"];
                                 
                 foreach ($centres as $centre) {
-                    $currentCentre = false;
-                                        
+                    $currentCentre = false;                                   
                     if ((int)$centre["toleranceLevelQty"] > (int)$centre["cotsAvailable"])
                     {
-                        $found = true;
                         error_log("##### LOW INVENTORY #####");
                         error_log("Reception Centre: " . $centre["name"]);
                         $currentCentre = $centre;
                         break;
                     }
                 }
-                
-                if (!$currentCentre) {
-                    // $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' levels above tolerance - skipping DB insert");
-                    $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' Inserted new event - success");
-                    $this->db->table('esrt_inventory_record')->insertGetId(array(
-                        'title' => " ",
-                        'description' => "All quantity levels above tolerance.",
-                        'date_created' => date('Y-m-d H:i:s')
-                    ));
-                } else {
+
                 //first check to see if we need to insert a new entry
                 $esrtr = $this->db->table('esrt_inventory_record')
                 ->orderBy('date_created', 'desc')
@@ -70,8 +59,13 @@ class ESRTInventoryController extends Controller
                 error_log(print_r($currentCentre["fields"][],1));
                 
                 // TODO: Future implementation: different items for inventory
-                if ($esrtr[0]->title != $currentCentre["name"]) {
-                    //insert NEW event!
+                if (!$currentCentre && $esrtr[0]->title != " "){
+                    $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' Inserted new event - success");
+                    $this->db->table('esrt_inventory_record')->insertGetId(array(
+                        'title' => " ",
+                        'description' => "All quantity levels above tolerance.",
+                        'date_created' => date('Y-m-d H:i:s')
+                } else if ($esrtr[0]->title != $currentCentre["name"]) {
                     $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' Inserted new event - success");
                     $this->db->table('esrt_inventory_record')->insertGetId(array(
                         'title' => $currentCentre["name"],
@@ -81,7 +75,7 @@ class ESRTInventoryController extends Controller
                 } else {
                     $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' levels above tolerance - skipping DB insert");
                 }
-                }
+                // }
                 error_log("#########################");
                 
                 //get events
