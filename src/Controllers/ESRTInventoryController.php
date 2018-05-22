@@ -38,8 +38,8 @@ class ESRTInventoryController extends Controller
                                 
                 // TODO: change to handle multiple reception centres with cot quantities below tolerance, no higher priority
                 foreach ($centres as $centre) {
-                    $toleranceQty = $centre["toleranceLevelQty"];
-                    $cotsQty = $centre["cotsAvailable"];
+                    $toleranceQty = (int) $centre["toleranceLevelQty"];
+                    $cotsQty = (int) $centre["cotsAvailable"];
                     $currentCentre = false;
                                         
                     if ($cotsQty < $toleranceQty)
