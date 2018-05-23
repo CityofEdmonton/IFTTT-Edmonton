@@ -72,7 +72,7 @@ class ESRTInventoryController extends Controller
                             'date_created' => date('Y-m-d H:i:s')));
                         $this->db->table('esrt_inventory_record')
                         ->orderBy('date_created', 'asc')
-                        ->limit($limit)
+                        ->limit(1)
                         ->delete();
                     // }                
                 } else {
@@ -85,7 +85,7 @@ class ESRTInventoryController extends Controller
                     ));
                     $this->db->table('esrt_inventory_record')
                     ->orderBy('date_created', 'asc')
-                    ->limit($limit)
+                    ->limit(1)
                     ->delete();
                 }
                 error_log("#########################");
