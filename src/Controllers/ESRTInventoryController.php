@@ -1,10 +1,7 @@
 <?php
-
 namespace Src\Controllers;
-
 use \DateTime;
 use Slim\Views\Twig as View;
-
 class ESRTInventoryController extends Controller
 {
     public function __construct($container)
@@ -12,7 +9,6 @@ class ESRTInventoryController extends Controller
         parent::__construct($container);
         $this->container=$container;
     }
-
     public function index($request, $response)
     {
         $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' route - success");
@@ -35,11 +31,11 @@ class ESRTInventoryController extends Controller
             if ($json !== FALSE) {
                 $obj         = json_decode($json, true);
                 $centres     = $obj["list"];
-                                
+                
                 foreach ($centres as $centre) {
                     $toleranceQty = $centre["toleranceLevelQty"];
                     $cotsQty = $centre["cotsAvailable"];
-                    $currentCentre = false;                                   
+                    $currentCentre = false;
                     if ($toleranceQty > $cotsQty)
                     {
                         error_log("##### LOW INVENTORY #####");
@@ -53,24 +49,28 @@ class ESRTInventoryController extends Controller
                     $lightColour = '#008000';
                     // check latest record
                     $esrtr = $this->db->table('esrt_inventory_record')
-                        ->orderBy('date_created', 'desc')
-                        ->limit(1)
-                        ->get();
+                    ->orderBy('date_created', 'desc')
+                    ->limit(1)
+                    ->get();
                     error_log("Reception Centre:");
                     error_log(print_r($currentCentre["name"], 1));
                     error_log("DB:");
                     error_log(print_r($esrtr[0],1));
                     
                     // insert new record
-                    //if ($esrtr[0]->title == " "){
-                        $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' levels above tolerance - skipping DB insert");
-                    //} else {
-                        $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' Inserted new event - success");
-                        $this->db->table('esrt_inventory_record')->insertGetId(array(
-                            'title' => " ",
-                            'description' => "All quantity levels above tolerance.",
-                            'date_created' => date('Y-m-d H:i:s')));
-                    //}                
+                    // if ($esrtr[0]->title == " "){
+                    // $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' levels above tolerance - skipping DB insert");
+                    // } else {
+                    $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' Inserted new event - success");
+                    $this->db->table('esrt_inventory_record')->insertGetId(array(
+                        'title' => " ",
+                        'description' => "All quantity levels above tolerance.",
+                        'date_created' => date('Y-m-d H:i:s')));
+                    $this->db->table('esrt_inventory_record')
+                    ->orderBy('date_created', 'asc')
+                    ->limit(1)
+                    ->delete();
+                    // }
                 } else {
                     $lightColour = '#FF0000';
                     $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' Inserted new event - success");
@@ -78,15 +78,19 @@ class ESRTInventoryController extends Controller
                         'title' => $currentCentre["name"],
                         'description' => "More cots needed at ",
                         'date_created' => date('Y-m-d H:i:s')
-                    ));                
+                    ));
+                    $this->db->table('esrt_inventory_record')
+                    ->orderBy('date_created', 'asc')
+                    ->limit(1)
+                    ->delete();
                 }
                 error_log("#########################");
                 
                 //get events
                 $dbevents = $this->db->table('esrt_inventory_record')
-                    ->orderBy('date_created', 'desc')
-                    ->limit($limit)
-                    ->get();
+                ->orderBy('date_created', 'desc')
+                ->limit($limit)
+                ->get();
                 
                 error_log("events from DB:");
                 error_log(print_r($dbevents,1));
