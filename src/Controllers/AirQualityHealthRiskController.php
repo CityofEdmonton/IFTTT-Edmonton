@@ -4,7 +4,7 @@ namespace Src\Controllers;
 
 use Slim\Views\Twig as View;
 
-class AirQualityHealthIndexController extends Controller
+class AirQualityHealthRiskController extends Controller
 {
     public function __construct($container)
     {
