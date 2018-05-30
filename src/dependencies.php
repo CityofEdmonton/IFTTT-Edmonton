@@ -80,6 +80,10 @@ $container['AirQualityHealthIndexController'] = function( $container ){
     return new \Src\Controllers\AirQualityHealthIndexController($container);
 };
 
+$container['AirQualityHealthRiskController'] = function( $container ){
+    return new \Src\Controllers\AirQualityHealthRiskController($container);
+};
+
 $container['LightTheBridgeController'] = function( $container ){
     return new \Src\Controllers\LightTheBridgeController($container);
 };
