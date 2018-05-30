@@ -10,6 +10,9 @@ $app->post('/ifttt/v1/test/setup', 'TestsController:setup');
 // Air Quality Health Index
 $app->post('/ifttt/v1/triggers/air_quality_health_index', 'AirQualityHealthIndexController:index');
 
+// Air Quality Health Index
+$app->post('/ifttt/v1/triggers/air_quality_health_risk', 'AirQualityHealthRiskController:index');
+
 // Light The Bridge
 $app->post('/ifttt/v1/triggers/light_the_bridge', 'LightTheBridgeController:index');
 
