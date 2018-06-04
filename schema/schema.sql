@@ -33,7 +33,7 @@ CREATE TABLE `esrt_inventory_record` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `air_quality_health_index_record`
+-- Dumping data for table `esrt_inventory_record`
 --
 
 LOCK TABLES `esrt_inventory_record` WRITE;
@@ -70,7 +70,7 @@ CREATE TABLE `light_the_bridge_event` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `air_quality_health_index_record`
+-- Dumping data for table `light_the_bridge_event`
 --
 
 LOCK TABLES `light_the_bridge_event` WRITE;
@@ -120,6 +120,44 @@ UNLOCK TABLES;
 -- /*!40000 ALTER TABLE `light_the_bridge_event` ENABLE KEYS */;
 -- UNLOCK TABLES;
 
+--
+-- Table structure for table `air_quality_health_risk_record`
+--
+
+DROP TABLE IF EXISTS `air_quality_health_risk_record`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `air_quality_health_risk_record` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `community_id` varchar(30) NOT NULL,
+  `community_name` varchar(20) NOT NULL,
+  `aqhi_current` varchar(10) NOT NULL,
+  `aqhi_forecast_today` varchar(10) NOT NULL,
+  `aqhi_forecast_tonight` varchar(10) NOT NULL,
+  `aqhi_forecast_tomorrow` varchar(10) NOT NULL,
+  `color` varchar(10) NOT NULL,
+  `light_color` varchar(10) NOT NULL,
+  `health_risk` varchar(20) NOT NULL,
+  `general_population_message` varchar(200) NOT NULL,
+  `at_risk_message` varchar(200) NOT NULL,
+  `date_created` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `aqhi_current` (`aqhi_current`)
+) ENGINE=MyISAM AUTO_INCREMENT=172 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `air_quality_health_risk_record`
+--
+
+LOCK TABLES `air_quality_health_risk_record` WRITE;
+/*!40000 ALTER TABLE `air_quality_health_risk_record` DISABLE KEYS */;
+INSERT INTO `air_quality_health_risk_record` VALUES
+("1","67","Edmonton",3,3,3,3,"#006699","#006699","Low","Ideal air quality for outdoor activities.","Enjoy your usual outdoor activities.","2017-12-07 20:14:17"),
+("2","67","Edmonton",4,4,4,4,"#FFFF00","#FFFF00","Moderate","No need to modify your usual outdoor activities unless you experience symptoms such as coughing and throat irritation.","Consider reducing or rescheduling strenuous activites outdoors if you are experiencing symptoms.","2017-12-07 19:55:57"),
+("3","67","Edmonton",8,8,8,8,"#FF0000","#FF0000","High","Consider reducing or rescheduling strenuous activities outdoors if you experience symptoms such as coughing and throat irritation.","Reduce or reschedule strenuous activities outdoors. Children and the elderly should also take it easy.","2017-12-07 19:55:57");
+/*!40000 ALTER TABLE `air_quality_health_risk_record` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `air_quality_health_index_record`

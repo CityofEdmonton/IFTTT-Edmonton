@@ -125,7 +125,7 @@ class AirQualityHealthRiskController extends Controller
                     error_log("########################");
 
                     //first check to see if we need to insert a new entry
-                    $aqhir = $this->db->table('air_quality_health_index_record')
+                    $aqhir = $this->db->table('air_quality_health_risk_record')
                         ->orderBy('date_created', 'desc')
                         ->limit(1)
                         ->get();
@@ -134,7 +134,7 @@ class AirQualityHealthRiskController extends Controller
                     if ($aqhir[0]->health_risk != $health_risk) {
                         //insert NEW RECORD!
                         $this->logger->info("air_quality_health_index '/ifttt/v1/triggers/air_quality_health_index' Inserted new AQHI - success");
-                        $this->db->table('air_quality_health_index_record')->insertGetId(array(
+                        $this->db->table('air_quality_health_risk_record')->insertGetId(array(
                             'community_id' => $community_id,
                             'community_name' => $community_name,
                             'aqhi_current' => $aqhi_current,
@@ -155,7 +155,7 @@ class AirQualityHealthRiskController extends Controller
 
 
                     //get air qulity's
-                    $records = $this->db->table('air_quality_health_index_record')
+                    $records = $this->db->table('air_quality_health_risk_record')
                         ->orderBy('date_created', 'desc')
                         ->limit($limit)
                         ->get();
