@@ -42,7 +42,7 @@ class LightTheBridgeController extends Controller
                     $title = $xml->channel->item[0]->title;
                     
                     //first check to see if we need to insert a new entry
-                    $ltbr = $this->db->table('light_the_bridge_event')
+                    $ltbr = $this->db->table('light_the_bridge')
                     ->orderBy('date_created', 'desc')
                     ->limit(1)
                     ->get();
@@ -50,7 +50,7 @@ class LightTheBridgeController extends Controller
                     if ($ltbr[0]->title != $title) {
                         //insert NEW event!
                         $this->logger->info("light_the_bridge '/ifttt/v1/triggers/light_the_bridge' Inserted new ltb - success");
-                        $this->db->table('light_the_bridge_event')->insertGetId(array(
+                        $this->db->table('light_the_bridge')->insertGetId(array(
                             'title' => $title,
                             'date_created' => date('Y-m-d H:i:s')
                         ));
@@ -61,7 +61,7 @@ class LightTheBridgeController extends Controller
                 error_log("#########################");
 
                 //get events's
-                $dbevents = $this->db->table('light_the_bridge_event')
+                $dbevents = $this->db->table('light_the_bridge')
                     ->orderBy('date_created', 'desc')
                     ->limit($limit)
                     ->get();
