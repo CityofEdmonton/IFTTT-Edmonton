@@ -30,7 +30,7 @@ class LightTheBridgeController extends Controller
         
         if (empty($error_msgs)) {
             $client = new \GuzzleHttp\Client();
-            $res = $client->request('GET', 'https://twitrss.me/twitter_search_to_rss/?term=LighttheBridge%20from:CityofEdmonton');
+            $res = $client->request('GET', 'https://twitrss.me/twitter_search_to_rss/?term=LighttheBridge+from%3Axjeanna');
             
             if ($res->getStatusCode() == 200) {
                 $this->logger->info("light_the_bridge '/ifttt/v1/triggers/light_the_bridge' pull - success");
