@@ -78,6 +78,12 @@ class LightTheBridgeController extends Controller
                         'id' => $event->id,
                         'title' => $event->title,
                         'created_at' => $time,
+			'description' => '',
+			'color_description' => '',
+			'color1' => '',
+			'color2' => '',
+			'color3' => '',
+			'color4' => '',
                         'meta' => array(
                             'id' => $event->id,
                             'timestamp' => strtotime($event->date_created)
