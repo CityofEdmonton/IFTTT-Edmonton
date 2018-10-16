@@ -52,7 +52,6 @@ class ESRTInventoryController extends Controller
                 if (!$currentCentre){
                     $lightColour = '#008000';
                     // check latest record
-                    
                     error_log("Reception Centre:");
                     error_log(print_r($currentCentre["name"], 1));
                     error_log("DB:");
