@@ -44,14 +44,14 @@ class ESRTInventoryController extends Controller
                         break;
                     }
                 }
+                $esrtr = $this->db->table('esrt_inventory_record')
+                ->orderBy('date_created', 'desc')
+                ->limit(1)
+                ->get();
                 // TODO: Future implementation: different items for inventory
                 if (!$currentCentre){
                     $lightColour = '#008000';
                     // check latest record
-                    $esrtr = $this->db->table('esrt_inventory_record')
-                    ->orderBy('date_created', 'desc')
-                    ->limit(1)
-                    ->get();
                     error_log("Reception Centre:");
                     error_log(print_r($currentCentre["name"], 1));
                     error_log("DB:");
