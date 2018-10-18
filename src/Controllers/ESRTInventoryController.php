@@ -58,19 +58,19 @@ class ESRTInventoryController extends Controller
                     error_log(print_r($esrtr[0],1));
                     
                     // insert new record
-                    // if ($esrtr[0]->title == " "){
-                    //     $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' levels above tolerance - skipping DB insert");
-                    // } else {
-                    $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' Inserted new event - success");
-                    $this->db->table('esrt_inventory_record')->insertGetId(array(
-                        'title' => " ",
-                        'description' => "All quantity levels above tolerance.",
-                        'date_created' => date('Y-m-d H:i:s')));
-                    $this->db->table('esrt_inventory_record')
-                    ->orderBy('date_created', 'asc')
-                    ->limit(1)
-                    ->delete();
-                    // }
+                    if ($esrtr[0]->title == " "){
+                        $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' levels above tolerance - skipping DB insert");
+                    } else {
+                        $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' Inserted new event - success");
+                        $this->db->table('esrt_inventory_record')->insertGetId(array(
+                            'title' => " ",
+                            'description' => "All quantity levels above tolerance.",
+                            'date_created' => date('Y-m-d H:i:s')));
+                        $this->db->table('esrt_inventory_record')
+                        ->orderBy('date_created', 'asc')
+                        ->limit(1)
+                        ->delete();
+                    }
                 } else {
                     $lightColour = '#FF0000';
                     if ($esrtr[0]->title != $currentCentre["name"]) {
