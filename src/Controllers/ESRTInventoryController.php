@@ -109,6 +109,7 @@ class ESRTInventoryController extends Controller
                         'title' => $event->title,
                         'description' => $event->description,
                         'lightColor' => $lightColour,
+                        'color' => $lightColour,
                         'created_at' => $time,
                         'meta' => array(
                             'id' => $event->id,
