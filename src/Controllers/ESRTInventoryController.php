@@ -44,14 +44,14 @@ class ESRTInventoryController extends Controller
                         break;
                     }
                 }
-                $esrtr = $this->db->table('esrt_inventory_record')
-                    ->orderBy('date_created', 'desc')
-                    ->limit(1)
-                    ->get();
                 // TODO: Future implementation: different items for inventory
                 if (!$currentCentre){
                     $lightColour = '#008000';
                     // check latest record
+                    $esrtr = $this->db->table('esrt_inventory_record')
+                    ->orderBy('date_created', 'desc')
+                    ->limit(1)
+                    ->get();
                     error_log("Reception Centre:");
                     error_log(print_r($currentCentre["name"], 1));
                     error_log("DB:");
@@ -73,20 +73,16 @@ class ESRTInventoryController extends Controller
                     // }
                 } else {
                     $lightColour = '#FF0000';
-                    if ($esrtr[0]->title != $currentCentre["name"]) {
-                        $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' Inserted new event - success");
-                        $this->db->table('esrt_inventory_record')->insertGetId(array(
-                            'title' => $currentCentre["name"],
-                            'description' => "More cots needed at ",
-                            'date_created' => date('Y-m-d H:i:s')
-                        ));
-                        $this->db->table('esrt_inventory_record')
-                        ->orderBy('date_created', 'asc')
-                        ->limit(1)
-                        ->delete();
-                    } else {
-                        $this->logger->info("esrt_inventory_record '/ifttt/v1/triggers/esrt_inventory' Reception Center not changed - skipping DB insert");
-                    }
+                    $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' Inserted new event - success");
+                    $this->db->table('esrt_inventory_record')->insertGetId(array(
+                        'title' => $currentCentre["name"],
+                        'description' => "More cots needed at ",
+                        'date_created' => date('Y-m-d H:i:s')
+                    ));
+                    $this->db->table('esrt_inventory_record')
+                    ->orderBy('date_created', 'asc')
+                    ->limit(1)
+                    ->delete();
                 }
                 error_log("#########################");
                 
