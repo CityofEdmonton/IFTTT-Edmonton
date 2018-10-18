@@ -73,16 +73,20 @@ class ESRTInventoryController extends Controller
                     }
                 } else {
                     $lightColour = '#FF0000';
-                    $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' Inserted new event - success");
-                    $this->db->table('esrt_inventory_record')->insertGetId(array(
-                        'title' => $currentCentre["name"],
-                        'description' => "More cots needed at ",
-                        'date_created' => date('Y-m-d H:i:s')
-                    ));
-                    $this->db->table('esrt_inventory_record')
-                    ->orderBy('date_created', 'asc')
-                    ->limit(1)
-                    ->delete();
+                    if ($esrtr[0]->title != $currentCentre["name"]) {
+                        $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' Inserted new event - success");
+                        $this->db->table('esrt_inventory_record')->insertGetId(array(
+                            'title' => $currentCentre["name"],
+                            'description' => "More cots needed at ",
+                            'date_created' => date('Y-m-d H:i:s')
+                        ));
+                        $this->db->table('esrt_inventory_record')
+                        ->orderBy('date_created', 'asc')
+                        ->limit(1)
+                        ->delete();
+                    } else {
+                        $this->logger->info("esrt_inventory_record '/ifttt/v1/triggers/esrt_inventory' Reception Center not changed - skipping DB insert");
+                    }
                 }
                 error_log("#########################");
                 
