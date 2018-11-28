@@ -22,5 +22,8 @@
         "psr-4": {
             "Src\\": "src"
         }
+    },
+    "require-dev": {
+        "symfony/dotenv": "^4.1"
     }
 }
