@@ -1,4 +1,11 @@
 <?php
+use Symfony\Component\Dotenv\Dotenv;
+$dotenv = new Dotenv();
+$dotenv->load(__DIR__.'/.env');
+$MYSQL_HOST = getenv('MYSQL_HOST');
+$MYSQL_DB = getenv('MYSQL_DB');
+$MYSQL_USER = getenv('MYSQL_USER');
+$MYSQL_PASS = getenv('MYSQL_PASS');
 return [
     'settings' => [
         'displayErrorDetails' => false, // set to false in production
@@ -21,13 +28,12 @@ return [
             'path' => __DIR__ . '/doc_root/logs/app.log', // Replace doc_root with the project directory path.
             'level' => \Monolog\Logger::DEBUG,
         ],
-        //Database Info
         'db' => [
             'driver' => 'mysql',
-            'host' => 'us-cdbr-iron-east-05.cleardb.net',
-            'database' => 'heroku_44aa3f48a6e9e55',
-            'username' => 'b0420e1388c018',
-            'password' => 'bed6d627',
+            'host' => $MYSQL_HOST,
+            'database' => $MYSQL_DB,
+            'username' => $MYSQL_USER,
+            'password' => $MYSQL_PASS,
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
