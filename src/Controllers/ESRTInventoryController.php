@@ -2,9 +2,6 @@
 namespace Src\Controllers;
 use \DateTime;
 use Slim\Views\Twig as View;
-use Symfony\Component\Dotenv\Dotenv;
-$dotenv = new Dotenv();
-$dotenv->load(__DIR__.'\..\..\.env');
 
 class ESRTInventoryController extends Controller
 {
@@ -15,8 +12,8 @@ class ESRTInventoryController extends Controller
     }
     public function index($request, $response)
     {
-        $IFTTT_USER = getenv('IFTTT_USER');
-        $IFTTT_PASS = getenv('IFTTT_PASS');
+        $IFTTT_USER = $this->container['settings']['ifttt']['username'];
+        $IFTTT_PASS = $this->container['settings']['ifttt']['password'];
         $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' route - success");
         $error_msgs = array();
         
