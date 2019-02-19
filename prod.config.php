@@ -3,8 +3,6 @@ $MYSQL_HOST = getenv('MYSQL_HOST');
 $MYSQL_DB = getenv('MYSQL_DB');
 $MYSQL_USER = getenv('MYSQL_USER');
 $MYSQL_PASS = getenv('MYSQL_PASS');
-$IFTTT_USER = getenv('IFTTT_USER');
-$IFTTT_PASS = getenv('IFTTT_PASS');
 return [
     'settings' => [
         'displayErrorDetails' => false, // set to false in production
@@ -26,10 +24,6 @@ return [
             'name' => 'logger',
             'path' => __DIR__ . '/doc_root/logs/app.log', // Replace doc_root with the project directory path.
             'level' => \Monolog\Logger::DEBUG,
-        ],
-        'ifttt' => [
-            'username' => $IFTTT_USER,
-            'password' => $IFTTT_PASS
         ],
         'db' => [
             'driver' => 'mysql',
