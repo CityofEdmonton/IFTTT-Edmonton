@@ -15,35 +15,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
---
--- Table structure for table `esrt_inventory_record`
---
-
-DROP TABLE IF EXISTS `esrt_inventory_record`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `esrt_inventory_record` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(100) NOT NULL,
-  `description` varchar(100) NOT NULL,
-  `date_created` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `title` (`title`)
-) ENGINE=MyISAM AUTO_INCREMENT=322 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `esrt_inventory_record`
---
-
-LOCK TABLES `esrt_inventory_record` WRITE;
-
-INSERT INTO `esrt_inventory_record` (`id`,`title`,`description`,`date_created`) VALUES (1,'TestReceptionCentre1','Cot quantity levels are low.','2018-02-15 04:25:09');
-INSERT INTO `esrt_inventory_record` (`id`,`title`,`description`,`date_created`) VALUES (2,'TestReceptionCentre2','Cot quantity levels are low.','2018-02-15 04:25:09');
-INSERT INTO `esrt_inventory_record` (`id`,`title`,`description`,`date_created`) VALUES (3,'TestReceptionCentre3','Cot quantity levels are low.','2018-02-15 04:25:09');
-
-UNLOCK TABLES;
-
 
 --
 -- Table structure for table `light_the_bridge_event`
