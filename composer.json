@@ -8,6 +8,18 @@
         {
             "name": "Jan Mußenbrock",
             "email": "jan@mussenbrock-w.de"
+        },
+        {
+            "name": "Farhad Makiabady",
+            "email": "makiabad@ualberta.ca"
+        },
+        {
+            "name": "Jeanna Somoza",
+            "email": "somoza@ualberta.ca"
+        },
+        {
+            "name": "Jared Rewerts",
+            "email": "jared.rewerts@edmonton.ca"
         }
     ],
     "require": {
