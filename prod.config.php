@@ -41,29 +41,8 @@ return [
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
         ],
-        'sendgrid' => [
-            'api_key' => 'SENDGRID_API_KEY' // Your SendGrid API Key
-        ],
-        'twilio' => [
-            'test' => [
-                'keysid' => 'YOUR_KEY_SID',
-                'keysecret' => 'YOU_KEY_SECRET',
-                'accountsid' => 'YOUR_ACCOUNT_SID',
-                'authtoken' => 'YOUR_AUTH_TOKEN',
-                'number' => 'YOUR_SENDGRID_NUMBER' // No dashes, no parenthesis(ex: 5021113456)
-            ],
-            'live' => [
-                'keysid' => 'YOUR_KEY_SID',
-                'keysecret' => 'YOU_KEY_SECRET',
-                'accountsid' => 'YOUR_ACCOUNT_SID',
-                'authtoken' => 'YOUR_AUTH_TOKEN',
-                'number' => 'YOUR_SENDGRID_NUMBER' // No dashes, no parenthesis(ex: 5021113456)
-            ]
-        ],
         'ifttt_vault' => [
-            'airQualityURL' => 'http://www.airnowapi.org/aq/observation/zipCode/current/?format=application/json&zipCode=10021&distance=25&API_KEY=25B86396-AC35-492D-8F19-631FE9E0DD6F', // Replace ZIP_CODE and YOUR_API_KEY with proper data.
-            'AQHI_Url_xml' => 'http://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs(67)',
-            'getRave' => 'http://www.getrave.com/cap/YOUR_ID/YOUR_CHANNEL' // Replace YOUR_ID and YOUR_CHANNEL with proper data.
+            'AQHI_Url_xml' => 'http://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs(67)'
         ],
     ],
 ];
