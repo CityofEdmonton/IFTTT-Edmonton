@@ -15,6 +15,3 @@ $app->post('/ifttt/v1/triggers/air_quality_health_risk', 'AirQualityHealthRiskCo
 
 // Light The Bridge
 $app->post('/ifttt/v1/triggers/light_the_bridge', 'LightTheBridgeController:index');
-
-// ESRT Inventory
-$app->post('/ifttt/v1/triggers/esrt_inventory', 'ESRTInventoryController:index');
