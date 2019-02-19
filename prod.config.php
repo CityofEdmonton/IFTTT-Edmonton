@@ -23,7 +23,7 @@ return [
         ],
         // Monolog settings
         'logger' => [
-            'name' => 'HansWurst90',
+            'name' => 'logger',
             'path' => __DIR__ . '/doc_root/logs/app.log', // Replace doc_root with the project directory path.
             'level' => \Monolog\Logger::DEBUG,
         ],
