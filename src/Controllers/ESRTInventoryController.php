@@ -2,6 +2,7 @@
 namespace Src\Controllers;
 use \DateTime;
 use Slim\Views\Twig as View;
+
 class ESRTInventoryController extends Controller
 {
     public function __construct($container)
@@ -11,6 +12,8 @@ class ESRTInventoryController extends Controller
     }
     public function index($request, $response)
     {
+        $IFTTT_USER = $this->container['settings']['ifttt']['username'];
+        $IFTTT_PASS = $this->container['settings']['ifttt']['password'];
         $this->logger->info("esrt_inventory '/ifttt/v1/triggers/esrt_inventory' route - success");
         $error_msgs = array();
         
@@ -23,9 +26,8 @@ class ESRTInventoryController extends Controller
         }
         
         $limit = isset($request_data['limit']) && !empty($request_data['limit']) ? $request_data['limit'] : (isset($request_data['limit']) && $request_data['limit'] === 0 ? 0 : null);
-        
         if (empty($error_msgs)) {
-            $auth = base64_encode("ifttt:24680");
+            $auth = base64_encode($IFTTT_USER.":".$IFTTT_PASS);
             $context = stream_context_create(['http' => ['header' => "Authorization: Basic $auth"]]);
             $json = file_get_contents("http://esrt.edmonton.ca/api/v1/ReceptionCentre", false, $context );
             if ($json !== FALSE) {
