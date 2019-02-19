@@ -1,7 +1,4 @@
 <?php
-use Symfony\Component\Dotenv\Dotenv;
-$dotenv = new Dotenv();
-$dotenv->load(__DIR__.'/.env');
 $MYSQL_HOST = getenv('MYSQL_HOST');
 $MYSQL_DB = getenv('MYSQL_DB');
 $MYSQL_USER = getenv('MYSQL_USER');
