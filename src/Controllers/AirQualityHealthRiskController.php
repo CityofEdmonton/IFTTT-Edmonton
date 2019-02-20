@@ -36,29 +36,16 @@ class AirQualityHealthRiskController extends Controller
                 $xml = simplexml_load_string($body);
 
                 if (! empty($xml)) {
-                    $test_case = false;
-                    // get all Data
-                    if (!$test_case) {
-                        $community_id = $xml->content->children('m', true)->children('d', true)->Id;
-                        $community_name = $xml->content->children('m', true)->children('d', true)->CommunityName;
-                        $aqhi_current = $xml->content->children('m', true)->children('d', true)->AQHI;
-                        $aqhi_forecast_today = $xml->content->children('m', true)->children('d', true)->ForecastToday;
-                        $aqhi_forecast_tonight = $xml->content->children('m', true)->children('d', true)->ForecastTonight;
-                        $aqhi_forecast_tomorrow = $xml->content->children('m', true)->children('d', true)->ForecastTomorrow;
-                        $health_risk = $xml->content->children('m', true)->children('d', true)->HealthRisk;
-                        $general_population_message = $xml->content->children('m', true)->children('d', true)->GeneralPopulationMessage;
-                        $at_risk_message = $xml->content->children('m', true)->children('d', true)->AtRiskMessage;
-                    } else {
-                        $community_id = 67;
-                        $community_name = "Edmonton_Test";
-                        $aqhi_current = 6;
-                        $aqhi_forecast_today = 1;
-                        $aqhi_forecast_tonight = 1;
-                        $aqhi_forecast_tomorrow = 1;
-                        $health_risk = "low";
-                        $general_population_message = "Test Message 1";
-                        $at_risk_message = "Test Message 2";
-                    }
+                    $community_id = $xml->content->children('m', true)->children('d', true)->Id;
+                    $community_name = $xml->content->children('m', true)->children('d', true)->CommunityName;
+                    $aqhi_current = $xml->content->children('m', true)->children('d', true)->AQHI;
+                    $aqhi_forecast_today = $xml->content->children('m', true)->children('d', true)->ForecastToday;
+                    $aqhi_forecast_tonight = $xml->content->children('m', true)->children('d', true)->ForecastTonight;
+                    $aqhi_forecast_tomorrow = $xml->content->children('m', true)->children('d', true)->ForecastTomorrow;
+                    $health_risk = $xml->content->children('m', true)->children('d', true)->HealthRisk;
+                    $general_population_message = $xml->content->children('m', true)->children('d', true)->GeneralPopulationMessage;
+                    $at_risk_message = $xml->content->children('m', true)->children('d', true)->AtRiskMessage;
+
                     $color = getColor($aqhi_current);
                     $light_color = getLightColor($aqhi_current);
 
