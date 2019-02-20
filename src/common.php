@@ -69,3 +69,21 @@ function getLightColor($index)
         return '#660000';
     }
 }
+
+/**
+ * Return an associative array mapping from the xml t
+ */
+function parseAirQuality($xml)
+{
+    return array(
+        'community_id' => $xml->content->children('m', true)->children('d', true)->Id,
+        'community_name' => $xml->content->children('m', true)->children('d', true)->CommunityName,
+        'aqhi_current' => $xml->content->children('m', true)->children('d', true)->AQHI,
+        'aqhi_forecast_today' => $xml->content->children('m', true)->children('d', true)->ForecastToday,
+        'aqhi_forecast_tonight' => $xml->content->children('m', true)->children('d', true)->ForecastTonight,
+        'aqhi_forecast_tomorrow' => $xml->content->children('m', true)->children('d', true)->ForecastTomorrow,
+        'health_risk' => $xml->content->children('m', true)->children('d', true)->HealthRisk,
+        'general_population_message' => $xml->content->children('m', true)->children('d', true)->GeneralPopulationMessage,
+        'at_risk_message' => $xml->content->children('m', true)->children('d', true)->AtRiskMessage
+    );
+}

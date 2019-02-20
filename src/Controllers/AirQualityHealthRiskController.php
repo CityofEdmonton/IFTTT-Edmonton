@@ -36,32 +36,23 @@ class AirQualityHealthRiskController extends Controller
                 $xml = simplexml_load_string($body);
 
                 if (! empty($xml)) {
-                    $community_id = $xml->content->children('m', true)->children('d', true)->Id;
-                    $community_name = $xml->content->children('m', true)->children('d', true)->CommunityName;
-                    $aqhi_current = $xml->content->children('m', true)->children('d', true)->AQHI;
-                    $aqhi_forecast_today = $xml->content->children('m', true)->children('d', true)->ForecastToday;
-                    $aqhi_forecast_tonight = $xml->content->children('m', true)->children('d', true)->ForecastTonight;
-                    $aqhi_forecast_tomorrow = $xml->content->children('m', true)->children('d', true)->ForecastTomorrow;
-                    $health_risk = $xml->content->children('m', true)->children('d', true)->HealthRisk;
-                    $general_population_message = $xml->content->children('m', true)->children('d', true)->GeneralPopulationMessage;
-                    $at_risk_message = $xml->content->children('m', true)->children('d', true)->AtRiskMessage;
-
-                    $color = getColor($aqhi_current);
-                    $light_color = getLightColor($aqhi_current);
+                    $parsedData = parseAirQuality($xml);
+                    $color = getColor($parsedData['aqhi_current']);
+                    $light_color = getLightColor($parsedData['aqhi_current']);
 
                     // log Data
                     error_log("#####     DATA     #####");
-                    error_log("community_id: " . $community_id);
-                    error_log("community_name: " . $community_name);
-                    error_log("aqhi_current: " . $aqhi_current);
+                    error_log("community_id: " . $parsedData['community_id']);
+                    error_log("community_name: " . $parsedData['community_name']);
+                    error_log("aqhi_current: " . $parsedData['aqhi_current']);
                     error_log("color: " . $color);
                     error_log("light_color: " . $light_color);
-                    error_log("aqhi_forecast_today: " . $aqhi_forecast_today);
-                    error_log("aqhi_forecast_tonight: " . $aqhi_forecast_tonight);
-                    error_log("aqhi_forecast_tomorrow: " . $aqhi_forecast_tomorrow);
-                    error_log("health_risk: " . $health_risk);
-                    error_log("general_population_message: " . $general_population_message);
-                    error_log("at_risk_message: " . $at_risk_message);
+                    error_log("aqhi_forecast_today: " . $parsedData['aqhi_forecast_today']);
+                    error_log("aqhi_forecast_tonight: " . $parsedData['aqhi_forecast_tonight']);
+                    error_log("aqhi_forecast_tomorrow: " . $parsedData['aqhi_forecast_tomorrow']);
+                    error_log("health_risk: " . $parsedData['health_risk']);
+                    error_log("general_population_message: " . $parsedData['general_population_message']);
+                    error_log("at_risk_message: " . $parsedData['at_risk_message']);
                     error_log("########################");
 
                     //first check to see if we need to insert a new entry
@@ -70,29 +61,16 @@ class AirQualityHealthRiskController extends Controller
                         ->limit(1)
                         ->get();
 
-
-                    if ($aqhir[0]->health_risk != $health_risk) {
+                    if ($aqhir[0]->health_risk != $parsedData['health_risk']) {
                         //insert NEW RECORD!
+                        $parsedData['color'] = $color;
+                        $parsedData['light_color'] = $light_color;
+                        $parsedData['date_created'] = date('Y-m-d H:i:s');
                         $this->logger->info("air_quality_health_index '/ifttt/v1/triggers/air_quality_health_index' Inserted new AQHI - success");
-                        $this->db->table('air_quality_health_risk_record')->insertGetId(array(
-                            'community_id' => $community_id,
-                            'community_name' => $community_name,
-                            'aqhi_current' => $aqhi_current,
-                            'aqhi_forecast_today' => $aqhi_forecast_today,
-                            'aqhi_forecast_tonight' => $aqhi_forecast_tonight,
-                            'aqhi_forecast_tomorrow' => $aqhi_forecast_tomorrow,
-                            'color' => $color,
-                            'light_color' => $light_color,
-                            'health_risk' => $health_risk,
-                            'general_population_message' => $general_population_message,
-                            'at_risk_message' => $at_risk_message,
-                            'date_created' => date('Y-m-d H:i:s')
-                        ));
+                        $this->db->table('air_quality_health_risk_record')->insertGetId($parsedData);
                     } else {
                         $this->logger->info("air_quality_health_index '/ifttt/v1/triggers/air_quality_health_index' AQHI not changed - skipping DB insert");
                     }
-
-
 
                     //get air qulity's
                     $records = $this->db->table('air_quality_health_risk_record')
