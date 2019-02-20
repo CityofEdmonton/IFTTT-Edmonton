@@ -59,55 +59,8 @@ class AirQualityHealthRiskController extends Controller
                         $general_population_message = "Test Message 1";
                         $at_risk_message = "Test Message 2";
                     }
-                    $color = '#A9A9A9';
-                    $light_color = '#A9A9A9';
-
-                    switch ($aqhi_current) {
-                      case ($aqhi_current == 1):
-                          $color = '#00CCFF';
-                          $light_color = '#00CCFF';
-                          break;
-                      case ($aqhi_current == 2):
-                          $color = '#0099CC';
-                          $light_color = '#0099CC';
-                          break;
-                      case ($aqhi_current == 3):
-                          $color = '#006699';
-                          $light_color = '#3F5FBF';
-                          break;
-                      case ($aqhi_current == 4):
-                          $color = '#FFFF00';
-                          $light_color = '#FFE900';
-                          break;
-                      case ($aqhi_current == 5):
-                          $color = '#FFCC00';
-                          $light_color = '#FFCC00';
-                          break;
-                      case ($aqhi_current == 6):
-                          $color = '#FF9933';
-                          $light_color = '#FFAA00';
-                          break;
-                      case ($aqhi_current == 7):
-                          $color = '#FF6666';
-                          $light_color = '#FF6666';
-                          break;
-                      case ($aqhi_current == 8):
-                          $color = '#FF0000';
-                          $light_color = '#FF0000';
-                          break;
-                      case ($aqhi_current == 9):
-                          $color = '#CC0000';
-                          $light_color = '#CC0000';
-                          break;
-                      case ($aqhi_current == 10):
-                          $color = '#990000';
-                          $light_color = '#990000';
-                          break;
-                      case ($aqhi_current > 10):
-                          $color = '#660000';
-                          $light_color = '#660000';
-                          break;
-                    }
+                    $color = getColor($aqhi_current);
+                    $light_color = getLightColor($aqhi_current);
 
                     // log Data
                     error_log("#####     DATA     #####");
