@@ -6,8 +6,9 @@ require __DIR__ . '/../vendor/autoload.php';
 
 require __DIR__ . '/../src/common.php';
 
-$env = $IFTTT_ENV; // Options are dev,tst,prod
+$env = getenv('IFTTT_ENV'); // Options are dev,tst,prod
 
+error_log($env);
 switch ($env) {
     case "dev":
         $config = require __DIR__ . '/../dev.config.php';
