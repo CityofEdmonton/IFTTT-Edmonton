@@ -31,6 +31,7 @@ This IFTTT applet makes use of PHP. The currently recommended version to develop
 1. Install your dependencies by running `php composer.phar install`.
 1. Run `docker run --name mysql -p3306:3306 -e MYSQL_ROOT_PASSWORD=password -d mysql:8` to start MySQL.
 1. To initialize the databases schema, run `docker run -v $(pwd)/schema:/schema --link mysql:mysql -it --rm mysql:8 sh -c 'exec mysql -h"$MYSQL_PORT_3306_TCP_ADDR" -P"$MYSQL_PORT_3306_TCP_PORT" -uroot -p"password" < /schema/schema.sql'`.
+1. Set the IFTTT_ENV environment variable by running `export IFTTT_ENV=dev`.
 1. Run `php -S localhost:8080 -t public public/index.php` to run the API on port 8080.
 
 ### Debugging
