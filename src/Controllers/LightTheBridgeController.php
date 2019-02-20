@@ -72,7 +72,7 @@ class LightTheBridgeController extends Controller
                 $newarr['data'] = array();
 
                 foreach ($dbevents as $event) {
-                    $time = datetimeformat(false, false, 'c');
+                    $time = datetimeFormat(false, false, 'c');
 
                     $newarr['data'][] = array(
                         'id' => $event->id,

@@ -163,7 +163,7 @@ class AirQualityHealthIndexController extends Controller
                     $newarr['data'] = array();
 
                     foreach ($records as $record) {
-                        $time = datetimeformat(false, false, 'c');
+                        $time = datetimeFormat(false, false, 'c');
 
                         $newarr['data'][] = array(
                             'id' => $record->id,

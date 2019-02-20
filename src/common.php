@@ -7,7 +7,7 @@
  *
  * date time function to return date how you like
  */
-function datetimeformat($datetime = false, $unix_format = false, $format = 'Y-m-d H:i:s')
+function datetimeFormat($datetime = false, $unix_format = false, $format = 'Y-m-d H:i:s')
 {
     $date = ( $datetime ? $datetime : date($format) );
     $time = ( $unix_format ? $date : strtotime($date) );
