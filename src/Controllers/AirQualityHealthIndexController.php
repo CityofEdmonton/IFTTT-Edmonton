@@ -71,7 +71,7 @@ class AirQualityHealthIndexController extends Controller
                         ->get();
 
 
-                        if ($aqhir[0]->aqhi_current != $aqhi_current) {
+                    if ($aqhir[0]->aqhi_current != $aqhi_current) {
                         //insert NEW RECORD!
                         $this->logger->info("air_quality_health_index '/ifttt/v1/triggers/air_quality_health_index' Inserted new AQHI - success");
                         $this->db->table('air_quality_health_index_record')->insertGetId(array(
