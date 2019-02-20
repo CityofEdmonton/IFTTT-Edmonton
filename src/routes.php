@@ -5,7 +5,6 @@ $app->get('/', 'HomeController:index');
 
 // Test cases
 $app->get('/ifttt/v1/status', 'TestsController:status');
-$app->post('/ifttt/v1/test/setup', 'TestsController:setup');
 
 // Air Quality Health Index
 $app->post('/ifttt/v1/triggers/air_quality_health_index', 'AirQualityHealthIndexController:index');
