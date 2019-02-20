@@ -69,23 +69,23 @@ $container['logger'] = function ($c) {
  *
  */
 
-$container['TestsController'] = function( $container ){
+$container['TestsController'] = function ($container) {
     return new \Src\Controllers\TestsController($container);
 };
 
-$container['HomeController'] = function( $container ){
+$container['HomeController'] = function ($container) {
     return new \Src\Controllers\HomeController($container);
 };
 
-$container['AirQualityHealthIndexController'] = function( $container ){
+$container['AirQualityHealthIndexController'] = function ($container) {
     return new \Src\Controllers\AirQualityHealthIndexController($container);
 };
 
-$container['AirQualityHealthRiskController'] = function( $container ){
+$container['AirQualityHealthRiskController'] = function ($container) {
     return new \Src\Controllers\AirQualityHealthRiskController($container);
 };
 
-$container['LightTheBridgeController'] = function( $container ){
+$container['LightTheBridgeController'] = function ($container) {
     return new \Src\Controllers\LightTheBridgeController($container);
 };
 

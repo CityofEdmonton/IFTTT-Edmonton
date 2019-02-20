@@ -6,12 +6,12 @@ use Slim\Views\Twig as View;
 
 class TestsController extends Controller
 {
-    public function status( $request, $response )
+    public function status($request, $response)
     {
         return $response->withStatus(200);
     }
 
-    public function setup( $request, $response )
+    public function setup($request, $response)
     {
         $data = [
             'data' => [
