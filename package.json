@@ -1,0 +1,28 @@
+{
+  "name": "ifttt-edmonton",
+  "version": "1.0.0",
+  "description": "| City of Edmonton  | IFTTT | | ------------- | ------------- | | <img src=\"https://i.imgur.com/DQtFLdv.png\" height=\"150\"/>  | <img src=\"https://i.imgur.com/kVKOYiQ.png\" height=\"150\"/>  |",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/j-rewerts/IFTTT-Edmonton.git"
+  },
+  "keywords": [
+    "IFTTT",
+    "Javascript",
+    "Express",
+    "Node.js"
+  ],
+  "author": "j-rewerts",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/j-rewerts/IFTTT-Edmonton/issues"
+  },
+  "homepage": "https://github.com/j-rewerts/IFTTT-Edmonton#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}

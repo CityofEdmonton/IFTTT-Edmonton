@@ -1,0 +1,5 @@
+redis:
+  image: redis
+  container_name: cache
+  expose:
+    - 6379

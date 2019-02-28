@@ -1,3 +1,1 @@
-**/vendor/
-doc_root/logs/**
-.env
+node_modules
