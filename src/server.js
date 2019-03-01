@@ -1,3 +1,15 @@
+// Set default env vars
+if (!process.env.AIR_QUALITY_URL) {
+  process.env['AIR_QUALITY_URL'] = 'https://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs'
+}
+if (!process.env.REDIS_PORT) {
+  process.env.REDIS_PORT = '6379'
+}
+if (!process.env.REDIS_HOST) {
+  process.env.REDIS_HOST = '127.0.0.1'
+}
+process.env.CACHE = 'REDIS'
+
 const express = require('express')
 const app = express()
 const airQuality = require('./controllers/air-quality')
@@ -7,11 +19,6 @@ const logger = require('./middleware/logger')
 const cacheProvider = require('./middleware/cache-provider')
 
 const port = 3000
-
-// Set default env vars
-if (!process.env.AIR_QUALITY_URL) {
-  process.env['AIR_QUALITY_URL'] = 'https://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs'
-}
 
 app.use(logger)
 app.use(cacheProvider)
