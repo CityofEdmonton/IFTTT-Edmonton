@@ -1,11 +1,20 @@
 const express = require('express');
 const router = express.Router();
+const request = require('request-promise-native')
 const parseXML = require('../utils/parseXML')
 
 // Home page route.
 router.get('/:field', async function (req, res) {
-  console.log(`Watching field: ${req.query.field}`)
-  req.cache.set(req.query.field, 'a value')
+  console.log(`Watching field: ${req.params.field}`)
+  let xmlString = ''
+  try {
+    xmlString = await request(process.env.AIR_QUALITY_URL)
+  }
+  catch (e) {
+    res.send(500, e)
+  }
+  
+  req.cache.set(req.params.field, 'a value')
   res.send('Wiki home page');
 })
 
