@@ -13,7 +13,12 @@ router.get('/:field', async function (req, res) {
   catch (e) {
     res.send(500, e)
   }
-  
+  for (let stationAirQuality of await parseXML(xmlString)) {
+    let { community_name, aqhi_current, health_risk } = stationAirQuality
+    console.log(`${community_name} has a ${health_risk} risk.`)
+    let key = `${community_name}/${req.params.field}`
+    console.log(`Key for cache is ${key}`)
+  }
   req.cache.set(req.params.field, 'a value')
   res.send('Wiki home page');
 })
