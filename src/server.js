@@ -8,6 +8,11 @@ const cacheProvider = require('./middleware/cache-provider')
 
 const port = 3000
 
+// Set default env vars
+if (!process.env.AIR_QUALITY_URL) {
+  process.env['AIR_QUALITY_URL'] = 'https://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs'
+}
+
 app.use(logger)
 app.use(cacheProvider)
 
