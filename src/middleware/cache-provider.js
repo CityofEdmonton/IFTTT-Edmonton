@@ -4,9 +4,10 @@
  * @author j-rewerts
  */
 const Cache = require('../in-mem-cache')
+const RedisCache = require('../cache/redis-cache')
 
 if (process.env.CACHE == 'REDIS') {
-
+  cache = new RedisCache()
 }
 else {
   cache = new Cache()
