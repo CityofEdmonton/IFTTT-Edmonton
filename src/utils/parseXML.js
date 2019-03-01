@@ -30,7 +30,18 @@ const parseXML = async function(xml) {
       return reject(err)
     }
 
-    flatRes = result.feed.entry.map((aqInfo) => {
+    let entry
+    if (result.entry) {
+      entry = [result.entry]
+    }
+    else if (result.feed.entry) {
+      entry = result.feed.entry
+    }
+    else {
+      throw new Error('XML Schema seems to have changed.')
+    }
+
+    flatRes = entry.map((aqInfo) => {
       let root = aqInfo.content[0]['m:properties'][0]
       return {
         community_id: root['d:Id'][0]['_'],
