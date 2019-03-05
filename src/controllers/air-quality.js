@@ -10,22 +10,23 @@ fieldToIFTTT = {
 }
 
 // Home page route.
-router.get('/:field', async function (req, res) {
+router.post('/:field', async function (req, res) {
   req.params.field = fieldToIFTTT[req.params.field]
-  console.log(`Watching field: ${req.params.field}`)
+  let communityID = req.body.triggerFields.city
+  console.log(`Watching field ${req.params.field} for community #${communityID}`)
+  
   let xmlString = ''
   try {
-    if (req.query.community_id) {
-      xmlString = await request(`${process.env.AIR_QUALITY_URL}(${req.query.community_id})`)
-    }
-    else {
-      xmlString = await request(process.env.AIR_QUALITY_URL)
-    }
+    xmlString = await request(process.env.AIR_QUALITY_URL)
   }
   catch (e) {
     res.send(500, e)
   }
   for (let stationAirQuality of await parseXML(xmlString)) {
+    if (stationAirQuality.community_id !== communityID) {
+      continue
+    }
+
     let { community_name, aqhi_current, health_risk } = stationAirQuality
     console.log(`${community_name} has a ${health_risk} risk.`)
     let key = `${community_name}/${req.params.field}`

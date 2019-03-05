@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/j-rewerts/IFTTT-Edmonton#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "redis": "^2.8.0",
     "request": "^2.88.0",
