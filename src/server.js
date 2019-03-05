@@ -1,7 +1,6 @@
 // Set default env vars
 if (!process.env.AIR_QUALITY_URL) {
-  // process.env['AIR_QUALITY_URL'] = 'https://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs'
-  process.env['AIR_QUALITY_URL'] = 'http://localhost:3000/samples/CommunityAQHIs.xml'
+  process.env['AIR_QUALITY_URL'] = 'https://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs'
 }
 if (!process.env.REDIS_PORT) {
   process.env.REDIS_PORT = '6379'
