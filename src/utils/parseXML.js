@@ -18,7 +18,6 @@ const parseString = require('xml2js').parseString;
 
 
 const parseXML = async function(xml) {
-  console.log(xml)
   let resolve, reject
   let promise = new Promise((res, rej) => {
     resolve = res
@@ -43,16 +42,39 @@ const parseXML = async function(xml) {
 
     flatRes = entry.map((aqInfo) => {
       let root = aqInfo.content[0]['m:properties'][0]
+      let ret = {}
+      if (typeof root['d:Id'][0]['_'] === 'string')
+        ret['community_id'] = root['d:Id'][0]['_']
+      if (typeof root['d:CommunityName'][0] === 'string')
+        ret['community_name'] = root['d:CommunityName'][0]
+      if (typeof root['d:AQHI'][0] === 'string')
+        ret['aqhi_current'] = root['d:AQHI'][0]
+      if (typeof root['d:ForecastToday'][0] === 'string')
+        ret['aqhi_forecast_today'] = root['d:ForecastToday'][0]
+      if (typeof root['d:ForecastTonight'][0] === 'string')
+        ret['aqhi_forecast_tonight'] = root['d:ForecastTonight'][0]
+      if (typeof root['d:ForecastTomorrow'][0] === 'string')
+        ret['aqhi_forecast_tomorrow'] = root['d:ForecastTomorrow'][0]
+      if (typeof root['d:HealthRisk'][0] === 'string')
+        ret['health_risk'] = root['d:HealthRisk'][0]
+      if (typeof root['d:GeneralPopulationMessage'][0] === 'string')
+        ret['general_population_message'] = root['d:GeneralPopulationMessage'][0]
+      if (typeof root['d:AtRiskMessage'][0] === 'string')
+        ret['at_risk_message'] = root['d:AtRiskMessage'][0]
+      
       return {
-        community_id: root['d:Id'][0]['_'],
-        community_name: root['d:CommunityName'][0],
-        aqhi_current: root['d:AQHI'][0],
-        aqhi_forecast_today: root['d:ForecastToday'][0],
-        aqhi_forecast_tonight: root['d:ForecastTonight'][0],
-        aqhi_forecast_tomorrow: root['d:ForecastTomorrow'][0],
-        health_risk: root['d:HealthRisk'][0],
-        general_population_message: root['d:GeneralPopulationMessage'][0],
-        at_risk_message: root['d:AtRiskMessage'][0]
+        ...{
+          community_id: '',
+          community_name: '',
+          aqhi_current: '',
+          aqhi_forecast_today: '',
+          aqhi_forecast_tonight: '',
+          aqhi_forecast_tomorrow: '',
+          health_risk: '',
+          general_population_message: '',
+          at_risk_message: ''
+        },
+        ...ret
       }
     })
 
