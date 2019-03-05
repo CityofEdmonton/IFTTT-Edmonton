@@ -14,7 +14,7 @@ router.post('/:field', async function (req, res) {
   req.params.field = fieldToIFTTT[req.params.field]
   let communityID = req.body.triggerFields.city
   console.log(`Watching field ${req.params.field} for community #${communityID}`)
-  
+
   let xmlString = ''
   try {
     xmlString = await request(process.env.AIR_QUALITY_URL)
@@ -91,13 +91,7 @@ router.post('/:field', async function (req, res) {
     }
     // Set object meta info
   }
-  return res.send('Wiki home page');
-})
-
-// About page route.
-router.get('/about', async function (req, res) {
-  console.log(req.cache.get('a key'))
-  res.send('About this wiki');
+  return res.send(404, `No communities found with ID ${communityID}`);
 })
 
 module.exports = router;
