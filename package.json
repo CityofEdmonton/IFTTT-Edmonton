@@ -5,6 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node --inspect src/server.js",
+    "prod": "node src/server.js",
     "watch": "nodemon"
   },
   "repository": {
