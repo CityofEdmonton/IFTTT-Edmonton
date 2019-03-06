@@ -8,6 +8,9 @@ if (!process.env.REDIS_PORT) {
 if (!process.env.REDIS_HOST) {
   process.env.REDIS_HOST = '127.0.0.1'
 }
+if (!process.env.REDIS_PASSWORD) {
+  process.env.REDIS_PASSWORD = 'myPassword'
+}
 process.env.CACHE = 'REDIS'
 
 const express = require('express')
