@@ -16,6 +16,19 @@ Pulled from [here](http://data.environment.alberta.ca/Services/AirQualityV2/AQHI
 ### AQH Risk
 Also pulled from [here](http://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs(67)). When the air quality risk changes, IFTTT actions are triggered.
 
+## Deployment
+These are deployed using Heroku.
+
+### Environment Variables
+These variables configure the application.
+
+| Variable | Default value |
+| ------------- | ------------- | ------------ |
+| REDIS_PORT | 6379 |
+| REDIS_HOST | localhost |
+| REDIS_PASSWORD | myPassword |
+| AIR_QUALITY_URL | https://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs |
+
 ## Contributing
 If you're interested in running this on your machine, follow this guide!
 
