@@ -29,6 +29,10 @@ const parseXML = async function(xml) {
       return reject(err)
     }
 
+    if (!result || (!result.entry && !result.feed.entry)) {
+      return reject('XML Schema seems to have changed.')
+    }
+
     let entry
     if (result.entry) {
       entry = [result.entry]
@@ -37,7 +41,7 @@ const parseXML = async function(xml) {
       entry = result.feed.entry
     }
     else {
-      throw new Error('XML Schema seems to have changed.')
+      return reject('XML Schema seems to have changed.')
     }
 
     flatRes = entry.map((aqInfo) => {
