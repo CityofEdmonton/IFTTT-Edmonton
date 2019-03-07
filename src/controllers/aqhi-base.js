@@ -1,4 +1,8 @@
-export async function handleAQHI(req, res, field, communityID) {
+const request = require('request-promise-native')
+const uuid = require('uuid/v4')
+const parseXML = require('../utils/parseXML')
+
+module.exports = async function handleAQHI(req, res, field, communityID) {
   console.log(`Watching field ${field} for community #${communityID}`)
 
   let xmlString = ''
@@ -6,9 +10,20 @@ export async function handleAQHI(req, res, field, communityID) {
     xmlString = await request(process.env.AIR_QUALITY_URL)
   }
   catch (e) {
-    res.send(500, e)
+    console.error(e)
+    return res.status(500).send(e)
   }
-  for (let stationAirQuality of await parseXML(xmlString)) {
+
+  let airQualityInfo
+  try {
+    airQualityInfo = await parseXML(xmlString)
+  }
+  catch (e) {
+    console.error(e)
+    return res.status(500).send(e)
+  }
+
+  for (let stationAirQuality of airQualityInfo) {
     if (stationAirQuality.community_id !== communityID) {
       continue
     }
@@ -30,7 +45,7 @@ export async function handleAQHI(req, res, field, communityID) {
         data: oldData
       })
     }
-    else if (oldField !== stationAirQuality[field]) {
+    else if (oldField && oldField !== stationAirQuality[field]) {
       console.log('Updating existing.')
       let oldData = await req.cache.hgetall(key)
       let oldMeta = await req.cache.hgetall(metaKey)
@@ -38,12 +53,12 @@ export async function handleAQHI(req, res, field, communityID) {
       let id = uuid()
       let newData = {...oldData, ...stationAirQuality}
       newData['id'] = id
-      newData['date_created'] = new Date()
+      newData['date_created'] = (new Date()).toString()
       await req.cache.hmset(key, newData)
       
       let newMeta = {
         id,
-        timestamp: Math.round(newData['date_created'] / 1000)
+        timestamp: Math.round(new Date() / 1000)
       }
       await req.cache.hmset(metaKey, newMeta)
 
