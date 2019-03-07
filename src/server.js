@@ -16,7 +16,7 @@ process.env.CACHE = 'REDIS'
 const express = require('express')
 var bodyParser = require('body-parser')
 const app = express()
-const airQuality = require('./controllers/air-quality')
+const edmontonAirQualityRisk = require('./controllers/edmonton-air-quality-risk')
 
 // Middleware
 const logger = require('./middleware/logger')
@@ -35,6 +35,6 @@ else {
   app.use(express.static('public'))
 }
 
-app.use('/test/path', airQuality)
+app.use('/ifttt/v1/triggers/health_risk', edmontonAirQualityRisk)
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
