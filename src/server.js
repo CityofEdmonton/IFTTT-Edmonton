@@ -11,6 +11,9 @@ if (!process.env.REDIS_HOST) {
 if (!process.env.REDIS_PASSWORD) {
   process.env.REDIS_PASSWORD = 'myPassword'
 }
+if (!process.env.IFTTT_SERVICE_KEY) {
+  throw new Error('Missing service key in IFTTT_SERVICE_KEY environment variable.')
+}
 process.env.CACHE = 'REDIS'
 
 const express = require('express')
@@ -23,12 +26,14 @@ const status = require('./controllers/status')
 // Middleware
 const logger = require('./middleware/logger')
 const cacheProvider = require('./middleware/cache-provider')
+const iftttValidator = require('./middleware/ifttt-validator')
 
 const port = process.env.PORT || 5000
 
 app.use(bodyParser.json())
 app.use(logger)
 app.use(cacheProvider)
+app.use(iftttValidator)
 
 if (process.env.STATIC) {
   app.use(express.static(process.env.static))
