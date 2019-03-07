@@ -22,7 +22,7 @@ const airQuality = require('./controllers/air-quality')
 const logger = require('./middleware/logger')
 const cacheProvider = require('./middleware/cache-provider')
 
-const port = 3000 || process.env.PORT
+const port = process.env.PORT || 5000
 
 app.use(bodyParser.json())
 app.use(logger)
