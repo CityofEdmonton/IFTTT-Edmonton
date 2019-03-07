@@ -18,6 +18,7 @@ var bodyParser = require('body-parser')
 const app = express()
 const edmontonAirQualityRisk = require('./controllers/edmonton-air-quality-risk')
 const edmontonAirQualityIndex = require('./controllers/edmonton-air-quality-index')
+const status = require('./controllers/status')
 
 // Middleware
 const logger = require('./middleware/logger')
@@ -38,5 +39,6 @@ else {
 
 app.use('/ifttt/v1/triggers/edmonton_air_health_risk', edmontonAirQualityRisk)
 app.use('/ifttt/v1/triggers/edmonton_air_health_index', edmontonAirQualityIndex)
+app.use('/ifttt/v1/status', status)
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
