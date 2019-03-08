@@ -1,6 +1,7 @@
 const request = require('request-promise-native')
 const uuid = require('uuid/v4')
 const parseXML = require('../utils/parseXML')
+const indexToColor = require('../utils/index-to-color')
 
 module.exports = async function handleAQHI(req, res, field, communityID, limit) {
   console.log(`Watching field ${field} for community #${communityID}`)
@@ -29,12 +30,15 @@ module.exports = async function handleAQHI(req, res, field, communityID, limit) 
     }
 
     let id = uuid()
+    let colors = indexToColor(stationAirQuality['aqhi_current'])
     stationAirQuality['id'] = id
     stationAirQuality['created_at'] = (new Date()).toISOString()
     stationAirQuality['meta'] = {
       id,
       timestamp: Math.round((new Date()) / 1000)
     }
+    stationAirQuality['color'] = colors['color']
+    stationAirQuality['light_color'] = colors['lightColor']
 
     let { community_name, aqhi_current, health_risk } = stationAirQuality
     console.log(`${community_name} has a ${health_risk} risk.`)
