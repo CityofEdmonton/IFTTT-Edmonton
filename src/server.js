@@ -2,6 +2,9 @@
 if (!process.env.AIR_QUALITY_URL) {
   process.env['AIR_QUALITY_URL'] = 'https://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs'
 }
+if (!process.env.LTB_URL) {
+  process.env['LTB_URL'] = 'https://twitrss.me/twitter_search_to_rss/?term=LighttheBridge%20from:CityofEdmonton'
+}
 if (!process.env.REDIS_PORT) {
   process.env.REDIS_PORT = '6379'
 }
@@ -19,6 +22,9 @@ process.env.CACHE = 'REDIS'
 const express = require('express')
 var bodyParser = require('body-parser')
 const app = express()
+
+// Controllers
+const lightTheBridge = require('./controllers/light-the-bridge')
 const createAirQualityController = require('./controllers/aqhi-base')
 const status = require('./controllers/status')
 const test = require('./controllers/test')
@@ -42,6 +48,7 @@ else {
   app.use(express.static('public'))
 }
 
+app.use('/ifttt/v1/triggers/light_the_bridge', lightTheBridge)
 app.use('/ifttt/v1/triggers/edmonton_air_health_risk', createAirQualityController((req, res) => {
   return {
     field: 'health_risk',
