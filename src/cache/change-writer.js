@@ -37,7 +37,10 @@ class ChangeWriter {
    */
   async getAll(key, limit) {
     let resultStrings
-    if (limit >= 0) {
+    if (limit == 0) {
+      return Promise.resolve([])
+    }
+    else if (limit > 0 && limit < this.maxElements) {
       resultStrings = await this.client.lrange(key, 0, limit-1)
     }
     else {

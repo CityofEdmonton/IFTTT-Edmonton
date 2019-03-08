@@ -2,7 +2,7 @@ const request = require('request-promise-native')
 const uuid = require('uuid/v4')
 const parseXML = require('../utils/parseXML')
 
-module.exports = async function handleAQHI(req, res, field, communityID) {
+module.exports = async function handleAQHI(req, res, field, communityID, limit) {
   console.log(`Watching field ${field} for community #${communityID}`)
 
   let xmlString = ''
@@ -45,7 +45,7 @@ module.exports = async function handleAQHI(req, res, field, communityID) {
     let latest = await req.cache.getLatest(key)
     if (latest && latest[field] === stationAirQuality[field]) {
       console.log('Sending old data.')
-      let oldData = await req.cache.getAll(key)
+      let oldData = await req.cache.getAll(key, limit)
       return res.send({
         data: oldData
       })
@@ -53,7 +53,7 @@ module.exports = async function handleAQHI(req, res, field, communityID) {
     else {
       console.log('Updating old data.')
       await req.cache.add(key, stationAirQuality)
-      let logs = await req.cache.getAll(key)
+      let logs = await req.cache.getAll(key, limit)
       return res.send({
         data: logs
       })

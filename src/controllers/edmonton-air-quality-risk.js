@@ -7,7 +7,7 @@ const handleAQHI = require('./aqhi-base')
  * This route requires no triggerFields.
  */
 router.post('/', async function (req, res) {
-  await handleAQHI(req, res, 'health_risk', '67')
+  await handleAQHI(req, res, 'health_risk', '67', req.headers['limit'])
 })
 
 module.exports = router;

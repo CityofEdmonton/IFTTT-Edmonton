@@ -7,7 +7,7 @@ const handleAQHI = require('./aqhi-base')
  * No trigger fields are needed here.
  */
 router.post('/', async function (req, res) {
-  await handleAQHI(req, res, 'aqhi_current', '67')
+  await handleAQHI(req, res, 'aqhi_current', '67', req.headers['limit'])
 })
 
 module.exports = router;
