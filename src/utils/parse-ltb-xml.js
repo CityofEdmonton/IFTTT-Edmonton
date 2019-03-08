@@ -49,7 +49,7 @@ module.exports = async function(xml) {
       }
     })
     
-    resolve(flatResult)
+    resolve(flatResult[0])
   })
 
   return promise
