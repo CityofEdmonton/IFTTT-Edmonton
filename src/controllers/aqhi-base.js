@@ -3,7 +3,37 @@ const uuid = require('uuid/v4')
 const parseXML = require('../utils/parseXML')
 const indexToColor = require('../utils/index-to-color')
 
-module.exports = async function handleAQHI(req, res, field, communityID, limit) {
+/**
+ * This is a factory function for creating air quality controllers. IFTTT requires unique 
+ * routes for every trigger. Since the functionality for our air quality triggers are all
+ * very similar, we can create controllers based on them.
+ * @param {Function} prepareFunc Prepares the values needed or parsing air quality information.
+ * This function must return an objetc with the fields 'field' and 'communityID'. Optionally, it
+ * may also include a 'limit' value.
+ */
+module.exports = function createAirQualityController(prepareFunc) {
+  return async (req, res) => {
+    let params = prepareFunc(req, res)
+    let handleResponse;
+    try {
+      handleResponse = await handleAQHI(req.cache, params.field, params.communityID, params.limit)
+    }
+    catch (e) {
+      console.error(e)
+      return res.status(500).send({
+        errors: [{
+          message: e
+        }]
+      })
+    }
+
+    return res.status(200).send({
+      data: handleResponse
+    })
+  }
+}
+
+async function handleAQHI(cache, field, communityID, limit) {
   console.log(`Watching field ${field} for community #${communityID}`)
 
   let xmlString = ''
@@ -11,8 +41,7 @@ module.exports = async function handleAQHI(req, res, field, communityID, limit) 
     xmlString = await request(process.env.AIR_QUALITY_URL)
   }
   catch (e) {
-    console.error(e)
-    return res.status(500).send(e)
+    throw e
   }
 
   let airQualityInfo
@@ -20,8 +49,7 @@ module.exports = async function handleAQHI(req, res, field, communityID, limit) 
     airQualityInfo = await parseXML(xmlString)
   }
   catch (e) {
-    console.error(e)
-    return res.status(500).send(e)
+    throw e
   }
 
   for (let stationAirQuality of airQualityInfo) {
@@ -46,22 +74,16 @@ module.exports = async function handleAQHI(req, res, field, communityID, limit) 
 
     // Set base object info
     console.log(`Key for cache is ${key}`)
-    let latest = await req.cache.getLatest(key)
+    let latest = await cache.getLatest(key)
     if (latest && latest[field] === stationAirQuality[field]) {
       console.log('Sending old data.')
-      let oldData = await req.cache.getAll(key, limit)
-      return res.send({
-        data: oldData
-      })
+      return await cache.getAll(key, limit)
     }
     else {
       console.log('Updating old data.')
-      await req.cache.add(key, stationAirQuality)
-      let logs = await req.cache.getAll(key, limit)
-      return res.send({
-        data: logs
-      })
+      await cache.add(key, stationAirQuality)
+      return await cache.getAll(key, limit)
     }
   }
-  return res.send(404, `No communities found with ID ${communityID}`)
+  throw new Error(`No communities found with ID ${communityID}`)
 }

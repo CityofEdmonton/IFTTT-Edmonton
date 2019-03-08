@@ -19,8 +19,7 @@ process.env.CACHE = 'REDIS'
 const express = require('express')
 var bodyParser = require('body-parser')
 const app = express()
-const edmontonAirQualityRisk = require('./controllers/edmonton-air-quality-risk')
-const edmontonAirQualityIndex = require('./controllers/edmonton-air-quality-index')
+const createAirQualityController = require('./controllers/aqhi-base')
 const status = require('./controllers/status')
 const test = require('./controllers/test')
 
@@ -43,8 +42,20 @@ else {
   app.use(express.static('public'))
 }
 
-app.use('/ifttt/v1/triggers/edmonton_air_health_risk', edmontonAirQualityRisk)
-app.use('/ifttt/v1/triggers/edmonton_air_health_index', edmontonAirQualityIndex)
+app.use('/ifttt/v1/triggers/edmonton_air_health_risk', createAirQualityController((req, res) => {
+  return {
+    field: 'health_risk',
+    communityID: '67',
+    limit: req.body['limit']
+  }
+}))
+app.use('/ifttt/v1/triggers/edmonton_air_health_index', createAirQualityController((req, res) => {
+  return {
+    field: 'aqhi_current',
+    communityID: '67',
+    limit: req.body['limit']
+  }
+}))
 app.use('/ifttt/v1/status', status)
 app.use('/ifttt/v1/test/setup', test)
 
