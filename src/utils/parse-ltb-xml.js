@@ -25,12 +25,28 @@ module.exports = async function(xml) {
 
     let description = result.rss.channel[0].title[0]
     let root = result.rss.channel[0].item
-    let flatResult = root.map((entry) => {
+
+    // Ensure results are sorted according to their publication date.
+    let items = root.sort((a, b) => {
+      let dateA = new Date(a.pubDate[0])
+      let dateB = new Date(b.pubDate[0])
+
+      if (dateA > dateB) {
+        return -1
+      }
+      if (dateA < dateB) {
+        return 1
+      }
+      return 0
+    })
+
+    let flatResult = items.map((entry) => {
       return {
         title: entry.title[0],
         description
       }
     })
+    
     resolve(flatResult)
   })
 
