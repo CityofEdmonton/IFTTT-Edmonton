@@ -1,6 +1,6 @@
 const request = require('request-promise-native')
 const uuid = require('uuid/v4')
-const parseXML = require('../utils/parseXML')
+const parseXML = require('../utils/parse-aqhi-xml')
 const indexToColor = require('../utils/index-to-color')
 
 /**
