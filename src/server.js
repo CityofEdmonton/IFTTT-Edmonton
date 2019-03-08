@@ -17,6 +17,9 @@ if (!process.env.REDIS_PASSWORD) {
 if (!process.env.IFTTT_SERVICE_KEY) {
   throw new Error('Missing service key in IFTTT_SERVICE_KEY environment variable.')
 }
+if (!process.env.MAX_RESULTS) {
+  process.env['MAX_RESULTS'] = 5
+}
 process.env.CACHE = 'REDIS'
 
 const express = require('express')
