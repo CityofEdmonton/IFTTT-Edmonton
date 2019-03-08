@@ -41,7 +41,9 @@ module.exports = async function(xml) {
     })
 
     let flatResult = items.map((entry) => {
+      let guidArray = entry.guid[0].split('/')
       return {
+        id: guidArray[guidArray.length-1],
         title: entry.title[0],
         description
       }
