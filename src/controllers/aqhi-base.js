@@ -30,7 +30,7 @@ module.exports = async function handleAQHI(req, res, field, communityID, limit) 
 
     let id = uuid()
     stationAirQuality['id'] = id
-    stationAirQuality['date_created'] = (new Date()).toString()
+    stationAirQuality['created_at'] = (new Date()).toString()
     stationAirQuality['meta'] = {
       id,
       timestamp: Math.round((new Date()) / 1000)
