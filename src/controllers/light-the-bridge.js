@@ -37,7 +37,7 @@ module.exports = async function (req, res) {
   }
 
   let responseValues
-  let key = `light_the_bridge/${tweet.id}`
+  let key = `light_the_bridge`
   let latest = await req.cache.getLatest(key)
   if (latest && tweet.id == latest.id) {
     console.log('Returning old results')
