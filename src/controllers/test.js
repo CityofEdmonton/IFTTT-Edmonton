@@ -12,7 +12,19 @@ const router = express.Router();
 router.post('/', async function (req, res) {
   res.send({
     data: {
-
+      samples: {
+        triggers: {
+          alberta_air_health_risk: {
+            city: '67'
+          },
+          triggerFieldValidations: {
+            alberta_air_health_risk: {
+              valid: '67',
+              invalid: 'not-a-community-id'
+            }
+          }
+        }
+      }
     }
   })
 })

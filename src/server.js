@@ -60,6 +60,22 @@ app.use('/ifttt/v1/triggers/edmonton_air_health_index', createAirQualityControll
     limit: req.body['limit']
   }
 }))
+app.use('/ifttt/v1/triggers/alberta_air_health_risk', createAirQualityController((req, res) => {
+  if (!req.body.triggerFields || !req.body.triggerFields['city']) {
+    return res.status(400).send({
+      errors: [{
+        message: 'triggerFields not provided'
+      }]
+    })
+  }
+
+  let city = req.body.triggerFields['city']
+  return {
+    field: 'health_risk',
+    communityID: city,
+    limit: req.body['limit']
+  }
+}))
 app.use('/ifttt/v1/status', status)
 app.use('/ifttt/v1/test/setup', test)
 
