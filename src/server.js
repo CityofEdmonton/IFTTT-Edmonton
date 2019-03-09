@@ -41,15 +41,9 @@ const port = process.env.PORT || 5000
 
 app.use(bodyParser.json())
 app.use(logger)
+app.use(express.static('public'))
 app.use(cacheProvider)
 app.use(iftttValidator)
-
-if (process.env.STATIC) {
-  app.use(express.static(process.env.static))
-}
-else {
-  app.use(express.static('public'))
-}
 
 app.use('/ifttt/v1/triggers/light_the_bridge', lightTheBridge)
 app.use('/ifttt/v1/triggers/edmonton_air_health_risk', createAirQualityController((req, res) => {
