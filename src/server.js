@@ -62,11 +62,9 @@ app.use('/ifttt/v1/triggers/edmonton_air_health_index', createAirQualityControll
 }))
 app.use('/ifttt/v1/triggers/alberta_air_health_risk', createAirQualityController((req, res) => {
   if (!req.body.triggerFields || !req.body.triggerFields['city']) {
-    return res.status(400).send({
-      errors: [{
-        message: 'triggerFields not provided'
-      }]
-    })
+    let error = new Error('Trigger fields not provided.')
+    error.code = 400
+    throw error
   }
 
   let city = req.body.triggerFields['city']

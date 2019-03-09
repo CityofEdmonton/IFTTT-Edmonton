@@ -13,16 +13,16 @@ const indexToColor = require('../utils/index-to-color')
  */
 module.exports = function createAirQualityController(prepareFunc) {
   return async (req, res) => {
-    let params = prepareFunc(req, res)
     let handleResponse;
     try {
+      let params = prepareFunc(req, res)
       handleResponse = await handleAQHI(req.cache, params.field, params.communityID, params.limit)
     }
     catch (e) {
       console.error(e)
-      return res.status(500).send({
+      return res.status(e.code).send({
         errors: [{
-          message: e
+          message: e.message
         }]
       })
     }
@@ -36,19 +36,13 @@ module.exports = function createAirQualityController(prepareFunc) {
 async function handleAQHI(cache, field, communityID, limit) {
   console.log(`Watching field ${field} for community #${communityID}`)
 
-  let xmlString = ''
-  try {
-    xmlString = await request(process.env.AIR_QUALITY_URL)
-  }
-  catch (e) {
-    throw e
-  }
-
   let airQualityInfo
   try {
+    let xmlString = await request(process.env.AIR_QUALITY_URL)
     airQualityInfo = await parseXML(xmlString)
   }
   catch (e) {
+    e.code = 500
     throw e
   }
 
@@ -85,5 +79,7 @@ async function handleAQHI(cache, field, communityID, limit) {
       return await cache.getAll(key, limit)
     }
   }
-  throw new Error(`No communities found with ID ${communityID}`)
+  let error = new Error(`No communities found with ID ${communityID}`)
+  error.code = 500
+  throw error
 }
