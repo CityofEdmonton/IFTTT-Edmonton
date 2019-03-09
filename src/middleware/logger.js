@@ -1,5 +1,5 @@
 var myLogger = function (req, res, next) {
-  console.log('LOGGED')
+  console.log(`${req.protocol}://${req.get('host')}${req.originalUrl}`)
   next()
 }
 
