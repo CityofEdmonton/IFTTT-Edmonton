@@ -50,6 +50,7 @@ app.use('/ifttt/v1/triggers/edmonton_air_health_risk', createAirQualityControlle
   return {
     field: 'health_risk',
     communityID: '67',
+    key: 'edmonton_air_health_risk/67/health_risk',
     limit: req.body['limit']
   }
 }))
@@ -57,6 +58,7 @@ app.use('/ifttt/v1/triggers/edmonton_air_health_index', createAirQualityControll
   return {
     field: 'aqhi_current',
     communityID: '67',
+    key: 'edmonton_air_health_index/67/aqhi_current',
     limit: req.body['limit']
   }
 }))
@@ -71,6 +73,7 @@ app.use('/ifttt/v1/triggers/alberta_air_health_risk', createAirQualityController
   return {
     field: 'health_risk',
     communityID: city,
+    key: `alberta_air_health_risk/${city}/health_risk`,
     limit: req.body['limit']
   }
 }))

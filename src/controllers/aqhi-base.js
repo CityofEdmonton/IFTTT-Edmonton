@@ -16,7 +16,8 @@ module.exports = function createAirQualityController(prepareFunc) {
     let handleResponse;
     try {
       let params = prepareFunc(req, res)
-      handleResponse = await handleAQHI(req.cache, params.field, params.communityID, params.limit)
+      handleResponse = await handleAQHI(req.cache, params.field, 
+        params.communityID, params.key, params.limit)
     }
     catch (e) {
       console.error(e)
@@ -33,7 +34,7 @@ module.exports = function createAirQualityController(prepareFunc) {
   }
 }
 
-async function handleAQHI(cache, field, communityID, limit) {
+async function handleAQHI(cache, field, communityID, key, limit) {
   console.log(`Watching field ${field} for community #${communityID}`)
 
   let airQualityInfo
@@ -64,7 +65,6 @@ async function handleAQHI(cache, field, communityID, limit) {
 
     let { community_name, aqhi_current, health_risk } = stationAirQuality
     console.log(`${community_name} has a ${health_risk} risk.`)
-    let key = `${community_name}/${field}`
 
     // Set base object info
     console.log(`Key for cache is ${key}`)
