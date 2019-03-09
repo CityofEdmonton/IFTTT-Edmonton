@@ -1,13 +1,10 @@
-const express = require('express');
-const router = express.Router();
 const request = require('request-promise-native')
-const uuid = require('uuid/v4')
 const parseXML = require('../utils/parse-ltb-xml')
 
 /**
  * Returns the most recent light the bridge results to IFTTT.
  */
-router.post('/', async function (req, res) {
+module.exports = async function (req, res) {
   let tweet
   try {
     let xmlString = await request(process.env.LTB_URL)
@@ -55,6 +52,4 @@ router.post('/', async function (req, res) {
   res.status(200).send({
     data: responseValues
   })
-})
-
-module.exports = router;
+}

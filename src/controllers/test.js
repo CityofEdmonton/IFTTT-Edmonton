@@ -1,6 +1,3 @@
-const express = require('express');
-const router = express.Router();
-
 /**
  * Gives IFTTT a set of test data to run on our endpoints. 
  * See here for info: https://platform.ifttt.com/docs/testing
@@ -9,7 +6,7 @@ const router = express.Router();
  * Note that only controllers that have trigger fields
  * use this controller.
  */
-router.post('/', async function (req, res) {
+module.exports = async function (req, res) {
   res.send({
     data: {
       samples: {
@@ -27,6 +24,4 @@ router.post('/', async function (req, res) {
       }
     }
   })
-})
-
-module.exports = router;
+}

@@ -25,12 +25,14 @@ process.env.CACHE = 'REDIS'
 const express = require('express')
 var bodyParser = require('body-parser')
 const app = express()
+const router = express.Router()
 
 // Controllers
 const lightTheBridge = require('./controllers/light-the-bridge')
 const createAirQualityController = require('./controllers/aqhi-base')
 const status = require('./controllers/status')
 const test = require('./controllers/test')
+const airQualityStations = require('./controllers/air-quality-stations')
 
 // Middleware
 const logger = require('./middleware/logger')
@@ -45,8 +47,10 @@ app.use(express.static('public'))
 app.use(cacheProvider)
 app.use(iftttValidator)
 
-app.use('/ifttt/v1/triggers/light_the_bridge', lightTheBridge)
-app.use('/ifttt/v1/triggers/edmonton_air_health_risk', createAirQualityController((req, res) => {
+// Triggers
+
+router.post('/triggers/light_the_bridge', lightTheBridge)
+router.post('/triggers/edmonton_air_health_risk', createAirQualityController((req, res) => {
   return {
     field: 'health_risk',
     communityID: '67',
@@ -54,7 +58,7 @@ app.use('/ifttt/v1/triggers/edmonton_air_health_risk', createAirQualityControlle
     limit: req.body['limit']
   }
 }))
-app.use('/ifttt/v1/triggers/edmonton_air_health_index', createAirQualityController((req, res) => {
+router.post('/triggers/edmonton_air_health_index', createAirQualityController((req, res) => {
   return {
     field: 'aqhi_current',
     communityID: '67',
@@ -62,7 +66,7 @@ app.use('/ifttt/v1/triggers/edmonton_air_health_index', createAirQualityControll
     limit: req.body['limit']
   }
 }))
-app.use('/ifttt/v1/triggers/alberta_air_health_risk', createAirQualityController((req, res) => {
+router.post('/triggers/alberta_air_health_risk', createAirQualityController((req, res) => {
   if (!req.body.triggerFields || !req.body.triggerFields['city']) {
     let error = new Error('Trigger fields not provided.')
     error.code = 400
@@ -77,7 +81,13 @@ app.use('/ifttt/v1/triggers/alberta_air_health_risk', createAirQualityController
     limit: req.body['limit']
   }
 }))
-app.use('/ifttt/v1/status', status)
-app.use('/ifttt/v1/test/setup', test)
+router.post('/triggers/alberta_air_health_risk/fields/city/options', airQualityStations)
+
+// Misc
+
+router.get('/status', status)
+router.post('/test/setup', test)
+
+app.use('/ifttt/v1', router)
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
