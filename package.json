@@ -1,0 +1,42 @@
+{
+  "name": "ifttt-edmonton",
+  "version": "1.0.0",
+  "description": "| City of Edmonton  | IFTTT | | ------------- | ------------- | | <img src=\"https://i.imgur.com/DQtFLdv.png\" height=\"150\"/>  | <img src=\"https://i.imgur.com/kVKOYiQ.png\" height=\"150\"/>  |",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node --inspect src/server.js",
+    "prod": "node src/server.js",
+    "watch": "nodemon",
+    "test": "jest",
+    "coverage": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/j-rewerts/IFTTT-Edmonton.git"
+  },
+  "keywords": [
+    "IFTTT",
+    "Javascript",
+    "Express",
+    "Node.js"
+  ],
+  "author": "j-rewerts",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/j-rewerts/IFTTT-Edmonton/issues"
+  },
+  "homepage": "https://github.com/j-rewerts/IFTTT-Edmonton#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "redis": "^2.8.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7",
+    "uuid": "^3.3.2",
+    "xml2js": "^0.4.19"
+  },
+  "devDependencies": {
+    "jest": "^24.4.0",
+    "nodemon": "^1.18.10"
+  }
+}

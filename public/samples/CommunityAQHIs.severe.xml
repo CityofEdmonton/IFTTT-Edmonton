@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<feed xml:base="http://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://www.w3.org/2005/Atom">
+  <title type="text">CommunityAQHIs</title>
+  <id>http://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs</id>
+  <updated>2019-03-05T16:27:31Z</updated>
+  <link rel="self" title="CommunityAQHIs" href="CommunityAQHIs" />
+  <entry>
+    <id>http://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs(93)</id>
+    <title type="text"></title>
+    <updated>2019-03-05T16:27:31Z</updated>
+    <author>
+      <name />
+    </author>
+    <link rel="edit" title="CommunityAQHI" href="CommunityAQHIs(93)" />
+    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Community" type="application/atom+xml;type=entry" title="Community" href="CommunityAQHIs(93)/Community" />
+    <category term="EDWModel.CommunityAQHI" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme" />
+    <content type="application/xml">
+      <m:properties>
+        <d:Id m:type="Edm.Int32">93</d:Id>
+        <d:CommunityName>Rycroft</d:CommunityName>
+        <d:ReadingDate>N/A</d:ReadingDate>
+        <d:AQHI>N/A</d:AQHI>
+        <d:AQHIDisabledText m:null="true" />
+        <d:ForecastToday m:null="true" />
+        <d:ForecastTonight m:null="true" />
+        <d:ForecastTomorrow m:null="true" />
+        <d:ForecastDisabledText>Area not forecasted</d:ForecastDisabledText>
+        <d:HealthRisk>No Data</d:HealthRisk>
+        <d:GeneralPopulationMessage></d:GeneralPopulationMessage>
+        <d:AtRiskMessage></d:AtRiskMessage>
+        <d:OdourMessage></d:OdourMessage>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>http://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs(81)</id>
+    <title type="text"></title>
+    <updated>2019-03-05T16:27:31Z</updated>
+    <author>
+      <name />
+    </author>
+    <link rel="edit" title="CommunityAQHI" href="CommunityAQHIs(81)" />
+    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Community" type="application/atom+xml;type=entry" title="Community" href="CommunityAQHIs(81)/Community" />
+    <category term="EDWModel.CommunityAQHI" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme" />
+    <content type="application/xml">
+      <m:properties>
+        <d:Id m:type="Edm.Int32">81</d:Id>
+        <d:CommunityName>Grande Prairie</d:CommunityName>
+        <d:ReadingDate>2019-03-05 09:00</d:ReadingDate>
+        <d:AQHI>7</d:AQHI>
+        <d:AQHIDisabledText m:null="true" />
+        <d:ForecastToday>7</d:ForecastToday>
+        <d:ForecastTonight>6</d:ForecastTonight>
+        <d:ForecastTomorrow>3</d:ForecastTomorrow>
+        <d:ForecastDisabledText m:null="true" />
+        <d:HealthRisk>High</d:HealthRisk>
+        <d:GeneralPopulationMessage>I'd recommend moving to another city. This air is baaaad.</d:GeneralPopulationMessage>
+        <d:AtRiskMessage>Consider reducing or rescheduling strenuous activites outdoors if you are experiencing symptoms.</d:AtRiskMessage>
+        <d:OdourMessage></d:OdourMessage>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>http://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs(67)</id>
+    <title type="text"></title>
+    <updated>2019-03-05T16:27:31Z</updated>
+    <author>
+      <name />
+    </author>
+    <link rel="edit" title="CommunityAQHI" href="CommunityAQHIs(67)" />
+    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Community" type="application/atom+xml;type=entry" title="Community" href="CommunityAQHIs(67)/Community" />
+    <category term="EDWModel.CommunityAQHI" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme" />
+    <content type="application/xml">
+      <m:properties>
+        <d:Id m:type="Edm.Int32">67</d:Id>
+        <d:CommunityName>Edmonton</d:CommunityName>
+        <d:ReadingDate>2019-03-05 09:00</d:ReadingDate>
+        <d:AQHI>8</d:AQHI>
+        <d:AQHIDisabledText m:null="true" />
+        <d:ForecastToday>9</d:ForecastToday>
+        <d:ForecastTonight>10</d:ForecastTonight>
+        <d:ForecastTomorrow>4</d:ForecastTomorrow>
+        <d:ForecastDisabledText m:null="true" />
+        <d:HealthRisk>High</d:HealthRisk>
+        <d:GeneralPopulationMessage>Oh boy. We're in trouble.</d:GeneralPopulationMessage>
+        <d:AtRiskMessage>Consider reducing or rescheduling strenuous activites outdoors if you are experiencing symptoms.</d:AtRiskMessage>
+        <d:OdourMessage></d:OdourMessage>
+      </m:properties>
+    </content>
+  </entry>
+</feed>

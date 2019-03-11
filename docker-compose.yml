@@ -1,0 +1,6 @@
+redis:
+  image: redis
+  command: redis-server --requirepass "myPassword"
+  container_name: cache
+  ports:
+    - "6379:6379"
