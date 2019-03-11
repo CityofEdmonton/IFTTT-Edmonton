@@ -31,7 +31,7 @@ const router = express.Router()
 const lightTheBridge = require('./controllers/light-the-bridge')
 const createAirQualityController = require('./controllers/aqhi-base')
 const status = require('./controllers/status')
-const test = require('./controllers/test')
+const test = require('./controllers/test-setup')
 const airQualityStations = require('./controllers/air-quality-stations')
 
 // Middleware
