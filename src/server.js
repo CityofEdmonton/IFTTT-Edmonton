@@ -82,6 +82,22 @@ router.post('/triggers/alberta_air_health_risk', createAirQualityController((req
   }
 }))
 router.post('/triggers/alberta_air_health_risk/fields/city/options', airQualityStations)
+router.post('/triggers/alberta_air_health_index', createAirQualityController((req, res) => {
+  if (!req.body.triggerFields || !req.body.triggerFields['city']) {
+    let error = new Error('Trigger fields not provided.')
+    error.code = 400
+    throw error
+  }
+
+  let city = req.body.triggerFields['city']
+  return {
+    field: 'aqhi_current',
+    communityID: city,
+    key: `alberta_air_health_index/${city}/aqhi_current`,
+    limit: req.body['limit']
+  }
+}))
+router.post('/triggers/alberta_air_health_index/fields/city/options', airQualityStations)
 
 // Misc
 
