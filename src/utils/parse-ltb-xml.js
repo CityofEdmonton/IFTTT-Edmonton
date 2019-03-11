@@ -19,15 +19,27 @@ module.exports = async function(xml) {
     if (err) {
       return reject(err)
     }
-    if (!result || !result.rss || !result.rss.channel || !result.rss.channel[0]) {
+    if (!result || !result.rss || !result.rss.channel || !result.rss.channel[0] ||
+      !result.rss.channel[0].title || !result.rss.channel[0].title[0]) {
       throw new Error('LTB XML schema is incorrect')
     }
 
     let description = result.rss.channel[0].title[0]
     let root = result.rss.channel[0].item
 
-    // Ensure results are sorted according to their publication date.
-    let items = root.sort((a, b) => {
+    let items = root.filter((entry) => {
+      // Remove malformed tweets
+      try {
+        entry.pubDate[0]
+        entry.title[0]
+        entry.guid[0]
+      }
+      catch (e) {
+        return false
+      }
+      return true
+    }).sort((a, b) => {
+      // Ensure results are sorted according to their publication date.
       let dateA = new Date(a.pubDate[0])
       let dateB = new Date(b.pubDate[0])
 
