@@ -55,7 +55,6 @@ test('invalid XML schema', async () => {
   }
 })
 
-// Maybe
 const invalidCitySchema = `
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <feed xml:base="http://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://www.w3.org/2005/Atom">
