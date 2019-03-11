@@ -14,8 +14,15 @@ module.exports = async function (req, res) {
           alberta_air_health_risk: {
             city: '67'
           },
+          alberta_air_health_index: {
+            city: '67'
+          },
           triggerFieldValidations: {
             alberta_air_health_risk: {
+              valid: '67',
+              invalid: 'not-a-community-id'
+            },
+            alberta_air_health_index: {
               valid: '67',
               invalid: 'not-a-community-id'
             }
