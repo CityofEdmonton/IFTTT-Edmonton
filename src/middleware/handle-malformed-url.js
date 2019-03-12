@@ -15,7 +15,6 @@ module.exports = function (req, res, next) {
     return true
   })
 
-  let url = `${req.protocol}://${req.get('host')}/${splits.join('/')}`
   req.url = req.originalUrl = `/${splits.join('/')}`
   next()
 }
