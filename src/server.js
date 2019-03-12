@@ -38,10 +38,12 @@ const airQualityStations = require('./controllers/air-quality-stations')
 const logger = require('./middleware/logger')
 const cacheProvider = require('./middleware/cache-provider')
 const iftttValidator = require('./middleware/ifttt-validator')
+const handleMalformedUrl = require('./middleware/handle-malformed-url')
 
 const port = process.env.PORT || 5000
 
 app.use(bodyParser.json())
+app.use(handleMalformedUrl)
 app.use(logger)
 app.use(express.static('public'))
 app.use(cacheProvider)
@@ -104,6 +106,6 @@ router.post('/triggers/alberta_air_health_index/fields/city/options', airQuality
 router.get('/status', status)
 router.post('/test/setup', test)
 
-app.use('ifttt/v1', router)
+app.use('/ifttt/v1', router)
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
