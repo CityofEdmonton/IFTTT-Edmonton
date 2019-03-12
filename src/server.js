@@ -50,7 +50,7 @@ app.use(iftttValidator)
 // Triggers
 
 router.post('/triggers/light_the_bridge', lightTheBridge)
-router.post('/triggers/edmonton_air_health_risk', createAirQualityController((req, res) => {
+router.post('/triggers/air_quality_health_risk', createAirQualityController((req, res) => {
   return {
     field: 'health_risk',
     communityID: '67',
@@ -58,7 +58,7 @@ router.post('/triggers/edmonton_air_health_risk', createAirQualityController((re
     limit: req.body['limit']
   }
 }))
-router.post('/triggers/edmonton_air_health_index', createAirQualityController((req, res) => {
+router.post('/triggers/air_quality_health_index', createAirQualityController((req, res) => {
   return {
     field: 'aqhi_current',
     communityID: '67',
