@@ -104,6 +104,6 @@ router.post('/triggers/alberta_air_health_index/fields/city/options', airQuality
 router.get('/status', status)
 router.post('/test/setup', test)
 
-app.use('/ifttt/v1', router)
+app.use('ifttt/v1', router)
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
