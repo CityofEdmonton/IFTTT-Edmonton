@@ -1,7 +1,7 @@
 {
   "name": "ifttt-edmonton",
   "version": "1.0.0",
-  "description": "| City of Edmonton  | IFTTT | | ------------- | ------------- | | <img src=\"https://i.imgur.com/DQtFLdv.png\" height=\"150\"/>  | <img src=\"https://i.imgur.com/kVKOYiQ.png\" height=\"150\"/>  |",
+  "description": "Edmonton's IFTTT triggers and actions.",
   "main": "src/server.js",
   "scripts": {
     "start": "node --inspect src/server.js",
