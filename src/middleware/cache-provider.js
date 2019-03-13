@@ -11,12 +11,11 @@ let cache
 if (process.env.CACHE == 'REDIS') {
   let redis = new RedisCache()
   cache = new ChangeWriter(redis, process.env.MAX_RESULTS)
-}
-else {
+} else {
   cache = new Cache()
 }
 
-var cacheProvider = function (req, res, next) {
+var cacheProvider = function(req, res, next) {
   req.cache = cache
   next()
 }

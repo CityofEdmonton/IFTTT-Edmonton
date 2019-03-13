@@ -35,7 +35,9 @@ test('single aqhi', async () => {
   expect(data[0].aqhi_forecast_tonight).toBe('4')
   expect(data[0].aqhi_forecast_tomorrow).toBe('3')
   expect(data[0].health_risk).toBe('Low')
-  expect(data[0].general_population_message).toBe('Ideal air quality for outdoor activities.')
+  expect(data[0].general_population_message).toBe(
+    'Ideal air quality for outdoor activities.'
+  )
   expect(data[0].at_risk_message).toBe('Enjoy your usual outdoor activities.')
 })
 
@@ -52,8 +54,7 @@ test('invalid XML', async () => {
   expect.assertions(1)
   try {
     await parseXML(invalidXml)
-  }
-  catch (e) {
+  } catch (e) {
     expect(e.message).toBe(invalidXmlMessage)
   }
 })
@@ -68,8 +69,7 @@ test('invalid XML schema', async () => {
   expect.assertions(1)
   try {
     await parseXML(invalidXmlSchema)
-  }
-  catch (e) {
+  } catch (e) {
     expect(e).toBe(invalidXmlSchemaMessage)
   }
 })
