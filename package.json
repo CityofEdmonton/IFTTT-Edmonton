@@ -10,7 +10,7 @@
     "test": "jest",
     "coverage": "jest --coverage && cat ./coverage/lcov.info | coveralls",
     "prettify": "prettier '**/*.{js,md}' --write",
-    "lint": "eslint ./src/server.js"
+    "lint": "eslint src/**"
   },
   "repository": {
     "type": "git",
