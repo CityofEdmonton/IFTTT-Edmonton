@@ -50,24 +50,34 @@ app.use(cacheProvider)
 app.use(iftttValidator)
 
 // Triggers
-
-router.post('/triggers/light_the_bridge', lightTheBridge)
-router.post('/triggers/air_quality_health_risk', createAirQualityController((req, res) => {
+let edmontonAirHealthRisk = createAirQualityController((req, res) => {
   return {
     field: 'health_risk',
     communityID: '67',
     key: 'edmonton_air_health_risk/67/health_risk',
     limit: req.body['limit']
   }
-}))
-router.post('/triggers/air_quality_health_index', createAirQualityController((req, res) => {
+})
+
+let edmontonAirHealthIndex = createAirQualityController((req, res) => {
   return {
     field: 'aqhi_current',
     communityID: '67',
     key: 'edmonton_air_health_index/67/aqhi_current',
     limit: req.body['limit']
   }
-}))
+})
+
+
+router.post('/triggers/light_the_bridge', lightTheBridge)
+
+// We split the route here to allow for upgrading the API with 0 downtime.
+// These 4 routes are for specifically Edmonton.
+router.post('/triggers/air_quality_health_risk', edmontonAirHealthRisk)
+router.post('/triggers/edmonton_air_health_risk', edmontonAirHealthRisk)
+router.post('/triggers/air_quality_health_index', edmontonAirHealthIndex)
+router.post('/triggers/edmonton_air_health_index', edmontonAirHealthIndex)
+
 router.post('/triggers/alberta_air_health_risk', createAirQualityController((req, res) => {
   if (!req.body.triggerFields || !req.body.triggerFields['city']) {
     let error = new Error('Trigger fields not provided.')
