@@ -1,23 +1,29 @@
 # Edmonton IFTTT Triggers and Applets
 This repository houses Edmonton's IFTTT applets, triggers and actions. IFTTT is a free platform that helps you do more with all your apps and devices.
 
-| City of Edmonton  | IFTTT |
-| ------------- | ------------- |
-| <img src="https://i.imgur.com/DQtFLdv.png" height="150"/>  | <img src="https://i.imgur.com/kVKOYiQ.png" height="150"/>  |
-
 ## Triggers
 IFTTT triggers cause IFTTT actions to occur. Sometimes, a value changing somewhere is a trigger. Other times, someone making changes to a Google Document triggers an action.
 
 ### Light the Bridge
 This triggers when the color on the High-level bridge changes.
 
-### AQH Index
+### Edmonton AQH Index
 Pulled from [here](http://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs(67)). When the air index changes, IFTTT actions can be triggered.
 
 <img src="https://i.imgur.com/RlUlfz0.jpg" height="60"/>
 
-### AQH Risk
+### Edmonton AQH Risk
 Also pulled from [here](http://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs(67)). When the air quality risk changes, IFTTT actions are triggered.
+
+### Alberta AQH Index
+Using a trigger field for all Albertan cities, we can trigger based on the air index for the given city.
+
+See [here](https://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs).
+
+### Alberta AQH Risk
+Using a trigger field for all Albertan cities, we can trigger based on the air risk for the given city.
+
+See [here](https://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs).
 
 ## Deployment
 These are deployed using Heroku.
