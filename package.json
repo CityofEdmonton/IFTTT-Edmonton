@@ -8,7 +8,9 @@
     "prod": "node src/server.js",
     "watch": "nodemon",
     "test": "jest",
-    "coverage": "jest --coverage && cat ./coverage/lcov.info | coveralls"
+    "coverage": "jest --coverage && cat ./coverage/lcov.info | coveralls",
+    "prettify": "prettier '**/*.{js,md}' --write",
+    "lint": "eslint ./src/server.js"
   },
   "repository": {
     "type": "git",
@@ -37,7 +39,10 @@
   },
   "devDependencies": {
     "coveralls": "^3.0.3",
+    "eslint": "^5.15.1",
+    "eslint-plugin-prettier": "^3.0.1",
     "jest": "^24.4.0",
-    "nodemon": "^1.18.10"
+    "nodemon": "^1.18.10",
+    "prettier": "1.16.4"
   }
 }
