@@ -8,7 +8,7 @@
     "prod": "node src/server.js",
     "watch": "nodemon",
     "test": "jest",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
@@ -36,6 +36,7 @@
     "xml2js": "^0.4.19"
   },
   "devDependencies": {
+    "coveralls": "^3.0.3",
     "jest": "^24.4.0",
     "nodemon": "^1.18.10"
   }

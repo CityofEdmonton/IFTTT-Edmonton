@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/CityofEdmonton/IFTTT-Edmonton/badge.svg?branch=master)](https://coveralls.io/github/CityofEdmonton/IFTTT-Edmonton?branch=master)
+
 # Edmonton IFTTT Triggers and Applets
 This repository houses Edmonton's IFTTT applets, triggers and actions. IFTTT is a free platform that helps you do more with all your apps and devices.
 
