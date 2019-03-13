@@ -14,8 +14,7 @@
  * <d:OdourMessage></d:OdourMessage>
  */
 
-const parseString = require('xml2js').parseString;
-
+const parseString = require('xml2js').parseString
 
 const parseXML = async function(xml) {
   let resolve, reject
@@ -36,15 +35,13 @@ const parseXML = async function(xml) {
     let entry
     if (result.entry) {
       entry = [result.entry]
-    }
-    else if (result.feed.entry) {
+    } else if (result.feed.entry) {
       entry = result.feed.entry
-    }
-    else {
+    } else {
       return reject('XML Schema seems to have changed.')
     }
 
-    flatRes = entry.map((aqInfo) => {
+    let flatRes = entry.map(aqInfo => {
       let root = aqInfo.content[0]['m:properties'][0]
       let ret = {}
       if (typeof root['d:Id'][0]['_'] === 'string')
@@ -62,10 +59,11 @@ const parseXML = async function(xml) {
       if (typeof root['d:HealthRisk'][0] === 'string')
         ret['health_risk'] = root['d:HealthRisk'][0]
       if (typeof root['d:GeneralPopulationMessage'][0] === 'string')
-        ret['general_population_message'] = root['d:GeneralPopulationMessage'][0]
+        ret['general_population_message'] =
+          root['d:GeneralPopulationMessage'][0]
       if (typeof root['d:AtRiskMessage'][0] === 'string')
         ret['at_risk_message'] = root['d:AtRiskMessage'][0]
-      
+
       return {
         ...{
           community_id: '',

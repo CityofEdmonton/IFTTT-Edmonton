@@ -27,8 +27,12 @@ test('single tweet', async () => {
   expect.assertions(3)
   const data = await parseXML(singleTweetSample)
   expect(data.id).toBe('1103431359610212353')
-  expect(data.title).toBe('The bridge will be lit in magenta for Social Work Week 2019. #socialworkersAB  http://acsw.ab.ca  http://facebook.com/AlbertaCollegeofSocialWorkers … #yeg #LightTheBridge')
-  expect(data.description).toBe('Twitter search feed for: lightthebridge from:cityofedmonton.')
+  expect(data.title).toBe(
+    'The bridge will be lit in magenta for Social Work Week 2019. #socialworkersAB  http://acsw.ab.ca  http://facebook.com/AlbertaCollegeofSocialWorkers … #yeg #LightTheBridge'
+  )
+  expect(data.description).toBe(
+    'Twitter search feed for: lightthebridge from:cityofedmonton.'
+  )
 })
 
 const invalidXml = `
@@ -44,8 +48,7 @@ test('invalid XML', async () => {
   expect.assertions(1)
   try {
     await parseXML(invalidXml)
-  }
-  catch (e) {
+  } catch (e) {
     expect(e.message).toBe(invalidXmlMessage)
   }
 })
@@ -62,8 +65,7 @@ test('invalid XML schema', async () => {
   expect.assertions(1)
   try {
     await parseXML(invalidXmlSchema)
-  }
-  catch (e) {
+  } catch (e) {
     expect(e.context.message).toBe(invalidXmlSchemaMessage)
   }
 })

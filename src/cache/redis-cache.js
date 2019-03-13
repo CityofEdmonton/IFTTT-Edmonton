@@ -1,5 +1,5 @@
-const redis = require('redis');
-const { promisify } = require('util');
+const redis = require('redis')
+const { promisify } = require('util')
 
 class RedisCache {
   /**
@@ -9,12 +9,12 @@ class RedisCache {
     const client = redis.createClient({
       port: process.env.REDIS_PORT,
       host: process.env.REDIS_HOST,
-      password: process.env.REDIS_PASSWORD,
-    });
-    client.on('error', (message) => {
+      password: process.env.REDIS_PASSWORD
+    })
+    client.on('error', message => {
       console.log(message)
     })
-    client.on('ready', (message) => {
+    client.on('ready', () => {
       console.log('Redis is ready.')
     })
 

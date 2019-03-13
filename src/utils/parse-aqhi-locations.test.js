@@ -34,8 +34,7 @@ test('invalid XML', async () => {
   expect.assertions(1)
   try {
     await parseXML(invalidXml)
-  }
-  catch (e) {
+  } catch (e) {
     expect(e.message).toBe(invalidXmlMessage)
   }
 })
@@ -49,8 +48,7 @@ test('invalid XML schema', async () => {
   expect.assertions(1)
   try {
     await parseXML(invalidXmlSchema)
-  }
-  catch (e) {
+  } catch (e) {
     expect(e.context.message).toBe(invalidXmlSchemaMessage)
   }
 })

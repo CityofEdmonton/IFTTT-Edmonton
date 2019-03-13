@@ -1,9 +1,11 @@
 // Set default env vars
 if (!process.env.AIR_QUALITY_URL) {
-  process.env['AIR_QUALITY_URL'] = 'https://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs'
+  process.env['AIR_QUALITY_URL'] =
+    'https://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs'
 }
 if (!process.env.LTB_URL) {
-  process.env['LTB_URL'] = 'https://twitrss.me/twitter_search_to_rss/?term=LighttheBridge%20from:CityofEdmonton'
+  process.env['LTB_URL'] =
+    'https://twitrss.me/twitter_search_to_rss/?term=LighttheBridge%20from:CityofEdmonton'
 }
 if (!process.env.REDIS_PORT) {
   process.env.REDIS_PORT = '6379'
@@ -15,7 +17,9 @@ if (!process.env.REDIS_PASSWORD) {
   process.env.REDIS_PASSWORD = 'myPassword'
 }
 if (!process.env.IFTTT_SERVICE_KEY) {
-  throw new Error('Missing service key in IFTTT_SERVICE_KEY environment variable.')
+  throw new Error(
+    'Missing service key in IFTTT_SERVICE_KEY environment variable.'
+  )
 }
 if (!process.env.MAX_RESULTS) {
   process.env['MAX_RESULTS'] = 5
@@ -50,7 +54,7 @@ app.use(cacheProvider)
 app.use(iftttValidator)
 
 // Triggers
-let edmontonAirHealthRisk = createAirQualityController((req, res) => {
+let edmontonAirHealthRisk = createAirQualityController(req => {
   return {
     field: 'health_risk',
     communityID: '67',
@@ -59,7 +63,7 @@ let edmontonAirHealthRisk = createAirQualityController((req, res) => {
   }
 })
 
-let edmontonAirHealthIndex = createAirQualityController((req, res) => {
+let edmontonAirHealthIndex = createAirQualityController(req => {
   return {
     field: 'aqhi_current',
     communityID: '67',
@@ -67,7 +71,6 @@ let edmontonAirHealthIndex = createAirQualityController((req, res) => {
     limit: req.body['limit']
   }
 })
-
 
 router.post('/triggers/light_the_bridge', lightTheBridge)
 
@@ -78,38 +81,50 @@ router.post('/triggers/edmonton_air_health_risk', edmontonAirHealthRisk)
 router.post('/triggers/air_quality_health_index', edmontonAirHealthIndex)
 router.post('/triggers/edmonton_air_health_index', edmontonAirHealthIndex)
 
-router.post('/triggers/alberta_air_health_risk', createAirQualityController((req, res) => {
-  if (!req.body.triggerFields || !req.body.triggerFields['city']) {
-    let error = new Error('Trigger fields not provided.')
-    error.code = 400
-    throw error
-  }
+router.post(
+  '/triggers/alberta_air_health_risk',
+  createAirQualityController(req => {
+    if (!req.body.triggerFields || !req.body.triggerFields['city']) {
+      let error = new Error('Trigger fields not provided.')
+      error.code = 400
+      throw error
+    }
 
-  let city = req.body.triggerFields['city']
-  return {
-    field: 'health_risk',
-    communityID: city,
-    key: `alberta_air_health_risk/${city}/health_risk`,
-    limit: req.body['limit']
-  }
-}))
-router.post('/triggers/alberta_air_health_risk/fields/city/options', airQualityStations)
-router.post('/triggers/alberta_air_health_index', createAirQualityController((req, res) => {
-  if (!req.body.triggerFields || !req.body.triggerFields['city']) {
-    let error = new Error('Trigger fields not provided.')
-    error.code = 400
-    throw error
-  }
+    let city = req.body.triggerFields['city']
+    return {
+      field: 'health_risk',
+      communityID: city,
+      key: `alberta_air_health_risk/${city}/health_risk`,
+      limit: req.body['limit']
+    }
+  })
+)
+router.post(
+  '/triggers/alberta_air_health_risk/fields/city/options',
+  airQualityStations
+)
+router.post(
+  '/triggers/alberta_air_health_index',
+  createAirQualityController(req => {
+    if (!req.body.triggerFields || !req.body.triggerFields['city']) {
+      let error = new Error('Trigger fields not provided.')
+      error.code = 400
+      throw error
+    }
 
-  let city = req.body.triggerFields['city']
-  return {
-    field: 'aqhi_current',
-    communityID: city,
-    key: `alberta_air_health_index/${city}/aqhi_current`,
-    limit: req.body['limit']
-  }
-}))
-router.post('/triggers/alberta_air_health_index/fields/city/options', airQualityStations)
+    let city = req.body.triggerFields['city']
+    return {
+      field: 'aqhi_current',
+      communityID: city,
+      key: `alberta_air_health_index/${city}/aqhi_current`,
+      limit: req.body['limit']
+    }
+  })
+)
+router.post(
+  '/triggers/alberta_air_health_index/fields/city/options',
+  airQualityStations
+)
 
 // Misc
 

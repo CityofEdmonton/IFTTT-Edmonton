@@ -4,18 +4,19 @@ const parseXML = require('../utils/parse-ltb-xml')
 /**
  * Returns the most recent light the bridge results to IFTTT.
  */
-module.exports = async function (req, res) {
+module.exports = async function(req, res) {
   let tweet
   try {
     let xmlString = await request(process.env.LTB_URL)
     tweet = await parseXML(xmlString)
-  }
-  catch (e) {
+  } catch (e) {
     console.error(e)
     return res.status(500).send({
-      errors:[{
-        message: e
-      }]
+      errors: [
+        {
+          message: e
+        }
+      ]
     })
   }
 
@@ -23,7 +24,7 @@ module.exports = async function (req, res) {
   tweet = {
     ...tweet,
     ...{
-      created_at: (new Date()).toISOString(),
+      created_at: new Date().toISOString(),
       color_description: '',
       color1: '',
       color2: '',
@@ -31,7 +32,7 @@ module.exports = async function (req, res) {
       color4: '',
       meta: {
         id: tweet.id,
-        timestamp: Math.round((new Date()) / 1000)
+        timestamp: Math.round(new Date() / 1000)
       }
     }
   }
@@ -42,8 +43,7 @@ module.exports = async function (req, res) {
   if (latest && tweet.id == latest.id) {
     console.log('Returning old results')
     responseValues = await req.cache.getAll(key, req.body['limit'])
-  }
-  else {
+  } else {
     console.log('Adding new tweet')
     await req.cache.add(key, tweet)
     responseValues = await req.cache.getAll(key, req.body['limit'])

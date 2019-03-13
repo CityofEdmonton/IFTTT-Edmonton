@@ -1,5 +1,4 @@
-
-const parseString = require('xml2js').parseString;
+const parseString = require('xml2js').parseString
 
 /**
  * Parses the list of cities found here:
@@ -24,26 +23,27 @@ module.exports = async function(xml) {
 
     let root = result.feed.entry
 
-    let flatResult = root.filter((entry) => {
-      // Filter out poorly formatted XML,
-      try {
+    let flatResult = root
+      .filter(entry => {
+        // Filter out poorly formatted XML,
+        try {
+          let path = entry.content[0]['m:properties'][0]
+          path['d:CommunityName'][0]
+          path['d:Id'][0]['_']
+        } catch (e) {
+          return false
+        }
+        return true
+      })
+      .map(entry => {
+        // then flatten the results.
         let path = entry.content[0]['m:properties'][0]
-        path['d:CommunityName'][0]
-        path['d:Id'][0]['_']
-      }
-      catch (e) {
-        return false
-      }
-      return true
-    }).map((entry) => {
-      // then flatten the results.
-      let path = entry.content[0]['m:properties'][0]
-      return {
-        label: path['d:CommunityName'][0],
-        value: path['d:Id'][0]['_']
-      }
-    })
-    
+        return {
+          label: path['d:CommunityName'][0],
+          value: path['d:Id'][0]['_']
+        }
+      })
+
     resolve(flatResult)
   })
 
