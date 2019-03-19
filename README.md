@@ -79,8 +79,7 @@ Run `export IFTTT_SERVICE_KEY=myservicekey`
 
 **Windows**
 
-PowerShell: `$env:IFTTT_SERVICE_KEY="myservicekey"` (This will only persist for the current PowerShell process)
-
+PowerShell: `$env:IFTTT_SERVICE_KEY="myservicekey"` (This will only persist for the current PowerShell process)\
 Command Prompt: `setx IFTTT_SERVICE_KEY myservicekey`
 
 Note that you must include the value `myservicekey` for the key IFTTT-Service-Key in the header of requests made to the service, even in local development.
