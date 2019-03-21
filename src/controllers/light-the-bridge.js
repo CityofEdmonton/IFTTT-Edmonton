@@ -16,7 +16,7 @@ module.exports = async function(req, res) {
     const words = _.words(tweet.title)
     for (let i = 0; i < words.length; i++) {
       var hexColor = toHex(words[i])
-      hexColor ? colors.push({color: words[i], hex: hexColor}) : null
+      hexColor ? colors.push({ color: words[i], hex: hexColor }) : null
     }
   } catch (e) {
     console.error(e)
@@ -34,7 +34,9 @@ module.exports = async function(req, res) {
     ...tweet,
     ...{
       created_at: new Date().toISOString(),
-      color_description: colors.map(function(element) { return _.capitalize(element.color) }).join(', '),
+      color_description: colors.map(function(element) {
+        return _.capitalize(element.color)
+      }).join(', '),
       color1: colors[0] ? colors[0].hex : '',
       color2: colors[1] ? colors[1].hex : '',
       color3: colors[2] ? colors[2].hex : '',
