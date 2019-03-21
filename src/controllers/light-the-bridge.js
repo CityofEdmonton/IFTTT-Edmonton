@@ -34,11 +34,11 @@ module.exports = async function(req, res) {
     ...tweet,
     ...{
       created_at: new Date().toISOString(),
-      color_description: colors.map(function(element) { return element.color }).join(', '),
-      color1: colors[0].hex,
-      color2: colors[1].hex,
-      color3: colors[2].hex,
-      color4: colors[3].hex,
+      color_description: colors.map(function(element) { return _.capitalize(element.color) }).join(', '),
+      color1: colors[0] ? colors[0].hex : '',
+      color2: colors[1] ? colors[1].hex : '',
+      color3: colors[2] ? colors[2].hex : '',
+      color4: colors[3] ? colors[3].hex : '',
       meta: {
         id: tweet.id,
         timestamp: Math.round(new Date() / 1000)
