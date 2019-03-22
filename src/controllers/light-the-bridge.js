@@ -1,7 +1,6 @@
 const request = require('request-promise-native')
 const parseXML = require('../utils/parse-ltb-xml')
-var _ = require('lodash')
-var toHex = require('colornames')
+const parseColors = require('../utils/color-parse')
 
 /**
  * Returns the most recent light the bridge results to IFTTT.
@@ -12,12 +11,7 @@ module.exports = async function(req, res) {
   try {
     let xmlString = await request(process.env.LTB_URL)
     tweet = await parseXML(xmlString)
-    // Parse colors
-    const words = _.words(tweet.title)
-    for (let i = 0; i < words.length; i++) {
-      var hexColor = toHex(words[i])
-      hexColor ? colors.push({ color: words[i], hex: hexColor }) : null
-    }
+    colors = parseColors(tweet.title)
   } catch (e) {
     console.error(e)
     return res.status(500).send({
@@ -50,7 +44,6 @@ module.exports = async function(req, res) {
     }
   }
 
-  console.log(tweet)
 
   let responseValues
   let key = `light_the_bridge`
