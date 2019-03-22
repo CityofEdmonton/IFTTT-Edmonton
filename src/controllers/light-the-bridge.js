@@ -1,7 +1,7 @@
 const request = require('request-promise-native')
 const parseXML = require('../utils/parse-ltb-xml')
 const parseColors = require('../utils/color-parse')
-const _ = require('lodash');
+const _ = require('lodash')
 
 /**
  * Returns the most recent light the bridge results to IFTTT.
@@ -44,7 +44,6 @@ module.exports = async function(req, res) {
       }
     }
   }
-
 
   let responseValues
   let key = `light_the_bridge`
