@@ -13,11 +13,13 @@ test('single-color', () => {
 })
 
 test('random-casing', () => {
-  expect(parseColors('tUrQuOIse')).toEqual([{ color: 'turquoise', hex: '#40E0D0' }])
+  expect(parseColors('tUrQuOIse')).toEqual([
+    { color: 'turquoise', hex: '#40E0D0' }
+  ])
 })
 
 test('multiple-colors', () => {
-  const message = "This message has maroon and gold colors. Also cobalt!"
+  const message = 'This message has maroon and gold colors. Also cobalt!'
   expect(parseColors(message)).toEqual([
     { color: 'maroon', hex: '#800000' },
     { color: 'gold', hex: '#FFD700' },
