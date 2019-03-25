@@ -1,8 +1,7 @@
-var _ = require('lodash')
 var toHex = require('colornames')
 
 function parseColors(string_to_parse) {
-  const words = _.words(_.toLower(string_to_parse))
+  const words = string_to_parse.toLowerCase().split(' ')
   var colors = []
   for (let i = 0; i < words.length; i++) {
     var hexColor = toHex(words[i])

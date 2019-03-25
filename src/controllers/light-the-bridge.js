@@ -1,7 +1,6 @@
 const request = require('request-promise-native')
 const parseXML = require('../utils/parse-ltb-xml')
 const parseColors = require('../utils/color-parse')
-const _ = require('lodash')
 
 /**
  * Returns the most recent light the bridge results to IFTTT.
@@ -31,7 +30,7 @@ module.exports = async function(req, res) {
       created_at: new Date().toISOString(),
       color_description: colors
         .map(function(element) {
-          return _.capitalize(element.color)
+          return element.color.charAt(0).toUpperCase() + element.color.slice(1)
         })
         .join(', '),
       color1: colors[0] ? colors[0].hex : '',
