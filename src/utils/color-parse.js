@@ -1,7 +1,10 @@
 var toHex = require('colornames')
 
-function parseColors(string_to_parse) {
-  const words = string_to_parse.toLowerCase().split(' ')
+function parseColors(string_to_parse = '') {
+  const words = string_to_parse
+    .replace(new RegExp(/[^a-zA-Z\s]/g), ' ')
+    .toLowerCase()
+    .split(' ')
   var colors = []
   for (let i = 0; i < words.length; i++) {
     var hexColor = toHex(words[i])
