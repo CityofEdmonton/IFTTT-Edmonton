@@ -41,3 +41,8 @@ test('additional-cases', () => {
   const message = 'This should only register blue... r.e.d'
   expect(parseColors(message)).toEqual([{ color: 'blue', hex: '#0000FF' }])
 })
+
+test('same-colors', () => {
+  const message = 'This message has blue color and then blue again!'
+  expect(parseColors(message)).toEqual([{ color: 'blue', hex: '#0000FF' }])
+})

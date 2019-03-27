@@ -1,7 +1,4 @@
 // Set default env vars
-if (!process.env.OPEN_DATA_URL) {
-  process.env['OPEN_DATA_URL'] = 'https://data.edmonton.ca/data.json'
-}
 if (!process.env.AIR_QUALITY_URL) {
   process.env['AIR_QUALITY_URL'] =
     'https://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs'
@@ -40,8 +37,6 @@ const createAirQualityController = require('./controllers/aqhi-base')
 const status = require('./controllers/status')
 const test = require('./controllers/test-setup')
 const airQualityStations = require('./controllers/air-quality-stations')
-const openData = require('./controllers/open-data')
-const openDataDatasets = require('./controllers/open-data-datasets')
 
 // Middleware
 const logger = require('./middleware/logger')
@@ -76,9 +71,6 @@ let edmontonAirHealthIndex = createAirQualityController(req => {
     limit: req.body['limit']
   }
 })
-
-router.post('/triggers/open_data', openData)
-router.post('/triggers/open_data/fields/dataset/options', openDataDatasets)
 
 router.post('/triggers/light_the_bridge', lightTheBridge)
 
