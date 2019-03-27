@@ -42,6 +42,7 @@ const test = require('./controllers/test-setup')
 const airQualityStations = require('./controllers/air-quality-stations')
 const openData = require('./controllers/open-data')
 const openDataDatasets = require('./controllers/open-data-datasets')
+const validateFields = require('./controllers/validate')
 
 // Middleware
 const logger = require('./middleware/logger')
@@ -76,6 +77,9 @@ let edmontonAirHealthIndex = createAirQualityController(req => {
     limit: req.body['limit']
   }
 })
+
+// For validation of trigger fields
+router.post('/triggers/open_data/validate', validateFields)
 
 router.post('/triggers/open_data', openData)
 router.post('/triggers/open_data/fields/dataset/options', openDataDatasets)

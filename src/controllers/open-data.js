@@ -17,7 +17,7 @@ module.exports = async function(req, res) {
         return { title: entry.title, identifier: entry.identifier }
     }).sort(sortOrder)
     // const sorted = new Map([...titles]).sort()
-    console.log(extractedData)
+    // console.log(extractedData)
     // console.log(data.dataset)
     // cities = await request(process.env.OPEN_DATA_URL)
     cities = "Success"
