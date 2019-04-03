@@ -49,6 +49,39 @@ class ChangeWriter {
       return JSON.parse(str)
     })
   }
+
+  /**
+   * Inserts the dataset descriptiong as a JSON string into
+   * the specified key
+   * @param {String} key The key to store the dataset under
+   * @param {String} dataset_label The dataset label
+   * @param {Array<Object>} columns The columns are in the form { label: <string>, value: <string> }
+   * @return {Promise}
+   */
+  async insertDataset(key, dataset_label, columns) {
+    let data = {
+      label: dataset_label,
+      values: columns
+    }
+    await this.client.set(key, JSON.stringify(data))
+  }
+
+  /**
+   * @return {Promise<Array<Object>>}
+   */
+  async getDatasetData() {
+    let keys = await this.client.keys('opendata:*')
+    let data = []
+    for (let key of keys) {
+      let dataset = await this.client.get(key)
+      data.push(JSON.parse(dataset))
+    }
+    data.sort(function(a, b) {
+      var x = a['label'], y = b['label']
+      return ((x < y) ? -1 : ((x > y) ? 1 : 0))
+    })
+    return data
+  }
 }
 
 module.exports = ChangeWriter
