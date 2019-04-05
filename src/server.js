@@ -40,7 +40,6 @@ const createAirQualityController = require('./controllers/aqhi-base')
 const status = require('./controllers/status')
 const test = require('./controllers/test-setup')
 const airQualityStations = require('./controllers/air-quality-stations')
-const openData = require('./controllers/open-data')
 const openDataDatasets = require('./controllers/open-data-datasets')
 const storeDatasets = require('./controllers/open-data-store')
 
@@ -78,7 +77,6 @@ let edmontonAirHealthIndex = createAirQualityController(req => {
   }
 })
 
-router.post('/triggers/open_data', openData)
 router.post('/triggers/open_data/fields/dataset/options', openDataDatasets)
 router.post('/open_data/datasets/store', storeDatasets)
 

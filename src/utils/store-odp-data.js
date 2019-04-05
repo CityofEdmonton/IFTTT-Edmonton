@@ -114,7 +114,7 @@ async function storeAll(cache) {
           )
         : await storeData(client, dataset).catch(e => console.log('Error ' + e))
       // console.log("Stored: ", counter)
-      //   counter++
+      // counter++
     }
     console.log(`Time taken to store data: ${Date.now() - timer} ms`)
   } catch (e) {
