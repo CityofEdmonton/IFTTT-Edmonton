@@ -1,5 +1,5 @@
 /**
- * Gets the datasets from the cache
+ * Gets the datasets from the cache and returns as a response
  */
 module.exports = async function(req, res) {
   let cache = req.cache

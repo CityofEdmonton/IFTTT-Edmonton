@@ -42,7 +42,6 @@ const test = require('./controllers/test-setup')
 const airQualityStations = require('./controllers/air-quality-stations')
 const openData = require('./controllers/open-data')
 const openDataDatasets = require('./controllers/open-data-datasets')
-const validateFields = require('./controllers/validate')
 const storeDatasets = require('./controllers/open-data-store')
 
 // Middleware
@@ -78,9 +77,6 @@ let edmontonAirHealthIndex = createAirQualityController(req => {
     limit: req.body['limit']
   }
 })
-
-// For validation of trigger fields
-router.post('/triggers/open_data/validate', validateFields)
 
 router.post('/triggers/open_data', openData)
 router.post('/triggers/open_data/fields/dataset/options', openDataDatasets)
@@ -139,10 +135,6 @@ router.post(
   '/triggers/alberta_air_health_index/fields/city/options',
   airQualityStations
 )
-
-
-// const storeData = require('./utils/store-odp-data')
-// storeData()
 
 // Misc
 

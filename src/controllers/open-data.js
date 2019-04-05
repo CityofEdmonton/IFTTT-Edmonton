@@ -2,9 +2,12 @@ const request = require('request-promise-native')
 const parseXML = require('../utils/parse-aqhi-locations')
 
 function sortOrder(a, b) {
-    return a.title < b.title ? -1 : (a.title > b.title ? 1 : 0)
+  return a.title < b.title ? -1 : a.title > b.title ? 1 : 0
 }
 
+/**
+ * TODO: This function might not be necessary. Remove.
+ */
 module.exports = async function(req, res) {
   let cities
   try {
@@ -13,14 +16,16 @@ module.exports = async function(req, res) {
     let jsonData = await request(process.env.OPEN_DATA_URL)
     const data = JSON.parse(jsonData)
     // console.log(data)
-    const extractedData = data.dataset.map(function(entry){
+    const extractedData = data.dataset
+      .map(function(entry) {
         return { title: entry.title, identifier: entry.identifier }
-    }).sort(sortOrder)
+      })
+      .sort(sortOrder)
     // const sorted = new Map([...titles]).sort()
     // console.log(extractedData)
     // console.log(data.dataset)
     // cities = await request(process.env.OPEN_DATA_URL)
-    cities = "Success"
+    cities = 'Success'
   } catch (e) {
     e.code = 500
     throw e

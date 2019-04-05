@@ -10,8 +10,7 @@
     "test": "jest",
     "coverage": "jest --coverage && cat ./coverage/lcov.info | coveralls",
     "prettify": "prettier \"**/*.{js,md}\" --write",
-    "lint": "eslint src/**",
-    "initData": "node src/utils/store-odp-data.js"
+    "lint": "eslint src/**"
   },
   "repository": {
     "type": "git",

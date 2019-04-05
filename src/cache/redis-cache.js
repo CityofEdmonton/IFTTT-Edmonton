@@ -22,8 +22,6 @@ class RedisCache {
     this.lpushAsync = promisify(client.lpush).bind(client)
     this.ltrimAsync = promisify(client.ltrim).bind(client)
     this.lrangeAsync = promisify(client.lrange).bind(client)
-    // TODO: add more functions (get/set... etc... keys...?)
-    // Look at ChangeWriter & RedisCache (this) - provider/middleware??
     this.setAsync = promisify(client.set).bind(client)
     this.getAsync = promisify(client.get).bind(client)
     this.keysAsync = promisify(client.keys).bind(client)

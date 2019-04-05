@@ -1,5 +1,9 @@
 const storeAll = require('../utils/store-odp-data')
 
+/**
+ * Starts the async function to obtain and store
+ * the dataset data into the Redis cache
+ */
 module.exports = async function(req, res) {
   try {
     storeAll(req.cache)
@@ -8,6 +12,6 @@ module.exports = async function(req, res) {
     throw e
   }
   res.status(200).send({
-    data: "Request sent."
+    data: 'Request sent.'
   })
 }

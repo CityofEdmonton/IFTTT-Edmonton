@@ -67,8 +67,7 @@ class ChangeWriter {
   }
 
   /**
-   * Returns a sorted array of dataset data store by the
-   * 'insertDataset' function
+   * Returns a sorted array of dataset data store by the 'insertDataset' function
    * @return {Promise<Array<Object>>}
    */
   async getDatasetData() {
@@ -79,14 +78,18 @@ class ChangeWriter {
       data.push(JSON.parse(dataset))
     }
     data.sort(function(a, b) {
-      var x = a['label'], y = b['label']
-      return ((x < y) ? -1 : ((x > y) ? 1 : 0))
+      var x = a['label'],
+        y = b['label']
+      return x < y ? -1 : x > y ? 1 : 0
     })
     return data
   }
 
   /**
    * Adds a key value pair
+   * @param {String} key The key to store the value under
+   * @param {String} value The value to store under the key
+   * @return {Promise}
    */
   async addKV(key, value) {
     await this.client.set(key, value)
@@ -94,6 +97,8 @@ class ChangeWriter {
 
   /**
    * Gets a value from a key
+   * @param {String} key The key to retrieve
+   * @return {Promise<String>}
    */
   async getKV(key) {
     return await this.client.get(key)
