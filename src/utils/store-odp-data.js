@@ -106,7 +106,7 @@ async function storeAll(cache) {
     console.log(`Time taken to retrieve datasets: ${Date.now() - timer} ms`)
     console.log('Storing dataset data...')
     timer = Date.now()
-    let counter = 1
+    // let counter = 1
     for (let dataset of datasets) {
       cache
         ? await storeData(cache, dataset, true).catch(e =>
@@ -114,7 +114,7 @@ async function storeAll(cache) {
           )
         : await storeData(client, dataset).catch(e => console.log('Error ' + e))
       // console.log("Stored: ", counter)
-      counter++
+      //   counter++
     }
     console.log(`Time taken to store data: ${Date.now() - timer} ms`)
   } catch (e) {
