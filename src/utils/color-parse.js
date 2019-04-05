@@ -8,7 +8,8 @@ function parseColors(string_to_parse = '') {
   var colors = []
   for (let i = 0; i < words.length; i++) {
     var hexColor = toHex(words[i])
-    if (hexColor) colors.push({ color: words[i], hex: hexColor })
+    if (hexColor && !colors.some(el => el.color === words[i]))
+      colors.push({ color: words[i], hex: hexColor })
   }
   return colors
 }
