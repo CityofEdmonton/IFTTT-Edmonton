@@ -43,6 +43,7 @@ const airQualityStations = require('./controllers/air-quality-stations')
 const openData = require('./controllers/open-data')
 const openDataDatasets = require('./controllers/open-data-datasets')
 const validateFields = require('./controllers/validate')
+const storeDatasets = require('./controllers/open-data-store')
 
 // Middleware
 const logger = require('./middleware/logger')
@@ -83,6 +84,7 @@ router.post('/triggers/open_data/validate', validateFields)
 
 router.post('/triggers/open_data', openData)
 router.post('/triggers/open_data/fields/dataset/options', openDataDatasets)
+router.post('/open_data/datasets/store', storeDatasets)
 
 router.post('/triggers/light_the_bridge', lightTheBridge)
 
@@ -137,6 +139,10 @@ router.post(
   '/triggers/alberta_air_health_index/fields/city/options',
   airQualityStations
 )
+
+
+// const storeData = require('./utils/store-odp-data')
+// storeData()
 
 // Misc
 

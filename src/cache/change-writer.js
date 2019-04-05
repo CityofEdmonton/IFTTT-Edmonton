@@ -51,7 +51,7 @@ class ChangeWriter {
   }
 
   /**
-   * Inserts the dataset descriptiong as a JSON string into
+   * Inserts the dataset description as a JSON string into
    * the specified key
    * @param {String} key The key to store the dataset under
    * @param {String} dataset_label The dataset label
@@ -63,10 +63,12 @@ class ChangeWriter {
       label: dataset_label,
       values: columns
     }
-    await this.client.set(key, JSON.stringify(data))
+    await this.client.set('opendata:' + key, JSON.stringify(data))
   }
 
   /**
+   * Returns a sorted array of dataset data store by the
+   * 'insertDataset' function
    * @return {Promise<Array<Object>>}
    */
   async getDatasetData() {
@@ -81,6 +83,20 @@ class ChangeWriter {
       return ((x < y) ? -1 : ((x > y) ? 1 : 0))
     })
     return data
+  }
+
+  /**
+   * Adds a key value pair
+   */
+  async addKV(key, value) {
+    await this.client.set(key, value)
+  }
+
+  /**
+   * Gets a value from a key
+   */
+  async getKV(key) {
+    return await this.client.get(key)
   }
 }
 
