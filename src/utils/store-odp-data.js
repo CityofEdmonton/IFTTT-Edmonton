@@ -59,4 +59,22 @@ function sortOrder(a, b) {
   }
 }
 
-module.exports = storeData
+async function returnData(datasets) {
+  let data
+  try {
+    await Promise.all(
+      datasets.map(async dataset => {
+        const { label, identifier } = dataset
+        let columns = await getDatasetColumns(identifier)
+        return { label: label, values: columns }
+      })
+    ).then(values => {
+      data = values
+    })
+  } catch (e) {
+    console.log('Error ' + e)
+  }
+  return data
+}
+
+module.exports = { storeData, returnData, getDatasets }

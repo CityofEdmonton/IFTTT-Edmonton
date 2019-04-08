@@ -17,6 +17,9 @@ module.exports = async function(req, res) {
           alberta_air_health_index: {
             city: '67'
           },
+          open_data: {
+            dataset: '???'
+          },
           triggerFieldValidations: {
             alberta_air_health_risk: {
               valid: '67',
@@ -25,6 +28,10 @@ module.exports = async function(req, res) {
             alberta_air_health_index: {
               valid: '67',
               invalid: 'not-a-community-id'
+            },
+            open_data: {
+              valid: '???',
+              invalid: 'idk lol'
             }
           }
         }
