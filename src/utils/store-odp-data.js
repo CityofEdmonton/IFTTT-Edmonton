@@ -54,9 +54,9 @@ function insertCache(cache, key, dataset_label, columns) {
 async function storeData(client, dataset, isCache = false) {
   const { label, identifier } = dataset
   // identifier is in the form: 'https://data.edmonton.ca/api/views/XXXX-XXXX'
-  const uid = identifier.slice(
-    identifier.length - 9
-  ) /** Gets the last 9 characters that form the uid */
+  const uid = identifier
+    .split('/')
+    .slice(-1)[0] /** Gets the last element of the array after the split */
   let key
   if (isCache) {
     key = uid
