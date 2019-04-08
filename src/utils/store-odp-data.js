@@ -19,7 +19,13 @@ async function getDatasets() {
 }
 
 function sortOrder(a, b) {
-  return a.label < b.label ? -1 : a.label > b.label ? 1 : 0
+  if (a.label < b.label) {
+    return -1
+  } else if (a.label > b.label) {
+    return 1
+  } else {
+    return 0
+  }
 }
 
 async function getDatasetColumns(identifier) {
