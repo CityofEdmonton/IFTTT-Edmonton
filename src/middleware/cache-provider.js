@@ -9,6 +9,7 @@ const ChangeWriter = require('../cache/change-writer')
 const PersistentStore = require('../cache/persistent-store')
 
 let cache
+let store
 if (process.env.CACHE == 'REDIS') {
   let redis = new RedisCache()
   cache = new ChangeWriter(redis, process.env.MAX_RESULTS)
@@ -19,6 +20,7 @@ if (process.env.CACHE == 'REDIS') {
 
 var cacheProvider = function(req, res, next) {
   req.cache = cache
+  req.store = store
   next()
 }
 

@@ -1,4 +1,4 @@
-const storeAll = require('../utils/store-odp-data')
+const storeData = require('../utils/store-odp-data')
 
 /**
  * Starts the async function to obtain and store
@@ -6,7 +6,7 @@ const storeAll = require('../utils/store-odp-data')
  */
 module.exports = async function(req, res) {
   try {
-    storeAll(req.store)
+    storeData(req.store)
   } catch (e) {
     e.code = 500
     throw e
