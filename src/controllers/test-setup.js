@@ -19,19 +19,21 @@ module.exports = async function(req, res) {
           },
           open_data: {
             dataset: '???'
+          }
+        },
+        triggerFieldValidations: {
+          alberta_air_health_risk: {
+            valid: '67',
+            invalid: 'not-a-community-id'
           },
-          triggerFieldValidations: {
-            alberta_air_health_risk: {
-              valid: '67',
-              invalid: 'not-a-community-id'
-            },
-            alberta_air_health_index: {
-              valid: '67',
-              invalid: 'not-a-community-id'
-            },
-            open_data: {
+          alberta_air_health_index: {
+            valid: '67',
+            invalid: 'not-a-community-id'
+          },
+          open_data: {
+            dataset: {
               valid: '???',
-              invalid: 'idk lol'
+              invalid: 'not-a-data-set'
             }
           }
         }
