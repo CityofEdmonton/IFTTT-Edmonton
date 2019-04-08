@@ -123,11 +123,13 @@ async function storeAll(cache) {
     timer = Date.now()
     // let counter = 1
     for (let dataset of datasets) {
-      cache
-        ? await storeData(cache, dataset, true).catch(e =>
-            console.log('Error ' + e)
-          )
-        : await storeData(client, dataset).catch(e => console.log('Error ' + e))
+      if (cache) {
+        await storeData(cache, dataset, true).catch(e =>
+          console.log('Error ' + e)
+        )
+      } else {
+        await storeData(client, dataset).catch(e => console.log('Error ' + e))
+      }
       // console.log("Stored: ", counter)
       // counter++
     }
