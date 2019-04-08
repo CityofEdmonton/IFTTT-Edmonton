@@ -6,11 +6,13 @@
 const Cache = require('../in-mem-cache')
 const RedisCache = require('../cache/redis-cache')
 const ChangeWriter = require('../cache/change-writer')
+const PersistentStore = require('../cache/persistent-store')
 
 let cache
 if (process.env.CACHE == 'REDIS') {
   let redis = new RedisCache()
   cache = new ChangeWriter(redis, process.env.MAX_RESULTS)
+  store = new PersistentStore(redis)
 } else {
   cache = new Cache()
 }

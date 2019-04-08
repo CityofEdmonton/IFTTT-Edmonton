@@ -6,7 +6,7 @@ const storeAll = require('../utils/store-odp-data')
  */
 module.exports = async function(req, res) {
   try {
-    storeAll(req.cache)
+    storeAll(req.store)
   } catch (e) {
     e.code = 500
     throw e
