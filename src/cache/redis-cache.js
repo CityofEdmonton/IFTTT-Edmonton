@@ -1,6 +1,5 @@
 const redis = require('redis')
 const { promisify } = require('util')
-const storeAll = require('../utils/store-odp-data')
 
 class RedisCache {
   /**
@@ -17,9 +16,6 @@ class RedisCache {
     })
     client.on('ready', () => {
       console.log('Redis is ready.')
-      // Initial call to store data sets data
-      console.log('Starting nitial storage of data sets data...')
-      storeAll()
     })
 
     this.lindexAsync = promisify(client.lindex).bind(client)
