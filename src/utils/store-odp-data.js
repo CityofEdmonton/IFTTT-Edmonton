@@ -47,14 +47,21 @@ function insertCache(cache, key, dataset_label, columns) {
 
 async function storeData(client, dataset, isCache = false) {
   const { label, identifier } = dataset
-  const key = isCache
-    ? identifier.slice(35)
-    : 'opendata:' + identifier.slice(35) /** unique identifier */
+  // identifier is in the form: 'https://data.edmonton.ca/api/views/XXXX-XXXX'
+  const uid = identifier.slice(identifier.length - 9) /** Gets the last 9 characters that form the uid */
+  let key
+  if (isCache) {
+    key = uid
+  } else {
+    key = 'opendata:' + uid
+  }
   await getDatasetColumns(identifier)
     .then(columns => {
-      isCache
-        ? insertCache(client, key, label, columns)
-        : insert(client, key, label, columns)
+      if (isCache) {
+        insertCache(client, key, label, columns)
+      } else {
+        insert(client, key, label, columns)
+      }
     })
     .catch(err => {
       console.log(err)
@@ -125,26 +132,6 @@ async function storeAll(cache) {
     : client.quit(() => {
         console.log('Client connection stopped.')
       })
-}
-
-function init() {
-  if (!process.env.REDIS_PORT) {
-    process.env.REDIS_PORT = '6379'
-  }
-  if (!process.env.REDIS_HOST) {
-    process.env.REDIS_HOST = '127.0.0.1'
-  }
-  if (!process.env.REDIS_PASSWORD) {
-    process.env.REDIS_PASSWORD = 'myPassword'
-  }
-  if (!process.env.OPEN_DATA_URL) {
-    process.env.OPEN_DATA_URL = 'https://data.edmonton.ca/data.json'
-  }
-}
-
-if (require.main === module) {
-  init()
-  storeAll()
 }
 
 module.exports = storeAll
