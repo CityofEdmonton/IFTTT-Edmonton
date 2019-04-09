@@ -1,3 +1,5 @@
+const zlib = require('zlib')
+
 function truncateString(string, maxLength) {
   let longer = string.length > maxLength ? true : false
   if (longer) {
@@ -30,8 +32,16 @@ module.exports = async function(req, res) {
     e.code = 500
     throw e
   }
-  res.status(200).send({
+  let sendData = {
     data: newData
+  }
+  res.writeHead(200, {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Content-Encoding': 'gzip'
   })
-  console.log(`Options sent. Time: ${Date.now() - timer} ms`)
+  zlib.gzip(JSON.stringify(sendData), function(_, result) {
+    res.end(result)
+    console.log(`Options sent. Time: ${Date.now() - timer} ms`)
+    console.log(result)
+  })
 }

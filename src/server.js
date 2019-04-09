@@ -43,6 +43,7 @@ const airQualityStations = require('./controllers/air-quality-stations')
 const openData = require('./controllers/open-data')
 const openDataDatasets = require('./controllers/open-data-datasets')
 const storeDatasets = require('./controllers/open-data-store')
+const openDataValidator = require('./controllers/open-data-validator')
 
 // Middleware
 const logger = require('./middleware/logger')
@@ -81,6 +82,7 @@ let edmontonAirHealthIndex = createAirQualityController(req => {
 router.post('/triggers/open_data', openData) // This is polled by IFTTT every 15 minutes
 router.post('/triggers/open_data/fields/dataset/options', openDataDatasets)
 router.post('/open_data/datasets/store', storeDatasets)
+router.post('/triggers/open_data/validate', openDataValidator)
 
 router.post('/triggers/light_the_bridge', lightTheBridge)
 
