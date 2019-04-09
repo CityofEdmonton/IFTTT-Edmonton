@@ -1,5 +1,3 @@
-const { returnData, getDatasets } = require('../utils/store-odp-data')
-
 function truncateString(string, maxLength) {
   let longer = string.length > maxLength ? true : false
   if (longer) {
