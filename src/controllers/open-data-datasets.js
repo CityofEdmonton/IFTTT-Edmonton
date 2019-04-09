@@ -1,5 +1,14 @@
 const { returnData, getDatasets } = require('../utils/store-odp-data')
 
+function truncateString(string, maxLength) {
+  let longer = string.length > maxLength ? true : false
+  if (longer) {
+    return string.slice(0, maxLength).trimEnd() + '...'
+  } else {
+    return string
+  }
+}
+
 /**
  * Gets the datasets from the cache and returns as a response
  */
@@ -25,15 +34,9 @@ module.exports = async function(req, res) {
     timer = Date.now()
     data = await req.store.getDatasetData()
     newData = data.map(dataset => {
-      let longer = dataset.label.length > 65 ? true : false
-      let newLabel = longer
-        ? dataset.label.slice(0, 65).trimEnd() + '...'
-        : dataset.label
+      let newLabel = truncateString(dataset.label, 65)
       let newValues = dataset.values.map(value => {
-        let longer = value.label.length > 65 ? true : false
-        let newValue = longer
-          ? value.label.slice(0, 65).trimEnd() + '...'
-          : value.label
+        let newValue = truncateString(value.label, 65)
         return { label: newValue, value: value.value }
       })
       return { label: newLabel, values: newValues }
