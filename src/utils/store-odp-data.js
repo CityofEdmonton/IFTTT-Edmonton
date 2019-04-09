@@ -66,9 +66,10 @@ async function getDatasetColumns(identifier) {
   }
   let rawJsonDataColumns = await request(identifier)
   const rawDataColumns = JSON.parse(rawJsonDataColumns)
+  const id = rawDataColumns.id
   const columns = rawDataColumns.columns
     .map(function(entry) {
-      return { label: entry.name, value: entry.id }
+      return { label: entry.name, value: id + ':' + entry.id }
     })
     .sort(sortOrder)
   return columns

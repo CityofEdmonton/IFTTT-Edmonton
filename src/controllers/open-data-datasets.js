@@ -42,6 +42,6 @@ module.exports = async function(req, res) {
   zlib.gzip(JSON.stringify(sendData), function(_, result) {
     res.end(result)
     console.log(`Options sent. Time: ${Date.now() - timer} ms`)
-    console.log(result)
+    // console.log(result)
   })
 }
