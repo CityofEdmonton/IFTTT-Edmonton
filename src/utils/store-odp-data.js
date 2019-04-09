@@ -1,17 +1,22 @@
 const request = require('request-promise-native')
 
 /** Stores the datasets and columns into Redis */
-async function storeData(store) {
+async function storeData(store, filterDate) {
   console.log('Retrieving data...')
   let timer = Date.now()
   try {
-    let datasets = await getDatasets()
+    let datasets = await getDatasets(filterDate)
     console.log(`Time taken to retrieve datasets: ${Date.now() - timer} ms`)
     console.log('Retrieving and storing all dataset columns...')
     timer = Date.now()
     await Promise.all(
       datasets.map(async dataset => {
         const { label, identifier } = dataset
+        if (dataset) {
+          console.log("Nothing.")
+          return
+        }
+        console.log("GOOOO")
         let columns = await getDatasetColumns(identifier)
         // The identifier is in the form: 'https://data.edmonton.ca/api/views/XXXX-XXXX'
         const key = identifier
@@ -30,11 +35,27 @@ async function storeData(store) {
   }
 }
 
-async function getDatasets() {
+function daysFromToday(dateString) {
+  let date = new Date(dateString)
+  return Math.floor((Date.now() - date)/(24 * 60 * 60 * 1000))
+}
+
+/**
+ * Gets the datasets from the Edmonton Open Data Portal with an additional filter
+ * @param {Number} dayFilter The maximum number of days last updated (E.g. 365 would
+ * filter datasets that were last updated a year ago or less)
+ */
+async function getDatasets(dayFilter) {
   let rawJsonData = await request(process.env.OPEN_DATA_URL)
   const rawData = JSON.parse(rawJsonData)
-  return rawData.dataset.map(function(entry) {
-    return { label: entry.title, identifier: entry.identifier }
+  return rawData.dataset.map((entry) => {
+    if (dayFilter) {
+      if (daysFromToday(entry.modified) > dayFilter) {
+        return { label: entry.title, identifier: entry.identifier }
+      }
+    } else {
+      return { label: entry.title, identifier: entry.identifier }
+    }
   })
 }
 

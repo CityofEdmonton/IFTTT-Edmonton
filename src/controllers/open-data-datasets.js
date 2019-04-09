@@ -3,9 +3,9 @@ const { returnData, getDatasets } = require('../utils/store-odp-data')
 function truncateString(string, maxLength) {
   let longer = string.length > maxLength ? true : false
   if (longer) {
-    return string.slice(0, maxLength).trimEnd() + '...'
+    return string.slice(0, maxLength).trimEnd() + '... '
   } else {
-    return string
+    return string + ' ' // Add a space as padding
   }
 }
 
