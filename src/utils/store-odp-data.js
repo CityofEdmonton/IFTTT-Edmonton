@@ -9,27 +9,26 @@ async function storeData(store, filterDate) {
     console.log(`Time taken to retrieve datasets: ${Date.now() - timer} ms`)
     console.log('Retrieving and storing all dataset columns...')
     timer = Date.now()
+    let counter = 0
     await Promise.all(
       datasets.map(async dataset => {
         const { label, identifier } = dataset
-        if (dataset) {
-          console.log("Nothing.")
-          return
-        }
-        console.log("GOOOO")
         let columns = await getDatasetColumns(identifier)
-        // The identifier is in the form: 'https://data.edmonton.ca/api/views/XXXX-XXXX'
-        const key = identifier
-          .split('/')
-          .slice(
-            -1
-          )[0] /** Gets the last element of the array after the split */
         // Store the data in the Redis 'store'
-        store.insertDataset(key, label, columns)
+        if (columns) {
+          // The identifier is in the form: 'https://data.edmonton.ca/api/views/XXXX-XXXX'
+          const key = identifier
+            .split('/')
+            .slice(
+              -1
+            )[0] /** Gets the last element of the array after the split */
+          store.insertDataset(key, label, columns)
+          counter++
+        }
       })
     )
     console.log(`Time taken to store data: ${Date.now() - timer} ms`)
-    console.log('Store operation completed.')
+    console.log(`Store operation completed. Datasets stored: ${counter}`)
   } catch (e) {
     console.log('Error ' + e)
   }
@@ -37,7 +36,7 @@ async function storeData(store, filterDate) {
 
 function daysFromToday(dateString) {
   let date = new Date(dateString)
-  return Math.floor((Date.now() - date)/(24 * 60 * 60 * 1000))
+  return Math.floor((Date.now() - date) / (24 * 60 * 60 * 1000))
 }
 
 /**
@@ -48,10 +47,12 @@ function daysFromToday(dateString) {
 async function getDatasets(dayFilter) {
   let rawJsonData = await request(process.env.OPEN_DATA_URL)
   const rawData = JSON.parse(rawJsonData)
-  return rawData.dataset.map((entry) => {
+  return rawData.dataset.map(entry => {
     if (dayFilter) {
-      if (daysFromToday(entry.modified) > dayFilter) {
+      if (daysFromToday(entry.modified) < dayFilter) {
         return { label: entry.title, identifier: entry.identifier }
+      } else {
+        return { label: null, identifier: null }
       }
     } else {
       return { label: entry.title, identifier: entry.identifier }
@@ -60,6 +61,9 @@ async function getDatasets(dayFilter) {
 }
 
 async function getDatasetColumns(identifier) {
+  if (!identifier) {
+    return
+  }
   let rawJsonDataColumns = await request(identifier)
   const rawDataColumns = JSON.parse(rawJsonDataColumns)
   const columns = rawDataColumns.columns
