@@ -13,33 +13,20 @@ function truncateString(string, maxLength) {
  * Gets the datasets from the cache and returns as a response
  */
 module.exports = async function(req, res) {
-  let cache = req.cache
-  let datasets
   let data
   let newData
   let timer
   try {
-    // console.log("Getting latest datasets")
-    // datasets = JSON.parse(await cache.getLatest('datasets'))
-    // if (!datasets) {
-    //   console.log("No datasets found")
-    //   datasets = (await getDatasets()).sort
-    //   cache.add('datasets', JSON.stringify(datasets))
-    // }
-    // console.log("Starting to get columns")
-    // let timer = Date.now()
-    // data = await returnData(datasets)
-    // console.log(`Time took: ${Date.now() - timer} ms`)
     console.log('Getting dataset options...')
     timer = Date.now()
     data = await req.store.getDatasetData()
     newData = data.map(dataset => {
       let newLabel = truncateString(dataset.label, 65)
-      let newValues = dataset.values.map(value => {
-        let newValue = truncateString(value.label, 65)
-        return { label: newValue, value: value.value }
+      let newColumnValues = dataset.values.map(columnValue => {
+        let newColumnValue = truncateString(columnValue.label, 65)
+        return { label: newColumnValue, value: columnValue.value }
       })
-      return { label: newLabel, values: newValues }
+      return { label: newLabel, values: newColumnValues }
     })
   } catch (e) {
     e.code = 500
