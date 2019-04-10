@@ -7,13 +7,14 @@ module.exports = async function(req, res) {
   console.log('Open Data trigger called.')
 
   let triggerFields = req.body.triggerFields
-  let column = triggerFields.dataset.split(':')
+  let data = triggerFields.dataset.split(':')
+  const id = data[0] // The id of the dataset
+  const column = data[1]
 
   // The Socrata api endpoint
-  let url = 'https://data.edmonton.ca/resource/' + column[0] + '.json'
-  let id = column[1]
+  let url = `https://data.edmonton.ca/resource/${id}.json?$select=${column}`
   console.log(url)
-  console.log(id)
+  console.log(column)
 
   // let newColumn
   try {
