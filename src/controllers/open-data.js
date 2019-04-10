@@ -1,16 +1,7 @@
 const request = require('request-promise-native')
 
-function getOffset(numberOfLatestRows, totalRows) {
-  let offset = totalRows - numberOfLatestRows
-  if (offset < 0) {
-    return 0
-  } else {
-    return offset
-  }
-}
-
 /**
- * Open Data...
+ * Open Data controller...
  */
 module.exports = async function(req, res) {
   console.log('Open Data trigger called.')
@@ -24,34 +15,72 @@ module.exports = async function(req, res) {
   // The Socrata api endpoint
   let url = `https://data.edmonton.ca/resource/${id}.json`
   let queryBase = `${url}?$query=`
-  // let countQuery = `${queryBase}SELECT count(*)`
-  let selectQuery = `${queryBase}SELECT ${column}`
-  let getLatestRowQuery = `${queryBase}SELECT ${column} ORDER BY :updated_at LIMIT 5`
+  let getLastUpdated = `${queryBase}SELECT :updated_at ORDER BY :updated_at LIMIT 1`
   // get lastUpdated (is a date encoded as ISO8601 Times) from changeWriter
-  let getLastUpdatedQuery = `${queryBase}SELECT ${column} WHERE :updated_at > ${lastUpdated}`
+  // get stored item from Redis here...
 
-  // let newColumn
+  let key = `opendata/${id}/${column}` // unique key for dataset storage? -> opendata:${id}:${column}
+  console.log(key)
+  /**
+   * storedColumnRows: {
+   *  lastUpdated: (ISO8601 Time),
+   *  rows: [
+   *    row 1,
+   *    row 2,
+   *    etc...
+   *  ]
+   * }
+   */
+  let storedColumnRows
   try {
-    // let rawJsonCount = await request(countQuery)
-    // console.log(rawJsonCount)
-    // const count = JSON.parse(rawJsonCount)[0].count
-    // const offset = getOffset(100, count)
-    // console.log(offset)
-    // let rawJsonDataColumns = await request(`${selectQuery} OFFSET ${offset}`)
-    let rawJsonDataColumns = await request(getLatestRowQuery)
-    const latestColumnRow = JSON.parse(rawJsonDataColumns)
-    console.log(latestColumnRow)
+    storedColumnRows = await req.cache.getLatest(key)
+  } catch (e) {
+    console.log('Error ' + e)
+  }
+
+  let lastUpdated
+  if (storedColumnRows) {
+    lastUpdated = storedColumnRows.lastUpdated
+  } else {
+    lastUpdated = '1998-07-25T00:00:00'
+  }
+
+  console.log(lastUpdated)
+
+  // Add a limit??
+  let getLatestUpdatedQuery = `${queryBase}SELECT :updated_at, ${column} WHERE :updated_at >= '${lastUpdated}' ORDER BY :updated_at DESC`
+
+  let latestColumnRows
+  try {
+    // let rawJsonLastUpdated = await request(getLastUpdated)
+    // lastUpdated = JSON.parse(rawJsonLastUpdated)[0][':updated_at']
+    // console.log("last updated: ", lastUpdated)
+    let rawJsonColumnRows = await request(getLatestUpdatedQuery)
+    latestColumnRows = JSON.parse(rawJsonColumnRows)
   } catch (e) {
     e.code = 500
     throw e
   }
 
+  console.log(latestColumnRows)
+
+  let responseValues
+  if (storedColumnRows && storedColumnRows.lastUpdated == latestColumnRows.lastUpdated) {
+    // send data
+  } else {
+    // store new row, send data
+    console.log('Adding new rows')
+    // req.cache.add(key, )
+  }
+
   res.status(200).send({
-    data: {
-      CreatedAt: 'Date',
-      DataSet: 'String',
-      Column: 'String',
-      ColumnValues: 'Array as String (Value1, Value2, Value3)'
-    }
+    data: [
+      {
+        CreatedAt: 'Date',
+        DataSet: 'String',
+        Column: 'String',
+        ColumnValues: 'Array as String (Value1, Value2, Value3)'
+      }
+    ]
   })
 }
