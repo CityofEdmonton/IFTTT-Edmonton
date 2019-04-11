@@ -3,7 +3,7 @@
  */
 module.exports = async function(req, res) {
   console.log('Open Data validator called.')
-  console.log(req.body)
+  // console.log(req.body)
 
   res.status(200).send({
     data: {

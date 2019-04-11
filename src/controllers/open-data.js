@@ -5,7 +5,9 @@ const uuid = require('uuid/v4')
  * Open Data controller...
  */
 module.exports = async function(req, res) {
-  console.log('Open Data trigger called.')
+  console.log(
+    `Open Data trigger called. Time: ${new Date(Date.now()).toISOString()}`
+  )
 
   let triggerFields = req.body.triggerFields
   let data = triggerFields.dataset.split('|&|') // unique separator (hopefully)
@@ -45,7 +47,7 @@ module.exports = async function(req, res) {
     lastUpdated = '1998-07-25T00:00:00.000Z'
   }
 
-  console.log('Last updated: ', lastUpdated)
+  // console.log('Last updated: ', lastUpdated)
 
   // Default limit is 1000 (Should always return an array)
   // TODO: Change to appropriate limit
@@ -73,7 +75,7 @@ module.exports = async function(req, res) {
     // Filter for Epoch times
     latestUpdated = new Date(updatedAt * 1000).toISOString()
   }
-  console.log('Latest updated: ', latestUpdated.toString())
+  // console.log('Latest updated: ', latestUpdated)
   let filteredColumnRows = latestColumnRows.map(row => {
     return { [column]: row[column] }
   })
