@@ -13,7 +13,7 @@ async function storeData(store, filterDate) {
     await Promise.all(
       datasets.map(async dataset => {
         const { label, identifier } = dataset
-        let columns = await getDatasetColumns(identifier)
+        let columns = await getDatasetColumns(identifier, label)
         // Store the data in the Redis 'store'
         if (columns) {
           // The identifier is in the form: 'https://data.edmonton.ca/api/views/XXXX-XXXX'
@@ -60,7 +60,11 @@ async function getDatasets(dayFilter) {
   })
 }
 
-async function getDatasetColumns(identifier) {
+/**
+ * @param {String} identifier The endpoint to retrieve dataset data
+ * @param {String} label The name of the dataset
+ */
+async function getDatasetColumns(identifier, label) {
   if (!identifier) {
     return
   }
@@ -69,7 +73,7 @@ async function getDatasetColumns(identifier) {
   const id = rawDataColumns.id
   const columns = rawDataColumns.columns
     .map(function(entry) {
-      return { label: entry.name, value: `${id}:${entry.fieldName}` }
+      return { label: entry.name, value: `${id}|&|${label}|&|${entry.fieldName}` }
     })
     .sort(sortOrder)
   return columns
@@ -91,7 +95,7 @@ async function returnData(datasets) {
     await Promise.all(
       datasets.map(async dataset => {
         const { label, identifier } = dataset
-        let columns = await getDatasetColumns(identifier)
+        let columns = await getDatasetColumns(identifier, label)
         return { label: label, values: columns }
       })
     ).then(values => {

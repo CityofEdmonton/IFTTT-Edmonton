@@ -16,7 +16,7 @@ class PersistentStore {
       label: dataset_label,
       values: columns
     }
-    await this.client.set('opendata:' + key, JSON.stringify(data))
+    await this.client.set('opendata/dataset/' + key, JSON.stringify(data))
   }
 
   /**
@@ -24,7 +24,7 @@ class PersistentStore {
    * @return {Promise<Array<Object>>}
    */
   async getDatasetData() {
-    let keys = await this.client.keys('opendata:*')
+    let keys = await this.client.keys('opendata/dataset/*')
     let data = []
     for (let key of keys) {
       let dataset = await this.client.get(key)
