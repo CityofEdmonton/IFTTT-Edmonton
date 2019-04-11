@@ -36,37 +36,36 @@ module.exports = async function(req, res) {
   // The Socrata api endpoint
   let url = `https://data.edmonton.ca/resource/${id}.json`
   let queryBase = `${url}?$query=`
-  let getLastUpdated = `${queryBase}SELECT :updated_at ORDER BY :updated_at LIMIT 1`
+  let getUpdatedTimestamp = `${queryBase}SELECT :updated_at ORDER BY :updated_at LIMIT 1`
 
   let key = `opendata/column/${id}/${column}` // unique key for dataset storage
-  /**
-   * storedColumnRows: {
-   *  created_at: (ISO 8601 Time),
-   *  rows: [
-   *    row 1,
-   *    row 2,
-   *    etc...
-   *  ]
-   *  meta:...
-   * }
-   */
-  let storedColumnRows
+  let storedData
   try {
-    storedColumnRows = await req.cache.getLatest(key)
+    storedData = await req.cache.getLatest(key)
   } catch (e) {
     console.log('Error ' + e)
   }
 
   let lastUpdated
-  if (storedColumnRows) {
-    lastUpdated = storedColumnRows.created_at
+  if (storedData) {
+    lastUpdated = storedData.created_at
   } else {
     lastUpdated = '1998-07-25T00:00:00.000Z'
   }
 
+  let updatedAt
+  try {
+    let rawJsonUpdatedAt = await request(getUpdatedTimestamp)
+    updatedAt = JSON.parse(rawJsonUpdatedAt)[0][':updated_at']
+  } catch (e) {
+    console.log('Error ' + e)
+  }
+
   // Default limit is 1000 (Should always return an array)
   // TODO: Change to appropriate limit
-  let getLatestUpdatedQuery = `${queryBase}SELECT :updated_at, ${column} WHERE :updated_at >= '${lastUpdated}' ORDER BY :updated_at DESC LIMIT 100`
+  // let getLatestUpdatedQuery = `${queryBase}SELECT :updated_at, ${column} WHERE :updated_at >= '${lastUpdated}' ORDER BY :updated_at DESC LIMIT 100`
+  // Get all the columns (filter it by column later)
+  let getLatestUpdatedQuery = `${queryBase}SELECT * WHERE :updated_at >= '${lastUpdated}' ORDER BY :updated_at DESC LIMIT 100`
 
   let latestColumnRows
   try {
@@ -77,7 +76,7 @@ module.exports = async function(req, res) {
     throw e
   }
 
-  let updatedAt = latestColumnRows[0][':updated_at']
+  // let updatedAt = latestColumnRows[0][':updated_at']
   let latestUpdated
   // Ensure that the date is in ISO 8601 time format
   if (
@@ -94,17 +93,23 @@ module.exports = async function(req, res) {
   let filteredColumnRows = latestColumnRows.map(row => {
     return row[column]
   })
+  let filteredStoredColumnRows
+  if (storedData) {
+    filteredStoredColumnRows = JSON.parse(storedData.column_values).map(row => {
+      return row[column]
+    })
+  }
 
   let responseValues
-  if (storedColumnRows && storedColumnRows.created_at == latestUpdated) {
+  if (storedData && storedData.created_at == latestUpdated) {
     console.log('Dataset rows not updated. Returning old data.')
     responseValues = await req.cache.getAll(key, req.body['limit'])
   } else {
     // Dataset rows were updated (check if the columns are different)
     console.log('Dataset rows updated.')
     if (
-      storedColumnRows &&
-      compareArr(JSON.parse(storedColumnRows.column_values), filteredColumnRows)
+      storedData &&
+      compareArr(JSON.parse(filteredStoredColumnRows), filteredColumnRows)
     ) {
       console.log('Row values not changed. Returning old data')
       responseValues = await req.cache.getAll(key, req.body['limit'])
@@ -116,7 +121,7 @@ module.exports = async function(req, res) {
         created_at: latestUpdated,
         data_set: dataset,
         column: column,
-        column_values: JSON.stringify(filteredColumnRows), // Stringified array of updated row values
+        column_values: JSON.stringify(latestColumnRows), // Stringified array of updated row values
         meta: {
           id,
           timestamp: Math.round(new Date() / 1000)
