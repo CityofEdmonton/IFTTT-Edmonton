@@ -1,6 +1,24 @@
 const request = require('request-promise-native')
 const uuid = require('uuid/v4')
 
+// Compares the elements of two arrays
+function compareArr(array1, array2) {
+  let arr1 = array1.sort()
+  let arr2 = array2.sort()
+  let length
+  if (arr1.length !== arr2.length) {
+    return false
+  } else {
+    length = arr1.length
+  }
+  for (let i = 0; i < length; i++) {
+    if (arr1[i] !== arr2[i]) {
+      return false
+    }
+  }
+  return true
+}
+
 /**
  * Open Data controller...
  */
@@ -19,18 +37,17 @@ module.exports = async function(req, res) {
   let url = `https://data.edmonton.ca/resource/${id}.json`
   let queryBase = `${url}?$query=`
   let getLastUpdated = `${queryBase}SELECT :updated_at ORDER BY :updated_at LIMIT 1`
-  // get lastUpdated (is a date encoded as ISO 8601 Times) from changeWriter
-  // get stored item from Redis here...
 
   let key = `opendata/column/${id}/${column}` // unique key for dataset storage
   /**
    * storedColumnRows: {
-   *  lastUpdated: (ISO 8601 Time),
+   *  created_at: (ISO 8601 Time),
    *  rows: [
    *    row 1,
    *    row 2,
    *    etc...
    *  ]
+   *  meta:...
    * }
    */
   let storedColumnRows
@@ -46,8 +63,6 @@ module.exports = async function(req, res) {
   } else {
     lastUpdated = '1998-07-25T00:00:00.000Z'
   }
-
-  // console.log('Last updated: ', lastUpdated)
 
   // Default limit is 1000 (Should always return an array)
   // TODO: Change to appropriate limit
@@ -75,36 +90,42 @@ module.exports = async function(req, res) {
     // Filter for Epoch times
     latestUpdated = new Date(updatedAt * 1000).toISOString()
   }
-  // console.log('Latest updated: ', latestUpdated)
+
   let filteredColumnRows = latestColumnRows.map(row => {
-    return { [column]: row[column] }
+    return row[column]
   })
 
   let responseValues
   if (storedColumnRows && storedColumnRows.created_at == latestUpdated) {
-    // send data
-    console.log('Returning old data')
+    console.log('Dataset rows not updated. Returning old data.')
     responseValues = await req.cache.getAll(key, req.body['limit'])
   } else {
-    // store new row, send data
-    console.log('Adding new rows')
-    let id = uuid()
-    let newRows = {
-      id,
-      created_at: latestUpdated,
-      data_set: dataset,
-      column: column,
-      column_values: JSON.stringify(filteredColumnRows),
-      meta: {
+    // Dataset rows were updated (check if the columns are different)
+    console.log('Dataset rows updated.')
+    if (
+      storedColumnRows &&
+      compareArr(JSON.parse(storedColumnRows.column_values), filteredColumnRows)
+    ) {
+      console.log('Row values not changed. Returning old data')
+      responseValues = await req.cache.getAll(key, req.body['limit'])
+    } else {
+      console.log('Adding new rows')
+      let id = uuid()
+      let newRows = {
         id,
-        timestamp: Math.round(new Date() / 1000)
+        created_at: latestUpdated,
+        data_set: dataset,
+        column: column,
+        column_values: JSON.stringify(filteredColumnRows), // Stringified array of updated row values
+        meta: {
+          id,
+          timestamp: Math.round(new Date() / 1000)
+        }
       }
+      req.cache.add(key, newRows)
+      responseValues = await req.cache.getAll(key, req.body['limit'])
     }
-    req.cache.add(key, newRows)
-    responseValues = await req.cache.getAll(key, req.body['limit'])
   }
-
-  // Filter and add meta data to responseValues here...
 
   res.status(200).send({
     data: responseValues
