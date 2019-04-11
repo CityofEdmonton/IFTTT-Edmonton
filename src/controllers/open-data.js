@@ -94,7 +94,7 @@ module.exports = async function(req, res) {
   })
   let filteredStoredColumnRows
   if (storedData) {
-    filteredStoredColumnRows = JSON.parse(storedData.column_values).map(row => {
+    filteredStoredColumnRows = JSON.parse(storedData.all_values).map(row => {
       return row[column]
     })
   }
