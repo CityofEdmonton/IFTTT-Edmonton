@@ -73,7 +73,10 @@ async function getDatasetColumns(identifier, label) {
   const id = rawDataColumns.id
   const columns = rawDataColumns.columns
     .map(function(entry) {
-      return { label: entry.name, value: `${id}|&|${label}|&|${entry.fieldName}` }
+      return {
+        label: entry.name,
+        value: `${id}|&|${label}|&|${entry.fieldName}`
+      }
     })
     .sort(sortOrder)
   return columns

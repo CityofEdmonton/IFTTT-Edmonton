@@ -63,14 +63,18 @@ module.exports = async function(req, res) {
   let updatedAt = latestColumnRows[0][':updated_at']
   let latestUpdated
   // Ensure that the date is in ISO 8601 time format
-  if (updatedAt.toString().match(/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}Z/)) {
+  if (
+    updatedAt
+      .toString()
+      .match(/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}Z/)
+  ) {
     latestUpdated = updatedAt
   } else {
     // Filter for Epoch times
     latestUpdated = new Date(updatedAt * 1000).toISOString()
   }
-  console.log("Latest updated: ", latestUpdated.toString())
-  let filteredColumnRows = latestColumnRows.map((row) => {
+  console.log('Latest updated: ', latestUpdated.toString())
+  let filteredColumnRows = latestColumnRows.map(row => {
     return { [column]: row[column] }
   })
 
