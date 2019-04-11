@@ -76,7 +76,6 @@ module.exports = async function(req, res) {
     throw e
   }
 
-  // let updatedAt = latestColumnRows[0][':updated_at']
   let latestUpdated
   // Ensure that the date is in ISO 8601 time format
   if (
@@ -109,7 +108,7 @@ module.exports = async function(req, res) {
     console.log('Dataset rows updated.')
     if (
       storedData &&
-      compareArr(JSON.parse(filteredStoredColumnRows), filteredColumnRows)
+      compareArr(filteredStoredColumnRows, filteredColumnRows)
     ) {
       console.log('Row values not changed. Returning old data')
       responseValues = await req.cache.getAll(key, req.body['limit'])
