@@ -120,7 +120,8 @@ module.exports = async function(req, res) {
         created_at: latestUpdated,
         data_set: dataset,
         column: column,
-        column_values: JSON.stringify(latestColumnRows), // Stringified array of updated row values
+        column_values: JSON.stringify(filteredColumnRows),
+        all_values: JSON.stringify(latestColumnRows), // Stringified array of updated row values
         meta: {
           id,
           timestamp: Math.round(new Date() / 1000)
