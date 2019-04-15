@@ -19,7 +19,7 @@ function compareArr(array1, array2) {
   return true
 }
 
-// Returns a new array (elements in array1 not in array2)
+// Returns elements in array1 that are not in array2
 function arrDiff(array1, array2) {
   let diff = []
   if (!array2) {
@@ -138,8 +138,8 @@ module.exports = async function(req, res) {
       let id = uuid()
       let diff = {
         // The unique difference (does not catch repeats)
-        new: arrDiff(filteredStoredColumnRows, filteredColumnRows),
-        removed: arrDiff(filteredColumnRows, filteredStoredColumnRows)
+        new: arrDiff(filteredColumnRows, filteredStoredColumnRows),
+        removed: arrDiff(filteredStoredColumnRows, filteredColumnRows)
       }
       let newRows = {
         id,
