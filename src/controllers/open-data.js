@@ -22,13 +22,13 @@ function compareArr(array1, array2) {
 // Returns elements in array1 that are not in array2
 function arrDiff(array1, array2) {
   let diff = []
-  if (!array2) {
-    // Nothing to compare to
+  if (!array1) {
+    // Nothing to compare with
     return diff
   }
-  if (!array1) {
-    // Everything in array2 will not be in array1 for this case
-    return array2
+  if (!array2) {
+    // Everything in array1 will not be in array2 for this case
+    return array1
   }
   for (let element of array1) {
     if (array2.indexOf(element) == -1) {
