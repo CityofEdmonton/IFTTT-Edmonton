@@ -19,6 +19,25 @@ function compareArr(array1, array2) {
   return true
 }
 
+// Returns a new array (elements in array1 not in array2)
+function arrDiff(array1, array2) {
+  let diff = []
+  if (!array2) {
+    // Nothing to compare to
+    return diff
+  }
+  if (!array1) {
+    // Everything in array2 will not be in array1 for this case
+    return array2
+  }
+  for (let element of array1) {
+    if (array2.indexOf(element) == -1) {
+      diff.push(element)
+    }
+  }
+  return diff
+}
+
 /**
  * Open Data controller...
  */
@@ -26,6 +45,8 @@ module.exports = async function(req, res) {
   console.log(
     `Open Data trigger called. Time: ${new Date(Date.now()).toISOString()}`
   )
+  // console.log(`\n\n${Object.keys(req)}\n\n`)
+  // console.log(req.body)
 
   let triggerFields = req.body.triggerFields
   let data = triggerFields.dataset.split('|&|') // unique separator (hopefully)
@@ -115,13 +136,19 @@ module.exports = async function(req, res) {
     } else {
       console.log('Adding new rows')
       let id = uuid()
+      let diff = {
+        // The unique difference (does not catch repeats)
+        new: arrDiff(filteredStoredColumnRows, filteredColumnRows),
+        removed: arrDiff(filteredColumnRows, filteredStoredColumnRows)
+      }
       let newRows = {
         id,
         created_at: latestUpdated,
         data_set: dataset,
         column: column,
         column_values: JSON.stringify(filteredColumnRows),
-        all_values: JSON.stringify(latestColumnRows), // Stringified array of updated row values
+        all_values: JSON.stringify(latestColumnRows), // Stringified array of updated row values (unfiltered)
+        difference: JSON.stringify(diff),
         meta: {
           id,
           timestamp: Math.round(new Date() / 1000)

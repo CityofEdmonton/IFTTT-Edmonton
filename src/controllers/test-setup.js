@@ -18,7 +18,8 @@ module.exports = async function(req, res) {
             city: '67'
           },
           open_data: {
-            dataset: '???'
+            data_set:
+              'rk7f-7aur|&|Recreational Facility -  Drop In Swim (Detail)|&|activity'
           }
         },
         triggerFieldValidations: {
@@ -31,13 +32,60 @@ module.exports = async function(req, res) {
             invalid: 'not-a-community-id'
           },
           open_data: {
-            dataset: {
-              valid: '???',
-              invalid: 'not-a-data-set'
-            }
+            valid:
+              'rk7f-7aur|&|Recreational Facility -  Drop In Swim (Detail)|&|activity',
+            invalid: 'not-a-data-set'
           }
         }
       }
     }
   })
 }
+
+/**
+ * "data": {
+    "samples": {
+      "triggers": {
+        "geo_location": {
+          "location": {
+            "lat": "",
+            "lon": "",
+            "address": "",
+            "description": "",
+            "radius": ""
+          }
+        },
+        "open_data_cd01961": {
+          "dataset": ""
+        },
+        "open_data": {
+          "dataset": ""
+        },
+        "alberta_air_health_risk": {
+          "city": ""
+        },
+        "alberta_air_health_index": {
+          "city": ""
+        }
+      },
+      "actions": {
+        "notification": {
+          "notification": ""
+        },
+        "test": {
+          "test": "",
+          "test2": ""
+        }
+      },
+      "actionRecordSkipping": {
+        "notification": {
+          "notification": ""
+        },
+        "test": {
+          "test": "",
+          "test2": ""
+        }
+      }
+    }
+  }
+ */

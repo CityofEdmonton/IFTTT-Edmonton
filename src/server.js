@@ -84,6 +84,12 @@ router.post('/triggers/open_data/fields/dataset/options', openDataDatasets)
 router.post('/open_data/datasets/store', storeDatasets)
 router.post('/triggers/open_data/validate', openDataValidator)
 
+// Test
+router.post('/triggers/open_data_loc', openData)
+router.post('/triggers/open_data_loc/fields/dataset/options', openDataDatasets)
+router.post('/triggers/open_data_loc/validate', openDataValidator)
+// Test
+
 router.post('/triggers/light_the_bridge', lightTheBridge)
 
 // We split the route here to allow for upgrading the API with 0 downtime.
