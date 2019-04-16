@@ -1,4 +1,4 @@
-const { storeData } = require('../utils/store-odp-data')
+const { storeData } = require('../../utils/store-odp-data')
 
 /**
  * Sends a post request to start the async function to obtain

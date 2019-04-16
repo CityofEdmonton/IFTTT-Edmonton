@@ -40,10 +40,10 @@ const createAirQualityController = require('./controllers/aqhi-base')
 const status = require('./controllers/status')
 const test = require('./controllers/test-setup')
 const airQualityStations = require('./controllers/air-quality-stations')
-const openData = require('./controllers/open-data')
-const openDataDatasets = require('./controllers/open-data-datasets')
-const storeDatasets = require('./controllers/open-data-store')
-const openDataValidator = require('./controllers/open-data-validator')
+const openData = require('./controllers/open-data/open-data')
+const openDataDatasets = require('./controllers/open-data/open-data-datasets')
+const storeDatasets = require('./controllers/open-data/open-data-store')
+const openDataValidator = require('./controllers/open-data/open-data-validator')
 
 // Middleware
 const logger = require('./middleware/logger')
@@ -83,12 +83,6 @@ router.post('/triggers/open_data', openData) // This is polled by IFTTT every 15
 router.post('/triggers/open_data/fields/dataset/options', openDataDatasets)
 router.post('/open_data/datasets/store', storeDatasets)
 router.post('/triggers/open_data/validate', openDataValidator)
-
-// Test
-router.post('/triggers/open_data_loc', openData)
-router.post('/triggers/open_data_loc/fields/dataset/options', openDataDatasets)
-router.post('/triggers/open_data_loc/validate', openDataValidator)
-// Test
 
 router.post('/triggers/light_the_bridge', lightTheBridge)
 
