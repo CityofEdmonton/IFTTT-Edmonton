@@ -121,4 +121,4 @@ async function returnData(datasets) {
   return data
 }
 
-module.exports = { storeData, getDatasets }
+module.exports = { storeData, getDatasets, returnData }
