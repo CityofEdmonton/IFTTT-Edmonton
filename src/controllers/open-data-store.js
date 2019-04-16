@@ -1,8 +1,8 @@
 const { storeData } = require('../utils/store-odp-data')
 
 /**
- * Starts the async function to obtain and store
- * the dataset data into the Redis cache
+ * Sends a post request to start the async function to obtain
+ * and store the dataset data into the Redis cache
  */
 module.exports = async function(req, res) {
   try {
