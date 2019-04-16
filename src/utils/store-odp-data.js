@@ -1,6 +1,11 @@
 const request = require('request-promise-native')
 
-/** Stores the datasets and columns into Redis */
+/**
+ * Stores the datasets and columns into Redis
+ * @param {PersistentStore} store The persisten store to store the dataset data
+ * @param {Number} filterDate The maximum number of days last updated (E.g. 365 would
+ * filter datasets that were last updated a year ago or less)
+ */
 async function storeData(store, filterDate) {
   console.log('Retrieving data...')
   let timer = Date.now()
@@ -17,11 +22,7 @@ async function storeData(store, filterDate) {
         // Store the data in the Redis 'store'
         if (columns) {
           // The identifier is in the form: 'https://data.edmonton.ca/api/views/XXXX-XXXX'
-          const key = identifier
-            .split('/')
-            .slice(
-              -1
-            )[0] /** Gets the last element of the array after the split */
+          const key = identifier.split('/').slice(-1)[0] // Gets the last element of the array after the split
           store.insertDataset(key, label, columns)
           counter++
         }
@@ -43,6 +44,7 @@ function daysFromToday(dateString) {
  * Gets the datasets from the Edmonton Open Data Portal with an additional filter
  * @param {Number} dayFilter The maximum number of days last updated (E.g. 365 would
  * filter datasets that were last updated a year ago or less)
+ * @return {Object} A JSON object describing the datasets obtained
  */
 async function getDatasets(dayFilter) {
   let rawJsonData = await request(process.env.OPEN_DATA_URL)
@@ -61,8 +63,11 @@ async function getDatasets(dayFilter) {
 }
 
 /**
+ * Returns the columns for the specified dataset
  * @param {String} identifier The endpoint to retrieve dataset data
  * @param {String} label The name of the dataset
+ * @return {Array<Object>} Returns an array of JSON objects in the proper format
+ * Look here for example format: https://platform.ifttt.com/docs/api_reference#trigger-field-dynamic-options
  */
 async function getDatasetColumns(identifier, label) {
   if (!identifier) {
@@ -92,6 +97,12 @@ function sortOrder(a, b) {
   }
 }
 
+/**
+ * Returns a JSON object in the proper format for a trigger field option
+ * See 'Example' here: https://platform.ifttt.com/docs/api_reference#trigger-field-dynamic-options
+ * @param {Object} datasets The JSON object describing the datasets to obtain columns of
+ * @return {Object} The JSON object in the proper format for the trigger field options
+ */
 async function returnData(datasets) {
   let data
   try {
@@ -110,4 +121,4 @@ async function returnData(datasets) {
   return data
 }
 
-module.exports = { storeData, returnData, getDatasets }
+module.exports = { storeData, getDatasets }

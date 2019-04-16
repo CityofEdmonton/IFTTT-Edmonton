@@ -1,3 +1,7 @@
+/**
+ * Example filter code for an Open Data Portal trigger applet
+ */
+
 function sortNumber(a: number, b: number) {
   return a - b
 }

@@ -1,14 +1,5 @@
 const zlib = require('zlib')
 
-function truncateString(string, maxLength) {
-  let longer = string.length > maxLength ? true : false
-  if (longer) {
-    return string.slice(0, maxLength).trimEnd() + '... '
-  } else {
-    return string + ' ' // Add a space as padding
-  }
-}
-
 /**
  * Gets the datasets from the cache and returns as a response
  */
@@ -44,4 +35,13 @@ module.exports = async function(req, res) {
     res.end(result)
     console.log(`Options sent. Time: ${Date.now() - timer} ms`)
   })
+}
+
+function truncateString(string, maxLength) {
+  let longer = string.length > maxLength ? true : false
+  if (longer) {
+    return string.slice(0, maxLength).trimEnd() + '... '
+  } else {
+    return string + ' ' // Add a space as padding
+  }
 }
