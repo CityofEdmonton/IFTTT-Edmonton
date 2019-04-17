@@ -23,9 +23,7 @@ module.exports = async function(req, res) {
   let filteredStoredColumnValues // The stored/previous column values to be compared to
   if (storedData) {
     storedTimestamp = storedData.created_at
-    filteredStoredColumnValues = JSON.parse(storedData.all_values).map(row => {
-      return row[column]
-    })
+    filteredStoredColumnValues = JSON.parse(storedData.column_values)
   } else {
     storedTimestamp = '1998-07-25T00:00:00.000Z' // This value is random
   }
