@@ -25,6 +25,7 @@ class RedisCache {
     this.setAsync = promisify(client.set).bind(client)
     this.getAsync = promisify(client.get).bind(client)
     this.keysAsync = promisify(client.keys).bind(client)
+    this.expireAsync = promisify(client.expire).bind(client)
   }
 
   /**
@@ -74,6 +75,13 @@ class RedisCache {
    */
   async keys(pattern) {
     return await this.keysAsync(pattern)
+  }
+
+  /**
+   * https://redis.io/commands/expire
+   */
+  async expire(key, time) {
+    return await this.expireAsync(key, time)
   }
 }
 

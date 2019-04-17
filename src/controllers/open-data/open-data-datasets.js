@@ -1,4 +1,5 @@
 const zlib = require('zlib')
+const { storeData } = require('../../utils/store-odp-data')
 
 /**
  * Gets the datasets from the cache and returns as a response
@@ -6,15 +7,12 @@ const zlib = require('zlib')
 module.exports = async function(req, res) {
   const LABEL_MAX_LENGTH = 65
   let data
-  let dataExpired
   let newData
   let timer
   try {
     console.log('Getting dataset options...')
     timer = Date.now()
-    let datasetData = await req.store.getDatasetData()
-    data = datasetData[0]
-    dataExpired = datasetData[1]
+    data = await req.store.getDatasetData()
     newData = data.map(dataset => {
       let newLabel = truncateString(dataset.label, LABEL_MAX_LENGTH)
       let newColumnValues = dataset.values.map(columnValue => {
@@ -39,9 +37,12 @@ module.exports = async function(req, res) {
     console.log(`Options sent. Time: ${Date.now() - timer} ms`)
   })
 
-  // TODO
+  // Expiry check to update stored data
+  let expiryKey = 'DATA_STORE_EXPIRY_KEY'
+  let dataExpired = await req.store.getExpired(expiryKey) // Return a boolean
   if (dataExpired) {
-    // call update function
+    req.store.setExpiry(expiryKey, 60 * 20) // Time is in seconds (20 minutes)
+    storeData(req.store, 185) // Only datasets that were last modified half a year ago or less
   }
 }
 
