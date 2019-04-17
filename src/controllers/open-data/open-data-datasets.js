@@ -6,12 +6,15 @@ const zlib = require('zlib')
 module.exports = async function(req, res) {
   const LABEL_MAX_LENGTH = 65
   let data
+  let dataExpired
   let newData
   let timer
   try {
     console.log('Getting dataset options...')
     timer = Date.now()
-    data = await req.store.getDatasetData()
+    let datasetData = await req.store.getDatasetData()
+    data = datasetData[0]
+    dataExpired = datasetData[1]
     newData = data.map(dataset => {
       let newLabel = truncateString(dataset.label, LABEL_MAX_LENGTH)
       let newColumnValues = dataset.values.map(columnValue => {
@@ -35,6 +38,11 @@ module.exports = async function(req, res) {
     res.end(result)
     console.log(`Options sent. Time: ${Date.now() - timer} ms`)
   })
+
+  // TODO
+  if (dataExpired) {
+    // call update function
+  }
 }
 
 function truncateString(string, maxLength) {

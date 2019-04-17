@@ -61,42 +61,35 @@ module.exports = async function(req, res) {
   }
 
   let responseValues
-  if (storedData && storedTimestamp == latestTimestamp) {
-    console.log('Dataset rows not updated. Returning old data.')
+  if (
+    storedData &&
+    compareArr(filteredStoredColumnValues, filteredLatestColumnValues)
+  ) {
+    console.log('Row values not changed. Returning old data')
     responseValues = await req.cache.getAll(key, req.body['limit'])
   } else {
-    // Dataset rows were updated - now check if the columns are different
-    console.log('Dataset rows updated.')
-    if (
-      storedData &&
-      compareArr(filteredStoredColumnValues, filteredLatestColumnValues)
-    ) {
-      console.log('Row values not changed. Returning old data')
-      responseValues = await req.cache.getAll(key, req.body['limit'])
-    } else {
-      console.log('Adding new rows')
-      let id = uuid()
-      // The unique difference (does not catch repeat values)
-      let diff = {
-        new: arrDiff(filteredLatestColumnValues, filteredStoredColumnValues),
-        removed: arrDiff(filteredStoredColumnValues, filteredLatestColumnValues)
-      }
-      let newRows = {
-        id,
-        created_at: latestTimestamp,
-        data_set: dataset,
-        column: column,
-        column_values: JSON.stringify(filteredLatestColumnValues),
-        all_values: JSON.stringify(latestColumnRows), // Stringified array of updated row values (unfiltered)
-        difference: JSON.stringify(diff),
-        meta: {
-          id,
-          timestamp: Math.round(new Date() / 1000)
-        }
-      }
-      req.cache.add(key, newRows)
-      responseValues = await req.cache.getAll(key, req.body['limit'])
+    console.log('Adding new rows')
+    let id = uuid()
+    // The unique difference (does not catch repeat values)
+    let diff = {
+      new: arrDiff(filteredLatestColumnValues, filteredStoredColumnValues),
+      removed: arrDiff(filteredStoredColumnValues, filteredLatestColumnValues)
     }
+    let newRows = {
+      id,
+      created_at: latestTimestamp,
+      data_set: dataset,
+      column: column,
+      column_values: JSON.stringify(filteredLatestColumnValues),
+      all_values: JSON.stringify(latestColumnRows), // Stringified array of updated row values (unfiltered)
+      difference: JSON.stringify(diff),
+      meta: {
+        id,
+        timestamp: Math.round(new Date() / 1000)
+      }
+    }
+    req.cache.add(key, newRows)
+    responseValues = await req.cache.getAll(key, req.body['limit'])
   }
 
   res.status(200).send({
