@@ -41,6 +41,7 @@ module.exports = async function(req, res) {
   let expiryKey = 'DATA_STORE_EXPIRY_KEY'
   let dataExpired = await req.store.getExpired(expiryKey) // Return a boolean
   if (dataExpired) {
+    console.log('Data-store key expired. Refresh data...')
     req.store.setExpiry(expiryKey, 60 * 20) // Time is in seconds (20 minutes)
     storeData(req.store, 185) // Only datasets that were last modified half a year ago or less
   }

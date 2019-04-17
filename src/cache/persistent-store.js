@@ -62,7 +62,6 @@ class PersistentStore {
   async getExpired(expiryKey) {
     let expire = await this.client.get(expiryKey)
     if (expire == null) return true
-    console.log('Not expired')
     return false
   }
 }
