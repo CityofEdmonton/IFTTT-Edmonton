@@ -49,14 +49,7 @@ module.exports = async function(req, res) {
   }
   // Ensure that the date is in ISO 8601 time format
   // TODO: Check for other potential time formats
-  if (
-    !latestTimestamp
-      .toString()
-      .match(/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}Z/)
-  ) {
-    // Convert Epoch times to ISO 8601 time format
-    latestTimestamp = new Date(latestTimestamp * 1000).toISOString()
-  }
+  latestTimestamp = timestampFormat(latestTimestamp.toString())
 
   let responseValues
   if (
@@ -142,4 +135,21 @@ function arrDiff(arr1, arr2) {
     }
   }
   return diff
+}
+
+/**
+ * Converts timestamps to correctly formatted ISO 8601 time (currently only checks for epoch time)
+ * @param {String} timestamp The timestamp to convert
+ * @return {String} The ISO 8601 formatted timestamp string
+ */
+function timestampFormat(timestamp) {
+  if (
+    !timestamp.match(
+      /[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}Z/
+    )
+  ) {
+    // Convert Epoch times to ISO 8601 time format
+    return Date(timestamp * 1000).toISOString()
+  }
+  return timestamp
 }
