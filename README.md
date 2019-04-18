@@ -34,6 +34,12 @@ Using a trigger field for all Albertan cities, we can trigger based on the air r
 
 See [here](https://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs).
 
+### Edmonton Open Data Portal
+
+Using a trigger field for the [Edmonton Open Data Portal](https://data.edmonton.ca/browse?limitTo=datasets), we can trigger based on a column of the chosen dataset.
+
+Data pulled from [here](https://data.edmonton.ca/data.json).
+
 ## Deployment
 
 These are deployed using Heroku.
