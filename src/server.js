@@ -37,6 +37,7 @@ const createAirQualityController = require('./controllers/aqhi-base')
 const status = require('./controllers/status')
 const test = require('./controllers/test-setup')
 const airQualityStations = require('./controllers/air-quality-stations')
+const lrtEscalatorOutages = require('./controllers/lrt-escalator-outages')
 
 // Middleware
 const logger = require('./middleware/logger')
@@ -71,6 +72,8 @@ let edmontonAirHealthIndex = createAirQualityController(req => {
     limit: req.body['limit']
   }
 })
+
+router.post('/triggers/lrt_escalator_outages', lrtEscalatorOutages)
 
 router.post('/triggers/light_the_bridge', lightTheBridge)
 
