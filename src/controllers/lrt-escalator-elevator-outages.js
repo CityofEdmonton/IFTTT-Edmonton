@@ -6,7 +6,7 @@ const uuid = require('uuid/v4')
  */
 module.exports = async function(req, res) {
   console.log('LRT Escalator & Elevator Outages Controller')
-  let key = 'lrt-escalator-outages' // Unique key for dataset storage
+  let key = 'lrt-escalator-elevator-outages' // Unique key for dataset storage
   let url = 'https://data.edmonton.ca/resource/snws-u3zx.json' // The Socrata api endpoint
   let queryBase = `${url}?$query=`
 
