@@ -108,7 +108,7 @@ function compareArr(arr1, arr2) {
 function arrDiffFixed(storedData, latestDeviceIds) {
   let fixed = []
   if (!storedData) return fixed
-  if (!latestDeviceIds) return stored
+  if (!latestDeviceIds) return storedData.outages
   for (let element of JSON.parse(storedData.outages)) {
     if (latestDeviceIds.indexOf(element.device_id) == -1) {
       fixed.push(element)
