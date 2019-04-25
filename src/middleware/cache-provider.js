@@ -6,7 +6,7 @@
 const RedisCache = require('../cache/redis-cache')
 const ChangeWriter = require('../cache/change-writer')
 
-let redis = new RedisCache()
+let redis = new RedisCache(process.env.REDIS_URL)
 let cache = new ChangeWriter(redis, process.env.MAX_RESULTS)
 
 var cacheProvider = function(req, res, next) {

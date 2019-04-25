@@ -4,12 +4,31 @@ const { promisify } = require('util')
 class RedisCache {
   /**
    * This class wraps the Redis client in async functions.
+   * @param {String} url The URL of the Redis service of the form
+   * redis://user:password@host:port
    */
-  constructor() {
+  constructor(url) {
+    // (user), (password), (host), (port)
+    let match = url.match(/redis:\/\/(\w+):(\w+)@([\w.-]+):(\w+)/)
+    if (match.length < 5) {
+      throw new Error(
+        `Failed parsing ${url} for port, host, user and password.`
+      )
+    }
+    let password = match[2]
+    let host = match[3]
+    let port = match[4]
+
+    if (!password || !host || !port) {
+      throw new Error(
+        `Failed parsing ${url} for port, host, user and password.`
+      )
+    }
+
     const client = redis.createClient({
-      port: process.env.REDIS_PORT,
-      host: process.env.REDIS_HOST,
-      password: process.env.REDIS_PASSWORD
+      port,
+      host,
+      password
     })
     client.on('error', message => {
       console.log(message)
