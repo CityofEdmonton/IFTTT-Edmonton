@@ -1,4 +1,7 @@
 // Set default env vars
+if (!process.env.OPEN_DATA_URL) {
+  process.env['OPEN_DATA_URL'] = 'https://data.edmonton.ca/data.json'
+}
 if (!process.env.AIR_QUALITY_URL) {
   process.env['AIR_QUALITY_URL'] =
     'https://data.environment.alberta.ca/Services/AirQualityV2/AQHIsource.svc/CommunityAQHIs'
@@ -7,14 +10,8 @@ if (!process.env.LTB_URL) {
   process.env['LTB_URL'] =
     'https://twitrss.me/twitter_search_to_rss/?term=LighttheBridge%20from:CityofEdmonton'
 }
-if (!process.env.REDIS_PORT) {
-  process.env.REDIS_PORT = '6379'
-}
-if (!process.env.REDIS_HOST) {
-  process.env.REDIS_HOST = '127.0.0.1'
-}
-if (!process.env.REDIS_PASSWORD) {
-  process.env.REDIS_PASSWORD = 'myPassword'
+if (!process.env.REDIS_URL) {
+  process.env.REDIS_URL = 'redis://user:myPassword@127.0.0.1:6379'
 }
 if (!process.env.IFTTT_SERVICE_KEY) {
   throw new Error(
@@ -37,6 +34,8 @@ const createAirQualityController = require('./controllers/aqhi-base')
 const status = require('./controllers/status')
 const test = require('./controllers/test-setup')
 const airQualityStations = require('./controllers/air-quality-stations')
+const openDataDatasets = require('./controllers/open-data/open-data-datasets')
+const openDataValidator = require('./controllers/open-data/open-data-validator')
 const lrtEscalatorElevatorOutages = require('./controllers/lrt-escalator-elevator-outages')
 
 // Middleware
@@ -73,6 +72,8 @@ let edmontonAirHealthIndex = createAirQualityController(req => {
   }
 })
 
+router.post('/triggers/open_data/fields/dataset/options', openDataDatasets)
+router.post('/triggers/open_data/validate', openDataValidator)
 router.post(
   '/triggers/lrt_escalator_elevator_outages',
   lrtEscalatorElevatorOutages
