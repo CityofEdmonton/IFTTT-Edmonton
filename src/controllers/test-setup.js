@@ -16,10 +16,6 @@ module.exports = async function(req, res) {
           },
           alberta_air_health_index: {
             city: '67'
-          },
-          open_data: {
-            data_set:
-              'rk7f-7aur|&|Recreational Facility -  Drop In Swim (Detail)|&|activity'
           }
         },
         triggerFieldValidations: {
@@ -30,11 +26,6 @@ module.exports = async function(req, res) {
           alberta_air_health_index: {
             valid: '67',
             invalid: 'not-a-community-id'
-          },
-          open_data: {
-            valid:
-              'rk7f-7aur|&|Recreational Facility -  Drop In Swim (Detail)|&|activity',
-            invalid: 'not-a-data-set'
           }
         }
       }
