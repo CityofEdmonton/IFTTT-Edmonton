@@ -9,7 +9,7 @@
     "watch": "nodemon",
     "test": "jest",
     "coverage": "jest --coverage && cat ./coverage/lcov.info | coveralls",
-    "prettify": "prettier '**/*.{js,md}' --write",
+    "prettify": "prettier \"**/*.{js,md}\" --write",
     "lint": "eslint src/**"
   },
   "repository": {
@@ -30,6 +30,7 @@
   "homepage": "https://github.com/j-rewerts/IFTTT-Edmonton#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "colornames": "^1.1.1",
     "express": "^4.16.4",
     "redis": "^2.8.0",
     "request": "^2.88.0",

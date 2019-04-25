@@ -77,6 +77,11 @@ This IFTTT applet makes use of Node.js. The currently recommended version to dev
 
 Run `export IFTTT_SERVICE_KEY=myservicekey`
 
+**Windows**
+
+PowerShell: `$env:IFTTT_SERVICE_KEY="myservicekey"` (This will only persist for the current PowerShell process)\
+Command Prompt: `setx IFTTT_SERVICE_KEY myservicekey`
+
 Note that you must include the value `myservicekey` for the key IFTTT-Service-Key in the header of requests made to the service, even in local development.
 
 ### Debugging
@@ -86,3 +91,7 @@ We recommend using VS Code's autoattach functionality.
 ### Adding new controllers
 
 A rolling log object is injected into each controller. Access it using `req.cache`. See the exposed functions [here](src/cache/change-writer.js). Each controller should add new objects at `${route}/${uniqueId}`. Beware sharing keys between different routes, as IFTTT has a strict 1 route per trigger rule.
+
+## Security concerns
+
+In the event that you find a vulnerability, please email jared.rewerts@edmonton.ca.
