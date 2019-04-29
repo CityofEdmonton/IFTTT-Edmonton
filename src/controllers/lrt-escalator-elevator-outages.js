@@ -60,10 +60,12 @@ module.exports = async function(req, res) {
       created_at: latestTimestamp,
       outages_json: JSON.stringify(latestColumnRows),
       fixed_json: JSON.stringify(fixed),
-      outages_string: stringData(latestColumnRows),
-      fixed_string: stringData(fixed),
-      outages_html: htmlData(latestColumnRows),
-      fixed_html: htmlData(fixed),
+      outages_string: formatData(latestColumnRows, '\n- '),
+      fixed_string: formatData(fixed, '\n- '),
+      outages_html: formatData(latestColumnRows, '<br>- '),
+      fixed_html: formatData(fixed, '<br>- '),
+      outages_csv: formatData(latestColumnRows, ''),
+      fixed_csv: formatData(fixed, ''),
       meta: {
         id,
         timestamp: Math.round(new Date() / 1000)
@@ -81,30 +83,15 @@ module.exports = async function(req, res) {
 /**
  * Uses \n newline to format the data
  * @param {Object} data The JSON object with outages information
+ * @param {String} lineBreak The linebreak to use
  * @returns {String} Formatted data
  */
-function stringData(data) {
+function formatData(data, lineBreak) {
   return data
     .map(entry => {
-      return `\n- ${entry.lrt_station_name} ${entry.device_type}: ${
+      return `${lineBreak}${entry.lrt_station_name} ${entry.device_type}: ${
         entry.lrt_device_location
       }`
-    })
-    .sort()
-    .toString()
-}
-
-/**
- * Uses <br> tags to format the data
- * @param {Object} data The JSON object with outages information
- * @returns {String} Formatted data
- */
-function htmlData(data) {
-  return data
-    .map(entry => {
-      return `<br>- ${entry.lrt_station_name} ${entry.device_type}: ${
-        entry.lrt_device_location
-      }</br>`
     })
     .sort()
     .toString()
