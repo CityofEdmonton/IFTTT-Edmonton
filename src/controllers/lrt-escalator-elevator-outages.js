@@ -58,8 +58,12 @@ module.exports = async function(req, res) {
     let newRows = {
       id,
       created_at: latestTimestamp,
-      outages: JSON.stringify(latestColumnRows),
-      fixed: JSON.stringify(fixed),
+      outages_json: JSON.stringify(latestColumnRows),
+      fixed_json: JSON.stringify(fixed),
+      outages_string: stringData(latestColumnRows),
+      fixed_string: stringData(fixed),
+      outages_html: htmlData(latestColumnRows),
+      fixed_html: htmlData(fixed),
       meta: {
         id,
         timestamp: Math.round(new Date() / 1000)
@@ -72,6 +76,38 @@ module.exports = async function(req, res) {
   res.status(200).send({
     data: responseValues
   })
+}
+
+/**
+ * Uses \n newline to format the data
+ * @param {Object} data The JSON object with outages information
+ * @returns {String} Formatted data
+ */
+function stringData(data) {
+  return data
+    .map(entry => {
+      return `\n- ${entry.lrt_station_name} ${entry.device_type}: ${
+        entry.lrt_device_location
+      }`
+    })
+    .sort()
+    .toString()
+}
+
+/**
+ * Uses <br> tags to format the data
+ * @param {Object} data The JSON object with outages information
+ * @returns {String} Formatted data
+ */
+function htmlData(data) {
+  return data
+    .map(entry => {
+      return `<br>- ${entry.lrt_station_name} ${entry.device_type}: ${
+        entry.lrt_device_location
+      }</br>`
+    })
+    .sort()
+    .toString()
 }
 
 /**
