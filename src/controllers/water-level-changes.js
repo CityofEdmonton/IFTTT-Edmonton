@@ -22,10 +22,12 @@ module.exports = async function(req, res) {
     LIMIT 1`
   let updatedData
   let recentUpdated
+  let recentWaterLevel
   try {
     let rawJsonUpdated = await request(getUpdatedQuery)
     updatedData = JSON.parse(rawJsonUpdated)
     recentUpdated = updatedData[0].date_and_time
+    recentWaterLevel = updatedData[0].water_level_m
   } catch (e) {
     e.code = 500
     throw e
@@ -59,6 +61,7 @@ module.exports = async function(req, res) {
       id,
       created_at: new Date(Date.now()).toISOString(),
       last_updated: recentUpdated,
+      latest_water_level: recentWaterLevel,
       one_day_average: oneDayResults[0].toFixed(3),
       one_day_delta: oneDayResults[1].toFixed(3),
       three_day_average: threeDaysResults[0].toFixed(3),
