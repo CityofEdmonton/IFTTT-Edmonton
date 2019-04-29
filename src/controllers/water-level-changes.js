@@ -7,7 +7,7 @@ const URL = 'https://data.edmonton.ca/resource/cnsu-iagr.json' // The Socrata ap
 const QUERY_BASE = `${URL}?$query=`
 
 /**
- * Water Level Changes
+ * Water Level Changes (North Saskatchewan River at Edmonton)
  */
 module.exports = async function(req, res) {
   console.log('Water Level Changes Controller')
@@ -83,10 +83,10 @@ module.exports = async function(req, res) {
 }
 
 /**
- * This function obtains the upper and lower bounds of a period
+ * This function obtains the upper and lower bounds of a time period
  * @param {String} date The date in ISO format
  * @param {Number} days The number of days the period should be
- * @returns {Array<String>} The upper and lower bounds of the period
+ * @returns {Array<String>} The upper and lower bounds of the time period
  */
 function getBounds(date, days) {
   const dateRegex = /[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}/
@@ -100,7 +100,7 @@ function getBounds(date, days) {
 }
 
 /**
- * Returns the average and bounds respecitvely in an array
+ * Returns the average and delta of the water levels respecitvely in an array
  * @param {Array<String>} bounds The bounds to do calculation on (dates in ISO 8601 format)
  * @returns {Array<Number>} The average and delta of the water level between the specified bounds
  */
