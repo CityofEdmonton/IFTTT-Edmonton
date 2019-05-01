@@ -13,8 +13,11 @@ module.exports = async function(req, res) {
   console.log('Water Level Changes Controller')
   let storedData = await req.cache.getLatest(KEY)
   let storedUpdated
-  if (storedData) storedUpdated = storedData.last_updated
+  if (storedData) {
+    storedUpdated = storedData.last_updated
+  }
 
+  // Note: station number 05DF001 refers to the water station near the low-level bridge by the North Saskatchewan River at Edmonton
   let getUpdatedQuery = `${QUERY_BASE}
     SELECT date_and_time, water_level_m
     WHERE station_number = '05DF001'
@@ -90,12 +93,12 @@ module.exports = async function(req, res) {
  */
 function getBounds(date, days) {
   const dateRegex = /[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}/
-  let currentDate = new Date(new Date(date) - TIMEZONE_OFFSET_MILLIS)
-  let threeDayPeriod = new Date(
+  let endOfPeriod = new Date(new Date(date) - TIMEZONE_OFFSET_MILLIS)
+  let startOfPeriod = new Date(
     new Date(date) - (days * 24 * 60 * 60 * 1000 + TIMEZONE_OFFSET_MILLIS)
   )
-  let lowerBound = threeDayPeriod.toISOString().match(dateRegex)[0]
-  let upperBound = currentDate.toISOString().match(dateRegex)[0]
+  let lowerBound = startOfPeriod.toISOString().match(dateRegex)[0]
+  let upperBound = endOfPeriod.toISOString().match(dateRegex)[0]
   return [lowerBound, upperBound]
 }
 
