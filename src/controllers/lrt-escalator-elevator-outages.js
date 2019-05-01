@@ -68,6 +68,8 @@ module.exports = async function(req, res) {
       fixed_html: formatData(fixed, '<br>- '),
       outages_csv: formatData(latestColumnRows, ''),
       fixed_csv: formatData(fixed, ''),
+      outages: JSON.stringify(latestColumnRows), // Old ingredients (Should be removed once trigger updated)
+      fixed: JSON.stringify(fixed), // Old ingredients (Should be removed once trigger updated)
       meta: {
         id,
         timestamp: Math.round(new Date() / 1000)
