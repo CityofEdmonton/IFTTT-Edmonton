@@ -15,9 +15,11 @@ module.exports = async function(req, res) {
   let filteredStoredColumnValues // The stored/previous column values to be compared to
   if (storedData) {
     storedTimestamp = storedData.created_at
-    filteredStoredColumnValues = JSON.parse(storedData.outages).map(device => {
-      return device.device_id
-    })
+    filteredStoredColumnValues = JSON.parse(storedData.outages_json).map(
+      device => {
+        return device.device_id
+      }
+    )
   } else {
     storedTimestamp = '1998-07-25T00:00:00.000Z' // This value is random
   }
@@ -58,8 +60,16 @@ module.exports = async function(req, res) {
     let newRows = {
       id,
       created_at: latestTimestamp,
-      outages: JSON.stringify(latestColumnRows),
-      fixed: JSON.stringify(fixed),
+      outages_json: JSON.stringify(latestColumnRows),
+      fixed_json: JSON.stringify(fixed),
+      outages_string: formatData(latestColumnRows, '\n- '),
+      fixed_string: formatData(fixed, '\n- '),
+      outages_html: formatData(latestColumnRows, '<br>- '),
+      fixed_html: formatData(fixed, '<br>- '),
+      outages_csv: formatData(latestColumnRows, ''),
+      fixed_csv: formatData(fixed, ''),
+      outages: JSON.stringify(latestColumnRows), // Old ingredients (Should be removed once trigger updated)
+      fixed: JSON.stringify(fixed), // Old ingredients (Should be removed once trigger updated)
       meta: {
         id,
         timestamp: Math.round(new Date() / 1000)
@@ -72,6 +82,23 @@ module.exports = async function(req, res) {
   res.status(200).send({
     data: responseValues
   })
+}
+
+/**
+ * Uses linebreaks to format the data
+ * @param {Object} data The JSON object with outages information
+ * @param {String} lineBreak The linebreak to use
+ * @returns {String} Formatted data
+ */
+function formatData(data, lineBreak) {
+  return data
+    .map(entry => {
+      return `${lineBreak}${entry.lrt_station_name} ${entry.device_type}: ${
+        entry.lrt_device_location
+      }`
+    })
+    .sort()
+    .toString()
 }
 
 /**
@@ -108,8 +135,8 @@ function compareArr(arr1, arr2) {
 function arrDiffFixed(storedData, latestDeviceIds) {
   let fixed = []
   if (!storedData) return fixed
-  if (!latestDeviceIds) return storedData.outages
-  for (let element of JSON.parse(storedData.outages)) {
+  if (!latestDeviceIds) return storedData.outages_json
+  for (let element of JSON.parse(storedData.outages_json)) {
     if (latestDeviceIds.indexOf(element.device_id) == -1) {
       fixed.push(element)
     }
