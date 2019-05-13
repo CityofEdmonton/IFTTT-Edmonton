@@ -14,7 +14,7 @@ class ChangeWriter {
   async add(key, obj) {
     let value = JSON.stringify(obj)
     await this.client.lpush(key, value)
-    await this.client.ltrim(key, 0, this.maxElements - 1)
+    await this.client.ltrim(key, 0, this.maxElements)
   }
 
   /**
