@@ -5,6 +5,7 @@ const TIMEZONE_OFFSET_MILLIS = 360 * 60 * 1000 // Timezone offset for Edmonton t
 const KEY = 'water-level-changes' // Unique key for dataset storage
 const URL = 'https://data.edmonton.ca/resource/cnsu-iagr.json' // The Socrata api endpoint
 const QUERY_BASE = `${URL}?$query=`
+const STATION_NUMBER = '05DF001' // 05DF001 refers to the water station near the low-level bridge by the North Saskatchewan River at Edmonton
 
 /**
  * Water Level Changes (North Saskatchewan River at Edmonton)
@@ -17,10 +18,9 @@ module.exports = async function(req, res) {
     storedUpdated = storedData.last_updated
   }
 
-  // Note: station number 05DF001 refers to the water station near the low-level bridge by the North Saskatchewan River at Edmonton
   let getUpdatedQuery = `${QUERY_BASE}
     SELECT date_and_time, water_level_m
-    WHERE station_number = '05DF001'
+    WHERE station_number = '${STATION_NUMBER}'
     ORDER BY date_and_time DESC
     LIMIT 1`
   let updatedData
@@ -110,7 +110,7 @@ function getBounds(date, days) {
 async function getData(bounds) {
   let workingDataQuery = `${QUERY_BASE}
     SELECT water_level_m
-    WHERE station_number = '05DF001'
+    WHERE station_number = '${STATION_NUMBER}'
     AND date_and_time
     BETWEEN '${bounds[0]}'
     AND '${bounds[1]}'
