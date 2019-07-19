@@ -88,6 +88,8 @@ module.exports = async function(req, res) {
     }
     console.log('Adding new rows')
     let id = uuid()
+    // Note: Delta values are calculated by taking the difference of the averages between the
+    // earliest and latest days of the specified time period.
     let newRows = {
       id,
       created_at: new Date(Date.now()).toISOString(),
