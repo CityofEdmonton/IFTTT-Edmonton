@@ -31,7 +31,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "colornames": "^1.1.1",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "redis": "^2.8.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
